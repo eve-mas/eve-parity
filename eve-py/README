@@ -1,0 +1,188 @@
+*************
+Prerequisites
+*************
+1. python 2.x
+2. IGraph version 0.7 (http://igraph.org/python/) (version 0.6 or older does not work)
+	You need to have C/C++ compiler installed on your machine.
+	for Ubuntu: if needed 'sudo apt-get install -y libigraph0-dev'
+3. Cairo (https://cairographics.org/download/)
+	or from sourcecode (https://cairographics.org/releases/) --MacOS usually runs into trouble with auto install:
+		- uncompress/unzip the source code folder
+		- go inside the folder
+		- run on terminal: 
+				[your pc]$ ./configure --prefix=/usr/local --disable-dependency-tracking
+				[your pc]$ make install
+				
+				install pkg-config if needed
+
+4. OCaml version 4.03.x or later (https://ocaml.org/docs/install.html)
+5. OPAM (https://opam.ocaml.org/doc/Install.html)
+	can be installed from binaries (download from https://github.com/ocaml/opam/releases)
+	or from source code (download from https://github.com/ocaml/opam/releases)
+		- uncompress/unzip the source code folder
+		- go inside the folder
+		- follow installation instructions on README file and dont forget to initalise OPAM with current installation of OCaml (https://opam.ocaml.org/doc/Usage.html)
+	Make sure OCaml is version 4.03.x or later before running config
+
+**************
+Configurations
+**************
+1. Make sure you have all of the prerequisites
+2. Go inside eve-py folder
+3. Run shell script ./config.sh
+   Make sure OCaml is version 4.03.x or later before running config.sh
+   If you have OPAM installed in your machine, you can upgrade OCaml by executing these in terminal:
+	opam update
+	opam upgrade
+	opam switch 4.03.0
+
+**********
+How to use
+**********
+
+usage: 
+
+$ main.py [problem] [path/name of the file] [options]
+
+List of problems:
+a 	 Solve A-Nash
+e 	 Solve E-Nash
+n 	 Solve Non-Emptiness
+
+List of optional arguments:
+-d 	 Draw the structures
+
+For instance:
+
+'$ main.py a .../examples/a-nash_1 -d' solves A-Nash problem in file a-nash_1
+
+
+SRML code input for RMG:
+
+ module alice controls ca
+   init
+   :: true ~> ca' := true;
+   update
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   goal
+   :: G F (ca <-> cb);
+ 
+  module bob controls cb
+   init
+   :: true ~> cb' := true;
+   update
+   :: true ~> cb' := true;
+   :: true ~> cb' := false;
+   goal
+   :: G F !(ca <-> cb);
+
+SRML code input for CGS:
+
+ module alice controls ca
+   init
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   update
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   goal
+   :: G !p;
+ 
+  module bob controls cb
+   init
+   :: true ~> cb' := true;
+   :: true ~> cb' := false;
+   update
+   :: true ~> cb' := true;
+   :: true ~> cb' := false;
+   goal
+   :: G p;
+
+  module environment controls p,s0,s1
+   init
+   :: true ~> p' := true, s0' := true, s1' := false;
+   update
+   :: (ca <-> cb) ~> p' := true, s0' := true, s1' := false;
+   :: !(ca <-> cb) ~> p' := false, s0' := false, s1' := true;
+
+For E/A-Nash you need an extra property (to be checked) in SRML code as shown in the following SRML code:
+
+ module alice controls ca
+   init
+   :: true ~> ca' := true;
+   update
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   goal
+   :: G F (ca <-> cb);
+ 
+  module bob controls cb
+   init
+   :: true ~> cb' := true;
+   update
+   :: true ~> cb' := true;
+   :: true ~> cb' := false;
+   goal
+   :: G F !(ca <-> cb);
+
+  property
+  :: G (ca and cb)
+
+
+EXAMPLE
+Solve E-Nash:
+
+[yourpc@localhost src]$ python main.py e ../examples/e-nash_1 
+Checking E-Nash property formula:  G  ( ca and cb ) 
+Kripke states 16
+Kripke edges 256
+matching_pennies_player_1  (  []  ( ca && cb )  )  ||  ( matching_pennies_player_1_var <-> matching_pennies_player_2_var ) 
+matching_pennies_player_2  (  []  ( ca && cb )  )  ||  !  ( matching_pennies_player_1_var <-> matching_pennies_player_2_var ) 
+alice  []  <>  ( ca <-> cb ) 
+bob  []  <>  !  ( ca <-> cb ) 
+
+ Convert G_{LTL} to G_{PAR}...
+
+
+ Sequentialising GPar for punishing <matching_pennies_player_1>
+IGRAPH DN-- 1011 2694 -- 
++ attr: colour (v), itd (v), label (v), name (v), prior (v), val (v), label (e), word (e)
+None
+
+ Computing punishing region for <matching_pennies_player_1>
+
+ Sequentialising GPar for punishing <matching_pennies_player_2>
+IGRAPH DN-- 1011 2694 -- 
++ attr: colour (v), itd (v), label (v), name (v), prior (v), val (v), label (e), word (e)
+None
+
+ Computing punishing region for <matching_pennies_player_2>
+
+ Sequentialising GPar for punishing <alice>
+IGRAPH DN-- 1013 2696 -- 
++ attr: colour (v), itd (v), label (v), name (v), prior (v), val (v), label (e), word (e)
+None
+
+ Computing punishing region for <alice>
+
+ Sequentialising GPar for punishing <bob>
+IGRAPH DN-- 1013 2696 -- 
++ attr: colour (v), itd (v), label (v), name (v), prior (v), val (v), label (e), word (e)
+None
+
+ Computing punishing region for <bob>
+>>> NO, the property  G  ( ca and cb )  is not satisfied in any NE <<<
+Parser Performance (milisecond) 0.7939453125
+Construction Performance (milisecond) 1281.89526367
+PGSolver Performance (milisecond) 2972.83203125
+Automata emptiness checking (milisecond) 3046.51196289
+GPar states 113
+GPar edges 1796
+Max TTPG states 1013
+Max TTPG edges 2696
+
+
+
+
+

@@ -1,0 +1,49 @@
+-- Example of Ring-based mutual exclusion algorithm in [Gutierrez et al., 2017]
+
+-- Ref:
+-- [Gutierrez et al., 2017] Julian Gutierrez, Paul Harrenstein, and Michael Wooldridge. 
+-- 	From model checking to equilibrium checking: Reactive modules for rational verification.
+-- 	Artificial Intelligence, 248:123–157, 2017.
+
+module m0 controls x0,y0
+init
+:: true ~> x0' := false, y0':= false;
+update
+:: y3 or x0 ~> x0' := true, y0':= y0;
+:: y3 or x0 ~> x0' := false, y0':= true;
+:: y0 ~> x0' := x0, y0':= false;
+goal
+:: (G F !(x0));
+
+module m1 controls x1,y1
+init
+:: true ~> x1' := false, y1':= false;
+update
+:: y0 or x1 ~> x1' := true, y1':= y1;
+:: y0 or x1 ~> x1' := false, y1':= true;
+:: y1 ~> x1' := x1, y1':= false;
+goal
+:: (G F !(x1));
+
+module m2 controls x2,y2
+init
+:: true ~> x2' := false, y2':= false;
+update
+:: y1 or x2 ~> x2' := true, y2':= y2;
+:: y1 or x2 ~> x2' := false, y2':= true;
+:: y2 ~> x2' := x2, y2':= false;
+goal
+:: (G F !(x2));
+
+module m3 controls x3,y3
+init
+:: true ~> x3' := false, y3':= true;
+update
+:: y2 or x3 ~> x3' := true, y3':= y3;
+:: y2 or x3 ~> x3' := false, y3':= true;
+:: y3 ~> x3' := x3, y3':= false;
+goal
+:: (G F !(x3));
+
+property
+:: G F x1;

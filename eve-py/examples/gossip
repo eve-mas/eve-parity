@@ -1,0 +1,37 @@
+-- Gossip protocol with 3 servers
+
+  module server1 controls s1,g1
+   init
+   :: true ~> s1' := true,g1':=false;
+   update
+   :: s1 ~> s1' := false,g1':=true;
+   :: s1 ~> s1' := true,g1':=false;
+   :: (g3 or g2) and g1 ~> s1' := true,g1':=false;
+   goal
+  :: G F (g1);
+
+  module server2 controls s2,g2
+   init
+   :: true ~> s2' := true,g2':=false;
+   update
+   :: s2 ~> s2' := false,g2':=true;
+   :: s2 ~> s2' := true,g2':=false;
+   :: (g1 or g3) and g2 ~> s2' := true,g2':=false;
+   goal
+   :: G F (g2);
+
+  module server3 controls s3,g3
+   init
+   :: true ~> s3' := true,g3':=false;
+   update
+   :: s3 ~> s3' := false,g3':=true;
+   :: s3 ~> s3' := true,g3':=false;
+   :: (g2 or g1) and g3 ~> s3' := true,g3':=false;
+   goal
+   :: G F (g3);
+
+   property
+   --:: G F (s1 or s2 or s3);
+   :: G F ((g1 and g2) or (g1 and g3) or (g2 and g3));
+   --:: G F (g1 or g2 or g3);
+

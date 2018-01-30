@@ -1,0 +1,27 @@
+-- This is matching pennies example
+-- alice (resp. bob) holds coin ca (resp. cb)
+-- They can flip their coins to either true or false
+
+ module alice controls ca
+   init
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   update
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   goal
+   :: G F (ca <-> cb);
+   
+  module bob controls cb
+   init
+   :: true ~> cb' := false;
+   :: true ~> cb' := true;
+   update
+   :: true ~> cb' := true;
+   :: true ~> cb' := false;
+   goal
+   :: G F !(ca <-> cb);
+
+  property
+  :: cb;
+

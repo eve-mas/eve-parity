@@ -1,0 +1,2031 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMMENT
+    GUARD
+
+Grammar
+
+Rule 0     S' -> input
+Rule 1     input -> MODULE NAME CONTROL var_y INIT init_y UPDATE update_y GOAL goal_form
+Rule 2     input -> MODULE ENVIRONMENT CONTROL var_y INIT init_y UPDATE update_y
+Rule 3     input -> input input
+Rule 4     var_y -> NAME
+Rule 5     var_y -> var_y COMMA var_y
+Rule 6     init_y -> DCOL init_command
+Rule 7     init_y -> init_y DCOL init_command
+Rule 8     init_command -> init_condition ASSIGN init_next_state
+Rule 9     init_condition -> TRUE
+Rule 10    init_next_state -> NAME NEXT EQUALS TRUE
+Rule 11    init_next_state -> NAME NEXT EQUALS FALSE
+Rule 12    init_next_state -> init_next_state COMMA init_next_state
+Rule 13    init_next_state -> init_next_state SEMICOLON
+Rule 14    update_command -> update_condition ASSIGN update_next_state
+Rule 15    update_y -> DCOL update_command
+Rule 16    update_y -> update_y DCOL update_command
+Rule 17    update_condition -> formula_guard
+Rule 18    update_condition -> update_condition COMMA update_condition
+Rule 19    formula_guard -> NAME
+Rule 20    formula_guard -> TRUE
+Rule 21    formula_guard -> FALSE
+Rule 22    formula_guard -> formula_guard OR formula_guard
+Rule 23    formula_guard -> formula_guard AND formula_guard
+Rule 24    formula_guard -> formula_guard IMPLIES formula_guard
+Rule 25    formula_guard -> formula_guard IFF formula_guard
+Rule 26    formula_guard -> NOT formula_guard
+Rule 27    formula_guard -> LB formula_guard RB
+Rule 28    update_next_state -> NAME NEXT EQUALS formula_assign
+Rule 29    update_next_state -> update_next_state COMMA update_next_state
+Rule 30    update_next_state -> update_next_state SEMICOLON
+Rule 31    formula_assign -> NAME
+Rule 32    formula_assign -> TRUE
+Rule 33    formula_assign -> FALSE
+Rule 34    formula_assign -> formula_assign OR formula_assign
+Rule 35    formula_assign -> formula_assign AND formula_assign
+Rule 36    formula_assign -> formula_assign IMPLIES formula_assign
+Rule 37    formula_assign -> formula_assign IFF formula_assign
+Rule 38    formula_assign -> NOT formula_assign
+Rule 39    formula_assign -> LB formula_assign RB
+Rule 40    goal_form -> DCOL gf SEMICOLON
+Rule 41    gf -> NAME
+Rule 42    gf -> TRUE
+Rule 43    gf -> FALSE
+Rule 44    gf -> gf OR gf
+Rule 45    gf -> gf AND gf
+Rule 46    gf -> gf IMPLIES gf
+Rule 47    gf -> gf IFF gf
+Rule 48    gf -> G gf
+Rule 49    gf -> F gf
+Rule 50    gf -> X gf
+Rule 51    gf -> U gf
+Rule 52    gf -> NOT gf
+Rule 53    gf -> LB gf RB
+
+Terminals, with rules where they appear
+
+AND                  : 23 35 45
+ASSIGN               : 8 14
+COMMA                : 5 12 18 29
+COMMENT              : 
+CONTROL              : 1 2
+DCOL                 : 6 7 15 16 40
+ENVIRONMENT          : 2
+EQUALS               : 10 11 28
+F                    : 49
+FALSE                : 11 21 33 43
+G                    : 48
+GOAL                 : 1
+GUARD                : 
+IFF                  : 25 37 47
+IMPLIES              : 24 36 46
+INIT                 : 1 2
+LB                   : 27 39 53
+MODULE               : 1 2
+NAME                 : 1 4 10 11 19 28 31 41
+NEXT                 : 10 11 28
+NOT                  : 26 38 52
+OR                   : 22 34 44
+RB                   : 27 39 53
+SEMICOLON            : 13 30 40
+TRUE                 : 9 10 20 32 42
+U                    : 51
+UPDATE               : 1 2
+X                    : 50
+error                : 
+
+Nonterminals, with rules where they appear
+
+formula_assign       : 28 34 34 35 35 36 36 37 37 38 39
+formula_guard        : 17 22 22 23 23 24 24 25 25 26 27
+gf                   : 40 44 44 45 45 46 46 47 47 48 49 50 51 52 53
+goal_form            : 1
+init_command         : 6 7
+init_condition       : 8
+init_next_state      : 8 12 12 13
+init_y               : 1 2 7
+input                : 3 3 0
+update_command       : 15 16
+update_condition     : 14 18 18
+update_next_state    : 14 29 29 30
+update_y             : 1 2 16
+var_y                : 1 2 5 5
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . input
+    (1) input -> . MODULE NAME CONTROL var_y INIT init_y UPDATE update_y GOAL goal_form
+    (2) input -> . MODULE ENVIRONMENT CONTROL var_y INIT init_y UPDATE update_y
+    (3) input -> . input input
+
+    MODULE          shift and go to state 1
+
+    input                          shift and go to state 2
+
+state 1
+
+    (1) input -> MODULE . NAME CONTROL var_y INIT init_y UPDATE update_y GOAL goal_form
+    (2) input -> MODULE . ENVIRONMENT CONTROL var_y INIT init_y UPDATE update_y
+
+    NAME            shift and go to state 3
+    ENVIRONMENT     shift and go to state 4
+
+
+state 2
+
+    (0) S' -> input .
+    (3) input -> input . input
+    (1) input -> . MODULE NAME CONTROL var_y INIT init_y UPDATE update_y GOAL goal_form
+    (2) input -> . MODULE ENVIRONMENT CONTROL var_y INIT init_y UPDATE update_y
+    (3) input -> . input input
+
+    MODULE          shift and go to state 1
+
+    input                          shift and go to state 5
+
+state 3
+
+    (1) input -> MODULE NAME . CONTROL var_y INIT init_y UPDATE update_y GOAL goal_form
+
+    CONTROL         shift and go to state 6
+
+
+state 4
+
+    (2) input -> MODULE ENVIRONMENT . CONTROL var_y INIT init_y UPDATE update_y
+
+    CONTROL         shift and go to state 7
+
+
+state 5
+
+    (3) input -> input input .
+    (3) input -> input . input
+    (1) input -> . MODULE NAME CONTROL var_y INIT init_y UPDATE update_y GOAL goal_form
+    (2) input -> . MODULE ENVIRONMENT CONTROL var_y INIT init_y UPDATE update_y
+    (3) input -> . input input
+
+  ! shift/reduce conflict for MODULE resolved as shift
+    $end            reduce using rule 3 (input -> input input .)
+    MODULE          shift and go to state 1
+
+  ! MODULE          [ reduce using rule 3 (input -> input input .) ]
+
+    input                          shift and go to state 5
+
+state 6
+
+    (1) input -> MODULE NAME CONTROL . var_y INIT init_y UPDATE update_y GOAL goal_form
+    (4) var_y -> . NAME
+    (5) var_y -> . var_y COMMA var_y
+
+    NAME            shift and go to state 8
+
+    var_y                          shift and go to state 9
+
+state 7
+
+    (2) input -> MODULE ENVIRONMENT CONTROL . var_y INIT init_y UPDATE update_y
+    (4) var_y -> . NAME
+    (5) var_y -> . var_y COMMA var_y
+
+    NAME            shift and go to state 8
+
+    var_y                          shift and go to state 10
+
+state 8
+
+    (4) var_y -> NAME .
+
+    COMMA           reduce using rule 4 (var_y -> NAME .)
+    INIT            reduce using rule 4 (var_y -> NAME .)
+
+
+state 9
+
+    (1) input -> MODULE NAME CONTROL var_y . INIT init_y UPDATE update_y GOAL goal_form
+    (5) var_y -> var_y . COMMA var_y
+
+    INIT            shift and go to state 11
+    COMMA           shift and go to state 12
+
+
+state 10
+
+    (2) input -> MODULE ENVIRONMENT CONTROL var_y . INIT init_y UPDATE update_y
+    (5) var_y -> var_y . COMMA var_y
+
+    INIT            shift and go to state 13
+    COMMA           shift and go to state 12
+
+
+state 11
+
+    (1) input -> MODULE NAME CONTROL var_y INIT . init_y UPDATE update_y GOAL goal_form
+    (6) init_y -> . DCOL init_command
+    (7) init_y -> . init_y DCOL init_command
+
+    DCOL            shift and go to state 15
+
+    init_y                         shift and go to state 14
+
+state 12
+
+    (5) var_y -> var_y COMMA . var_y
+    (4) var_y -> . NAME
+    (5) var_y -> . var_y COMMA var_y
+
+    NAME            shift and go to state 8
+
+    var_y                          shift and go to state 16
+
+state 13
+
+    (2) input -> MODULE ENVIRONMENT CONTROL var_y INIT . init_y UPDATE update_y
+    (6) init_y -> . DCOL init_command
+    (7) init_y -> . init_y DCOL init_command
+
+    DCOL            shift and go to state 15
+
+    init_y                         shift and go to state 17
+
+state 14
+
+    (1) input -> MODULE NAME CONTROL var_y INIT init_y . UPDATE update_y GOAL goal_form
+    (7) init_y -> init_y . DCOL init_command
+
+    UPDATE          shift and go to state 18
+    DCOL            shift and go to state 19
+
+
+state 15
+
+    (6) init_y -> DCOL . init_command
+    (8) init_command -> . init_condition ASSIGN init_next_state
+    (9) init_condition -> . TRUE
+
+    TRUE            shift and go to state 21
+
+    init_command                   shift and go to state 20
+    init_condition                 shift and go to state 22
+
+state 16
+
+    (5) var_y -> var_y COMMA var_y .
+    (5) var_y -> var_y . COMMA var_y
+
+  ! shift/reduce conflict for COMMA resolved as shift
+    INIT            reduce using rule 5 (var_y -> var_y COMMA var_y .)
+    COMMA           shift and go to state 12
+
+  ! COMMA           [ reduce using rule 5 (var_y -> var_y COMMA var_y .) ]
+
+
+state 17
+
+    (2) input -> MODULE ENVIRONMENT CONTROL var_y INIT init_y . UPDATE update_y
+    (7) init_y -> init_y . DCOL init_command
+
+    UPDATE          shift and go to state 23
+    DCOL            shift and go to state 19
+
+
+state 18
+
+    (1) input -> MODULE NAME CONTROL var_y INIT init_y UPDATE . update_y GOAL goal_form
+    (15) update_y -> . DCOL update_command
+    (16) update_y -> . update_y DCOL update_command
+
+    DCOL            shift and go to state 25
+
+    update_y                       shift and go to state 24
+
+state 19
+
+    (7) init_y -> init_y DCOL . init_command
+    (8) init_command -> . init_condition ASSIGN init_next_state
+    (9) init_condition -> . TRUE
+
+    TRUE            shift and go to state 21
+
+    init_command                   shift and go to state 26
+    init_condition                 shift and go to state 22
+
+state 20
+
+    (6) init_y -> DCOL init_command .
+
+    UPDATE          reduce using rule 6 (init_y -> DCOL init_command .)
+    DCOL            reduce using rule 6 (init_y -> DCOL init_command .)
+
+
+state 21
+
+    (9) init_condition -> TRUE .
+
+    ASSIGN          reduce using rule 9 (init_condition -> TRUE .)
+
+
+state 22
+
+    (8) init_command -> init_condition . ASSIGN init_next_state
+
+    ASSIGN          shift and go to state 27
+
+
+state 23
+
+    (2) input -> MODULE ENVIRONMENT CONTROL var_y INIT init_y UPDATE . update_y
+    (15) update_y -> . DCOL update_command
+    (16) update_y -> . update_y DCOL update_command
+
+    DCOL            shift and go to state 25
+
+    update_y                       shift and go to state 28
+
+state 24
+
+    (1) input -> MODULE NAME CONTROL var_y INIT init_y UPDATE update_y . GOAL goal_form
+    (16) update_y -> update_y . DCOL update_command
+
+    GOAL            shift and go to state 30
+    DCOL            shift and go to state 29
+
+
+state 25
+
+    (15) update_y -> DCOL . update_command
+    (14) update_command -> . update_condition ASSIGN update_next_state
+    (17) update_condition -> . formula_guard
+    (18) update_condition -> . update_condition COMMA update_condition
+    (19) formula_guard -> . NAME
+    (20) formula_guard -> . TRUE
+    (21) formula_guard -> . FALSE
+    (22) formula_guard -> . formula_guard OR formula_guard
+    (23) formula_guard -> . formula_guard AND formula_guard
+    (24) formula_guard -> . formula_guard IMPLIES formula_guard
+    (25) formula_guard -> . formula_guard IFF formula_guard
+    (26) formula_guard -> . NOT formula_guard
+    (27) formula_guard -> . LB formula_guard RB
+
+    NAME            shift and go to state 38
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 31
+    NOT             shift and go to state 36
+    LB              shift and go to state 35
+
+    formula_guard                  shift and go to state 34
+    update_condition               shift and go to state 32
+    update_command                 shift and go to state 33
+
+state 26
+
+    (7) init_y -> init_y DCOL init_command .
+
+    UPDATE          reduce using rule 7 (init_y -> init_y DCOL init_command .)
+    DCOL            reduce using rule 7 (init_y -> init_y DCOL init_command .)
+
+
+state 27
+
+    (8) init_command -> init_condition ASSIGN . init_next_state
+    (10) init_next_state -> . NAME NEXT EQUALS TRUE
+    (11) init_next_state -> . NAME NEXT EQUALS FALSE
+    (12) init_next_state -> . init_next_state COMMA init_next_state
+    (13) init_next_state -> . init_next_state SEMICOLON
+
+    NAME            shift and go to state 39
+
+    init_next_state                shift and go to state 40
+
+state 28
+
+    (2) input -> MODULE ENVIRONMENT CONTROL var_y INIT init_y UPDATE update_y .
+    (16) update_y -> update_y . DCOL update_command
+
+    MODULE          reduce using rule 2 (input -> MODULE ENVIRONMENT CONTROL var_y INIT init_y UPDATE update_y .)
+    $end            reduce using rule 2 (input -> MODULE ENVIRONMENT CONTROL var_y INIT init_y UPDATE update_y .)
+    DCOL            shift and go to state 29
+
+
+state 29
+
+    (16) update_y -> update_y DCOL . update_command
+    (14) update_command -> . update_condition ASSIGN update_next_state
+    (17) update_condition -> . formula_guard
+    (18) update_condition -> . update_condition COMMA update_condition
+    (19) formula_guard -> . NAME
+    (20) formula_guard -> . TRUE
+    (21) formula_guard -> . FALSE
+    (22) formula_guard -> . formula_guard OR formula_guard
+    (23) formula_guard -> . formula_guard AND formula_guard
+    (24) formula_guard -> . formula_guard IMPLIES formula_guard
+    (25) formula_guard -> . formula_guard IFF formula_guard
+    (26) formula_guard -> . NOT formula_guard
+    (27) formula_guard -> . LB formula_guard RB
+
+    NAME            shift and go to state 38
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 31
+    NOT             shift and go to state 36
+    LB              shift and go to state 35
+
+    formula_guard                  shift and go to state 34
+    update_condition               shift and go to state 32
+    update_command                 shift and go to state 41
+
+state 30
+
+    (1) input -> MODULE NAME CONTROL var_y INIT init_y UPDATE update_y GOAL . goal_form
+    (40) goal_form -> . DCOL gf SEMICOLON
+
+    DCOL            shift and go to state 43
+
+    goal_form                      shift and go to state 42
+
+state 31
+
+    (21) formula_guard -> FALSE .
+
+    RB              reduce using rule 21 (formula_guard -> FALSE .)
+    OR              reduce using rule 21 (formula_guard -> FALSE .)
+    AND             reduce using rule 21 (formula_guard -> FALSE .)
+    IMPLIES         reduce using rule 21 (formula_guard -> FALSE .)
+    IFF             reduce using rule 21 (formula_guard -> FALSE .)
+    COMMA           reduce using rule 21 (formula_guard -> FALSE .)
+    ASSIGN          reduce using rule 21 (formula_guard -> FALSE .)
+
+
+state 32
+
+    (14) update_command -> update_condition . ASSIGN update_next_state
+    (18) update_condition -> update_condition . COMMA update_condition
+
+    ASSIGN          shift and go to state 45
+    COMMA           shift and go to state 44
+
+
+state 33
+
+    (15) update_y -> DCOL update_command .
+
+    DCOL            reduce using rule 15 (update_y -> DCOL update_command .)
+    MODULE          reduce using rule 15 (update_y -> DCOL update_command .)
+    $end            reduce using rule 15 (update_y -> DCOL update_command .)
+    GOAL            reduce using rule 15 (update_y -> DCOL update_command .)
+
+
+state 34
+
+    (17) update_condition -> formula_guard .
+    (22) formula_guard -> formula_guard . OR formula_guard
+    (23) formula_guard -> formula_guard . AND formula_guard
+    (24) formula_guard -> formula_guard . IMPLIES formula_guard
+    (25) formula_guard -> formula_guard . IFF formula_guard
+
+    ASSIGN          reduce using rule 17 (update_condition -> formula_guard .)
+    COMMA           reduce using rule 17 (update_condition -> formula_guard .)
+    OR              shift and go to state 49
+    AND             shift and go to state 46
+    IMPLIES         shift and go to state 48
+    IFF             shift and go to state 47
+
+
+state 35
+
+    (27) formula_guard -> LB . formula_guard RB
+    (19) formula_guard -> . NAME
+    (20) formula_guard -> . TRUE
+    (21) formula_guard -> . FALSE
+    (22) formula_guard -> . formula_guard OR formula_guard
+    (23) formula_guard -> . formula_guard AND formula_guard
+    (24) formula_guard -> . formula_guard IMPLIES formula_guard
+    (25) formula_guard -> . formula_guard IFF formula_guard
+    (26) formula_guard -> . NOT formula_guard
+    (27) formula_guard -> . LB formula_guard RB
+
+    NAME            shift and go to state 38
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 31
+    NOT             shift and go to state 36
+    LB              shift and go to state 35
+
+    formula_guard                  shift and go to state 50
+
+state 36
+
+    (26) formula_guard -> NOT . formula_guard
+    (19) formula_guard -> . NAME
+    (20) formula_guard -> . TRUE
+    (21) formula_guard -> . FALSE
+    (22) formula_guard -> . formula_guard OR formula_guard
+    (23) formula_guard -> . formula_guard AND formula_guard
+    (24) formula_guard -> . formula_guard IMPLIES formula_guard
+    (25) formula_guard -> . formula_guard IFF formula_guard
+    (26) formula_guard -> . NOT formula_guard
+    (27) formula_guard -> . LB formula_guard RB
+
+    NAME            shift and go to state 38
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 31
+    NOT             shift and go to state 36
+    LB              shift and go to state 35
+
+    formula_guard                  shift and go to state 51
+
+state 37
+
+    (20) formula_guard -> TRUE .
+
+    RB              reduce using rule 20 (formula_guard -> TRUE .)
+    OR              reduce using rule 20 (formula_guard -> TRUE .)
+    AND             reduce using rule 20 (formula_guard -> TRUE .)
+    IMPLIES         reduce using rule 20 (formula_guard -> TRUE .)
+    IFF             reduce using rule 20 (formula_guard -> TRUE .)
+    COMMA           reduce using rule 20 (formula_guard -> TRUE .)
+    ASSIGN          reduce using rule 20 (formula_guard -> TRUE .)
+
+
+state 38
+
+    (19) formula_guard -> NAME .
+
+    RB              reduce using rule 19 (formula_guard -> NAME .)
+    OR              reduce using rule 19 (formula_guard -> NAME .)
+    AND             reduce using rule 19 (formula_guard -> NAME .)
+    IMPLIES         reduce using rule 19 (formula_guard -> NAME .)
+    IFF             reduce using rule 19 (formula_guard -> NAME .)
+    COMMA           reduce using rule 19 (formula_guard -> NAME .)
+    ASSIGN          reduce using rule 19 (formula_guard -> NAME .)
+
+
+state 39
+
+    (10) init_next_state -> NAME . NEXT EQUALS TRUE
+    (11) init_next_state -> NAME . NEXT EQUALS FALSE
+
+    NEXT            shift and go to state 52
+
+
+state 40
+
+    (8) init_command -> init_condition ASSIGN init_next_state .
+    (12) init_next_state -> init_next_state . COMMA init_next_state
+    (13) init_next_state -> init_next_state . SEMICOLON
+
+    UPDATE          reduce using rule 8 (init_command -> init_condition ASSIGN init_next_state .)
+    DCOL            reduce using rule 8 (init_command -> init_condition ASSIGN init_next_state .)
+    COMMA           shift and go to state 54
+    SEMICOLON       shift and go to state 53
+
+
+state 41
+
+    (16) update_y -> update_y DCOL update_command .
+
+    DCOL            reduce using rule 16 (update_y -> update_y DCOL update_command .)
+    MODULE          reduce using rule 16 (update_y -> update_y DCOL update_command .)
+    $end            reduce using rule 16 (update_y -> update_y DCOL update_command .)
+    GOAL            reduce using rule 16 (update_y -> update_y DCOL update_command .)
+
+
+state 42
+
+    (1) input -> MODULE NAME CONTROL var_y INIT init_y UPDATE update_y GOAL goal_form .
+
+    MODULE          reduce using rule 1 (input -> MODULE NAME CONTROL var_y INIT init_y UPDATE update_y GOAL goal_form .)
+    $end            reduce using rule 1 (input -> MODULE NAME CONTROL var_y INIT init_y UPDATE update_y GOAL goal_form .)
+
+
+state 43
+
+    (40) goal_form -> DCOL . gf SEMICOLON
+    (41) gf -> . NAME
+    (42) gf -> . TRUE
+    (43) gf -> . FALSE
+    (44) gf -> . gf OR gf
+    (45) gf -> . gf AND gf
+    (46) gf -> . gf IMPLIES gf
+    (47) gf -> . gf IFF gf
+    (48) gf -> . G gf
+    (49) gf -> . F gf
+    (50) gf -> . X gf
+    (51) gf -> . U gf
+    (52) gf -> . NOT gf
+    (53) gf -> . LB gf RB
+
+    NAME            shift and go to state 56
+    TRUE            shift and go to state 64
+    FALSE           shift and go to state 55
+    G               shift and go to state 59
+    F               shift and go to state 57
+    X               shift and go to state 62
+    U               shift and go to state 61
+    NOT             shift and go to state 63
+    LB              shift and go to state 58
+
+    gf                             shift and go to state 60
+
+state 44
+
+    (18) update_condition -> update_condition COMMA . update_condition
+    (17) update_condition -> . formula_guard
+    (18) update_condition -> . update_condition COMMA update_condition
+    (19) formula_guard -> . NAME
+    (20) formula_guard -> . TRUE
+    (21) formula_guard -> . FALSE
+    (22) formula_guard -> . formula_guard OR formula_guard
+    (23) formula_guard -> . formula_guard AND formula_guard
+    (24) formula_guard -> . formula_guard IMPLIES formula_guard
+    (25) formula_guard -> . formula_guard IFF formula_guard
+    (26) formula_guard -> . NOT formula_guard
+    (27) formula_guard -> . LB formula_guard RB
+
+    NAME            shift and go to state 38
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 31
+    NOT             shift and go to state 36
+    LB              shift and go to state 35
+
+    formula_guard                  shift and go to state 34
+    update_condition               shift and go to state 65
+
+state 45
+
+    (14) update_command -> update_condition ASSIGN . update_next_state
+    (28) update_next_state -> . NAME NEXT EQUALS formula_assign
+    (29) update_next_state -> . update_next_state COMMA update_next_state
+    (30) update_next_state -> . update_next_state SEMICOLON
+
+    NAME            shift and go to state 66
+
+    update_next_state              shift and go to state 67
+
+state 46
+
+    (23) formula_guard -> formula_guard AND . formula_guard
+    (19) formula_guard -> . NAME
+    (20) formula_guard -> . TRUE
+    (21) formula_guard -> . FALSE
+    (22) formula_guard -> . formula_guard OR formula_guard
+    (23) formula_guard -> . formula_guard AND formula_guard
+    (24) formula_guard -> . formula_guard IMPLIES formula_guard
+    (25) formula_guard -> . formula_guard IFF formula_guard
+    (26) formula_guard -> . NOT formula_guard
+    (27) formula_guard -> . LB formula_guard RB
+
+    NAME            shift and go to state 38
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 31
+    NOT             shift and go to state 36
+    LB              shift and go to state 35
+
+    formula_guard                  shift and go to state 68
+
+state 47
+
+    (25) formula_guard -> formula_guard IFF . formula_guard
+    (19) formula_guard -> . NAME
+    (20) formula_guard -> . TRUE
+    (21) formula_guard -> . FALSE
+    (22) formula_guard -> . formula_guard OR formula_guard
+    (23) formula_guard -> . formula_guard AND formula_guard
+    (24) formula_guard -> . formula_guard IMPLIES formula_guard
+    (25) formula_guard -> . formula_guard IFF formula_guard
+    (26) formula_guard -> . NOT formula_guard
+    (27) formula_guard -> . LB formula_guard RB
+
+    NAME            shift and go to state 38
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 31
+    NOT             shift and go to state 36
+    LB              shift and go to state 35
+
+    formula_guard                  shift and go to state 69
+
+state 48
+
+    (24) formula_guard -> formula_guard IMPLIES . formula_guard
+    (19) formula_guard -> . NAME
+    (20) formula_guard -> . TRUE
+    (21) formula_guard -> . FALSE
+    (22) formula_guard -> . formula_guard OR formula_guard
+    (23) formula_guard -> . formula_guard AND formula_guard
+    (24) formula_guard -> . formula_guard IMPLIES formula_guard
+    (25) formula_guard -> . formula_guard IFF formula_guard
+    (26) formula_guard -> . NOT formula_guard
+    (27) formula_guard -> . LB formula_guard RB
+
+    NAME            shift and go to state 38
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 31
+    NOT             shift and go to state 36
+    LB              shift and go to state 35
+
+    formula_guard                  shift and go to state 70
+
+state 49
+
+    (22) formula_guard -> formula_guard OR . formula_guard
+    (19) formula_guard -> . NAME
+    (20) formula_guard -> . TRUE
+    (21) formula_guard -> . FALSE
+    (22) formula_guard -> . formula_guard OR formula_guard
+    (23) formula_guard -> . formula_guard AND formula_guard
+    (24) formula_guard -> . formula_guard IMPLIES formula_guard
+    (25) formula_guard -> . formula_guard IFF formula_guard
+    (26) formula_guard -> . NOT formula_guard
+    (27) formula_guard -> . LB formula_guard RB
+
+    NAME            shift and go to state 38
+    TRUE            shift and go to state 37
+    FALSE           shift and go to state 31
+    NOT             shift and go to state 36
+    LB              shift and go to state 35
+
+    formula_guard                  shift and go to state 71
+
+state 50
+
+    (27) formula_guard -> LB formula_guard . RB
+    (22) formula_guard -> formula_guard . OR formula_guard
+    (23) formula_guard -> formula_guard . AND formula_guard
+    (24) formula_guard -> formula_guard . IMPLIES formula_guard
+    (25) formula_guard -> formula_guard . IFF formula_guard
+
+    RB              shift and go to state 72
+    OR              shift and go to state 49
+    AND             shift and go to state 46
+    IMPLIES         shift and go to state 48
+    IFF             shift and go to state 47
+
+
+state 51
+
+    (26) formula_guard -> NOT formula_guard .
+    (22) formula_guard -> formula_guard . OR formula_guard
+    (23) formula_guard -> formula_guard . AND formula_guard
+    (24) formula_guard -> formula_guard . IMPLIES formula_guard
+    (25) formula_guard -> formula_guard . IFF formula_guard
+
+    RB              reduce using rule 26 (formula_guard -> NOT formula_guard .)
+    OR              reduce using rule 26 (formula_guard -> NOT formula_guard .)
+    AND             reduce using rule 26 (formula_guard -> NOT formula_guard .)
+    IMPLIES         reduce using rule 26 (formula_guard -> NOT formula_guard .)
+    IFF             reduce using rule 26 (formula_guard -> NOT formula_guard .)
+    COMMA           reduce using rule 26 (formula_guard -> NOT formula_guard .)
+    ASSIGN          reduce using rule 26 (formula_guard -> NOT formula_guard .)
+
+  ! OR              [ shift and go to state 49 ]
+  ! AND             [ shift and go to state 46 ]
+  ! IMPLIES         [ shift and go to state 48 ]
+  ! IFF             [ shift and go to state 47 ]
+
+
+state 52
+
+    (10) init_next_state -> NAME NEXT . EQUALS TRUE
+    (11) init_next_state -> NAME NEXT . EQUALS FALSE
+
+    EQUALS          shift and go to state 73
+
+
+state 53
+
+    (13) init_next_state -> init_next_state SEMICOLON .
+
+    COMMA           reduce using rule 13 (init_next_state -> init_next_state SEMICOLON .)
+    SEMICOLON       reduce using rule 13 (init_next_state -> init_next_state SEMICOLON .)
+    UPDATE          reduce using rule 13 (init_next_state -> init_next_state SEMICOLON .)
+    DCOL            reduce using rule 13 (init_next_state -> init_next_state SEMICOLON .)
+
+
+state 54
+
+    (12) init_next_state -> init_next_state COMMA . init_next_state
+    (10) init_next_state -> . NAME NEXT EQUALS TRUE
+    (11) init_next_state -> . NAME NEXT EQUALS FALSE
+    (12) init_next_state -> . init_next_state COMMA init_next_state
+    (13) init_next_state -> . init_next_state SEMICOLON
+
+    NAME            shift and go to state 39
+
+    init_next_state                shift and go to state 74
+
+state 55
+
+    (43) gf -> FALSE .
+
+    SEMICOLON       reduce using rule 43 (gf -> FALSE .)
+    OR              reduce using rule 43 (gf -> FALSE .)
+    AND             reduce using rule 43 (gf -> FALSE .)
+    IMPLIES         reduce using rule 43 (gf -> FALSE .)
+    IFF             reduce using rule 43 (gf -> FALSE .)
+    RB              reduce using rule 43 (gf -> FALSE .)
+
+
+state 56
+
+    (41) gf -> NAME .
+
+    SEMICOLON       reduce using rule 41 (gf -> NAME .)
+    OR              reduce using rule 41 (gf -> NAME .)
+    AND             reduce using rule 41 (gf -> NAME .)
+    IMPLIES         reduce using rule 41 (gf -> NAME .)
+    IFF             reduce using rule 41 (gf -> NAME .)
+    RB              reduce using rule 41 (gf -> NAME .)
+
+
+state 57
+
+    (49) gf -> F . gf
+    (41) gf -> . NAME
+    (42) gf -> . TRUE
+    (43) gf -> . FALSE
+    (44) gf -> . gf OR gf
+    (45) gf -> . gf AND gf
+    (46) gf -> . gf IMPLIES gf
+    (47) gf -> . gf IFF gf
+    (48) gf -> . G gf
+    (49) gf -> . F gf
+    (50) gf -> . X gf
+    (51) gf -> . U gf
+    (52) gf -> . NOT gf
+    (53) gf -> . LB gf RB
+
+    NAME            shift and go to state 56
+    TRUE            shift and go to state 64
+    FALSE           shift and go to state 55
+    G               shift and go to state 59
+    F               shift and go to state 57
+    X               shift and go to state 62
+    U               shift and go to state 61
+    NOT             shift and go to state 63
+    LB              shift and go to state 58
+
+    gf                             shift and go to state 75
+
+state 58
+
+    (53) gf -> LB . gf RB
+    (41) gf -> . NAME
+    (42) gf -> . TRUE
+    (43) gf -> . FALSE
+    (44) gf -> . gf OR gf
+    (45) gf -> . gf AND gf
+    (46) gf -> . gf IMPLIES gf
+    (47) gf -> . gf IFF gf
+    (48) gf -> . G gf
+    (49) gf -> . F gf
+    (50) gf -> . X gf
+    (51) gf -> . U gf
+    (52) gf -> . NOT gf
+    (53) gf -> . LB gf RB
+
+    NAME            shift and go to state 56
+    TRUE            shift and go to state 64
+    FALSE           shift and go to state 55
+    G               shift and go to state 59
+    F               shift and go to state 57
+    X               shift and go to state 62
+    U               shift and go to state 61
+    NOT             shift and go to state 63
+    LB              shift and go to state 58
+
+    gf                             shift and go to state 76
+
+state 59
+
+    (48) gf -> G . gf
+    (41) gf -> . NAME
+    (42) gf -> . TRUE
+    (43) gf -> . FALSE
+    (44) gf -> . gf OR gf
+    (45) gf -> . gf AND gf
+    (46) gf -> . gf IMPLIES gf
+    (47) gf -> . gf IFF gf
+    (48) gf -> . G gf
+    (49) gf -> . F gf
+    (50) gf -> . X gf
+    (51) gf -> . U gf
+    (52) gf -> . NOT gf
+    (53) gf -> . LB gf RB
+
+    NAME            shift and go to state 56
+    TRUE            shift and go to state 64
+    FALSE           shift and go to state 55
+    G               shift and go to state 59
+    F               shift and go to state 57
+    X               shift and go to state 62
+    U               shift and go to state 61
+    NOT             shift and go to state 63
+    LB              shift and go to state 58
+
+    gf                             shift and go to state 77
+
+state 60
+
+    (40) goal_form -> DCOL gf . SEMICOLON
+    (44) gf -> gf . OR gf
+    (45) gf -> gf . AND gf
+    (46) gf -> gf . IMPLIES gf
+    (47) gf -> gf . IFF gf
+
+    SEMICOLON       shift and go to state 80
+    OR              shift and go to state 82
+    AND             shift and go to state 78
+    IMPLIES         shift and go to state 79
+    IFF             shift and go to state 81
+
+
+state 61
+
+    (51) gf -> U . gf
+    (41) gf -> . NAME
+    (42) gf -> . TRUE
+    (43) gf -> . FALSE
+    (44) gf -> . gf OR gf
+    (45) gf -> . gf AND gf
+    (46) gf -> . gf IMPLIES gf
+    (47) gf -> . gf IFF gf
+    (48) gf -> . G gf
+    (49) gf -> . F gf
+    (50) gf -> . X gf
+    (51) gf -> . U gf
+    (52) gf -> . NOT gf
+    (53) gf -> . LB gf RB
+
+    NAME            shift and go to state 56
+    TRUE            shift and go to state 64
+    FALSE           shift and go to state 55
+    G               shift and go to state 59
+    F               shift and go to state 57
+    X               shift and go to state 62
+    U               shift and go to state 61
+    NOT             shift and go to state 63
+    LB              shift and go to state 58
+
+    gf                             shift and go to state 83
+
+state 62
+
+    (50) gf -> X . gf
+    (41) gf -> . NAME
+    (42) gf -> . TRUE
+    (43) gf -> . FALSE
+    (44) gf -> . gf OR gf
+    (45) gf -> . gf AND gf
+    (46) gf -> . gf IMPLIES gf
+    (47) gf -> . gf IFF gf
+    (48) gf -> . G gf
+    (49) gf -> . F gf
+    (50) gf -> . X gf
+    (51) gf -> . U gf
+    (52) gf -> . NOT gf
+    (53) gf -> . LB gf RB
+
+    NAME            shift and go to state 56
+    TRUE            shift and go to state 64
+    FALSE           shift and go to state 55
+    G               shift and go to state 59
+    F               shift and go to state 57
+    X               shift and go to state 62
+    U               shift and go to state 61
+    NOT             shift and go to state 63
+    LB              shift and go to state 58
+
+    gf                             shift and go to state 84
+
+state 63
+
+    (52) gf -> NOT . gf
+    (41) gf -> . NAME
+    (42) gf -> . TRUE
+    (43) gf -> . FALSE
+    (44) gf -> . gf OR gf
+    (45) gf -> . gf AND gf
+    (46) gf -> . gf IMPLIES gf
+    (47) gf -> . gf IFF gf
+    (48) gf -> . G gf
+    (49) gf -> . F gf
+    (50) gf -> . X gf
+    (51) gf -> . U gf
+    (52) gf -> . NOT gf
+    (53) gf -> . LB gf RB
+
+    NAME            shift and go to state 56
+    TRUE            shift and go to state 64
+    FALSE           shift and go to state 55
+    G               shift and go to state 59
+    F               shift and go to state 57
+    X               shift and go to state 62
+    U               shift and go to state 61
+    NOT             shift and go to state 63
+    LB              shift and go to state 58
+
+    gf                             shift and go to state 85
+
+state 64
+
+    (42) gf -> TRUE .
+
+    SEMICOLON       reduce using rule 42 (gf -> TRUE .)
+    OR              reduce using rule 42 (gf -> TRUE .)
+    AND             reduce using rule 42 (gf -> TRUE .)
+    IMPLIES         reduce using rule 42 (gf -> TRUE .)
+    IFF             reduce using rule 42 (gf -> TRUE .)
+    RB              reduce using rule 42 (gf -> TRUE .)
+
+
+state 65
+
+    (18) update_condition -> update_condition COMMA update_condition .
+    (18) update_condition -> update_condition . COMMA update_condition
+
+  ! shift/reduce conflict for COMMA resolved as shift
+    ASSIGN          reduce using rule 18 (update_condition -> update_condition COMMA update_condition .)
+    COMMA           shift and go to state 44
+
+  ! COMMA           [ reduce using rule 18 (update_condition -> update_condition COMMA update_condition .) ]
+
+
+state 66
+
+    (28) update_next_state -> NAME . NEXT EQUALS formula_assign
+
+    NEXT            shift and go to state 86
+
+
+state 67
+
+    (14) update_command -> update_condition ASSIGN update_next_state .
+    (29) update_next_state -> update_next_state . COMMA update_next_state
+    (30) update_next_state -> update_next_state . SEMICOLON
+
+    GOAL            reduce using rule 14 (update_command -> update_condition ASSIGN update_next_state .)
+    DCOL            reduce using rule 14 (update_command -> update_condition ASSIGN update_next_state .)
+    MODULE          reduce using rule 14 (update_command -> update_condition ASSIGN update_next_state .)
+    $end            reduce using rule 14 (update_command -> update_condition ASSIGN update_next_state .)
+    COMMA           shift and go to state 88
+    SEMICOLON       shift and go to state 87
+
+
+state 68
+
+    (23) formula_guard -> formula_guard AND formula_guard .
+    (22) formula_guard -> formula_guard . OR formula_guard
+    (23) formula_guard -> formula_guard . AND formula_guard
+    (24) formula_guard -> formula_guard . IMPLIES formula_guard
+    (25) formula_guard -> formula_guard . IFF formula_guard
+
+    RB              reduce using rule 23 (formula_guard -> formula_guard AND formula_guard .)
+    OR              reduce using rule 23 (formula_guard -> formula_guard AND formula_guard .)
+    AND             reduce using rule 23 (formula_guard -> formula_guard AND formula_guard .)
+    IMPLIES         reduce using rule 23 (formula_guard -> formula_guard AND formula_guard .)
+    IFF             reduce using rule 23 (formula_guard -> formula_guard AND formula_guard .)
+    COMMA           reduce using rule 23 (formula_guard -> formula_guard AND formula_guard .)
+    ASSIGN          reduce using rule 23 (formula_guard -> formula_guard AND formula_guard .)
+
+  ! OR              [ shift and go to state 49 ]
+  ! AND             [ shift and go to state 46 ]
+  ! IMPLIES         [ shift and go to state 48 ]
+  ! IFF             [ shift and go to state 47 ]
+
+
+state 69
+
+    (25) formula_guard -> formula_guard IFF formula_guard .
+    (22) formula_guard -> formula_guard . OR formula_guard
+    (23) formula_guard -> formula_guard . AND formula_guard
+    (24) formula_guard -> formula_guard . IMPLIES formula_guard
+    (25) formula_guard -> formula_guard . IFF formula_guard
+
+    RB              reduce using rule 25 (formula_guard -> formula_guard IFF formula_guard .)
+    IMPLIES         reduce using rule 25 (formula_guard -> formula_guard IFF formula_guard .)
+    IFF             reduce using rule 25 (formula_guard -> formula_guard IFF formula_guard .)
+    COMMA           reduce using rule 25 (formula_guard -> formula_guard IFF formula_guard .)
+    ASSIGN          reduce using rule 25 (formula_guard -> formula_guard IFF formula_guard .)
+    OR              shift and go to state 49
+    AND             shift and go to state 46
+
+  ! OR              [ reduce using rule 25 (formula_guard -> formula_guard IFF formula_guard .) ]
+  ! AND             [ reduce using rule 25 (formula_guard -> formula_guard IFF formula_guard .) ]
+  ! IMPLIES         [ shift and go to state 48 ]
+  ! IFF             [ shift and go to state 47 ]
+
+
+state 70
+
+    (24) formula_guard -> formula_guard IMPLIES formula_guard .
+    (22) formula_guard -> formula_guard . OR formula_guard
+    (23) formula_guard -> formula_guard . AND formula_guard
+    (24) formula_guard -> formula_guard . IMPLIES formula_guard
+    (25) formula_guard -> formula_guard . IFF formula_guard
+
+    RB              reduce using rule 24 (formula_guard -> formula_guard IMPLIES formula_guard .)
+    IMPLIES         reduce using rule 24 (formula_guard -> formula_guard IMPLIES formula_guard .)
+    IFF             reduce using rule 24 (formula_guard -> formula_guard IMPLIES formula_guard .)
+    COMMA           reduce using rule 24 (formula_guard -> formula_guard IMPLIES formula_guard .)
+    ASSIGN          reduce using rule 24 (formula_guard -> formula_guard IMPLIES formula_guard .)
+    OR              shift and go to state 49
+    AND             shift and go to state 46
+
+  ! OR              [ reduce using rule 24 (formula_guard -> formula_guard IMPLIES formula_guard .) ]
+  ! AND             [ reduce using rule 24 (formula_guard -> formula_guard IMPLIES formula_guard .) ]
+  ! IMPLIES         [ shift and go to state 48 ]
+  ! IFF             [ shift and go to state 47 ]
+
+
+state 71
+
+    (22) formula_guard -> formula_guard OR formula_guard .
+    (22) formula_guard -> formula_guard . OR formula_guard
+    (23) formula_guard -> formula_guard . AND formula_guard
+    (24) formula_guard -> formula_guard . IMPLIES formula_guard
+    (25) formula_guard -> formula_guard . IFF formula_guard
+
+    RB              reduce using rule 22 (formula_guard -> formula_guard OR formula_guard .)
+    OR              reduce using rule 22 (formula_guard -> formula_guard OR formula_guard .)
+    AND             reduce using rule 22 (formula_guard -> formula_guard OR formula_guard .)
+    IMPLIES         reduce using rule 22 (formula_guard -> formula_guard OR formula_guard .)
+    IFF             reduce using rule 22 (formula_guard -> formula_guard OR formula_guard .)
+    COMMA           reduce using rule 22 (formula_guard -> formula_guard OR formula_guard .)
+    ASSIGN          reduce using rule 22 (formula_guard -> formula_guard OR formula_guard .)
+
+  ! OR              [ shift and go to state 49 ]
+  ! AND             [ shift and go to state 46 ]
+  ! IMPLIES         [ shift and go to state 48 ]
+  ! IFF             [ shift and go to state 47 ]
+
+
+state 72
+
+    (27) formula_guard -> LB formula_guard RB .
+
+    RB              reduce using rule 27 (formula_guard -> LB formula_guard RB .)
+    OR              reduce using rule 27 (formula_guard -> LB formula_guard RB .)
+    AND             reduce using rule 27 (formula_guard -> LB formula_guard RB .)
+    IMPLIES         reduce using rule 27 (formula_guard -> LB formula_guard RB .)
+    IFF             reduce using rule 27 (formula_guard -> LB formula_guard RB .)
+    COMMA           reduce using rule 27 (formula_guard -> LB formula_guard RB .)
+    ASSIGN          reduce using rule 27 (formula_guard -> LB formula_guard RB .)
+
+
+state 73
+
+    (10) init_next_state -> NAME NEXT EQUALS . TRUE
+    (11) init_next_state -> NAME NEXT EQUALS . FALSE
+
+    TRUE            shift and go to state 90
+    FALSE           shift and go to state 89
+
+
+state 74
+
+    (12) init_next_state -> init_next_state COMMA init_next_state .
+    (12) init_next_state -> init_next_state . COMMA init_next_state
+    (13) init_next_state -> init_next_state . SEMICOLON
+
+  ! shift/reduce conflict for COMMA resolved as shift
+  ! shift/reduce conflict for SEMICOLON resolved as shift
+    UPDATE          reduce using rule 12 (init_next_state -> init_next_state COMMA init_next_state .)
+    DCOL            reduce using rule 12 (init_next_state -> init_next_state COMMA init_next_state .)
+    COMMA           shift and go to state 54
+    SEMICOLON       shift and go to state 53
+
+  ! COMMA           [ reduce using rule 12 (init_next_state -> init_next_state COMMA init_next_state .) ]
+  ! SEMICOLON       [ reduce using rule 12 (init_next_state -> init_next_state COMMA init_next_state .) ]
+
+
+state 75
+
+    (49) gf -> F gf .
+    (44) gf -> gf . OR gf
+    (45) gf -> gf . AND gf
+    (46) gf -> gf . IMPLIES gf
+    (47) gf -> gf . IFF gf
+
+  ! shift/reduce conflict for OR resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for IMPLIES resolved as shift
+  ! shift/reduce conflict for IFF resolved as shift
+    SEMICOLON       reduce using rule 49 (gf -> F gf .)
+    RB              reduce using rule 49 (gf -> F gf .)
+    OR              shift and go to state 82
+    AND             shift and go to state 78
+    IMPLIES         shift and go to state 79
+    IFF             shift and go to state 81
+
+  ! OR              [ reduce using rule 49 (gf -> F gf .) ]
+  ! AND             [ reduce using rule 49 (gf -> F gf .) ]
+  ! IMPLIES         [ reduce using rule 49 (gf -> F gf .) ]
+  ! IFF             [ reduce using rule 49 (gf -> F gf .) ]
+
+
+state 76
+
+    (53) gf -> LB gf . RB
+    (44) gf -> gf . OR gf
+    (45) gf -> gf . AND gf
+    (46) gf -> gf . IMPLIES gf
+    (47) gf -> gf . IFF gf
+
+    RB              shift and go to state 91
+    OR              shift and go to state 82
+    AND             shift and go to state 78
+    IMPLIES         shift and go to state 79
+    IFF             shift and go to state 81
+
+
+state 77
+
+    (48) gf -> G gf .
+    (44) gf -> gf . OR gf
+    (45) gf -> gf . AND gf
+    (46) gf -> gf . IMPLIES gf
+    (47) gf -> gf . IFF gf
+
+  ! shift/reduce conflict for OR resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for IMPLIES resolved as shift
+  ! shift/reduce conflict for IFF resolved as shift
+    SEMICOLON       reduce using rule 48 (gf -> G gf .)
+    RB              reduce using rule 48 (gf -> G gf .)
+    OR              shift and go to state 82
+    AND             shift and go to state 78
+    IMPLIES         shift and go to state 79
+    IFF             shift and go to state 81
+
+  ! OR              [ reduce using rule 48 (gf -> G gf .) ]
+  ! AND             [ reduce using rule 48 (gf -> G gf .) ]
+  ! IMPLIES         [ reduce using rule 48 (gf -> G gf .) ]
+  ! IFF             [ reduce using rule 48 (gf -> G gf .) ]
+
+
+state 78
+
+    (45) gf -> gf AND . gf
+    (41) gf -> . NAME
+    (42) gf -> . TRUE
+    (43) gf -> . FALSE
+    (44) gf -> . gf OR gf
+    (45) gf -> . gf AND gf
+    (46) gf -> . gf IMPLIES gf
+    (47) gf -> . gf IFF gf
+    (48) gf -> . G gf
+    (49) gf -> . F gf
+    (50) gf -> . X gf
+    (51) gf -> . U gf
+    (52) gf -> . NOT gf
+    (53) gf -> . LB gf RB
+
+    NAME            shift and go to state 56
+    TRUE            shift and go to state 64
+    FALSE           shift and go to state 55
+    G               shift and go to state 59
+    F               shift and go to state 57
+    X               shift and go to state 62
+    U               shift and go to state 61
+    NOT             shift and go to state 63
+    LB              shift and go to state 58
+
+    gf                             shift and go to state 92
+
+state 79
+
+    (46) gf -> gf IMPLIES . gf
+    (41) gf -> . NAME
+    (42) gf -> . TRUE
+    (43) gf -> . FALSE
+    (44) gf -> . gf OR gf
+    (45) gf -> . gf AND gf
+    (46) gf -> . gf IMPLIES gf
+    (47) gf -> . gf IFF gf
+    (48) gf -> . G gf
+    (49) gf -> . F gf
+    (50) gf -> . X gf
+    (51) gf -> . U gf
+    (52) gf -> . NOT gf
+    (53) gf -> . LB gf RB
+
+    NAME            shift and go to state 56
+    TRUE            shift and go to state 64
+    FALSE           shift and go to state 55
+    G               shift and go to state 59
+    F               shift and go to state 57
+    X               shift and go to state 62
+    U               shift and go to state 61
+    NOT             shift and go to state 63
+    LB              shift and go to state 58
+
+    gf                             shift and go to state 93
+
+state 80
+
+    (40) goal_form -> DCOL gf SEMICOLON .
+
+    MODULE          reduce using rule 40 (goal_form -> DCOL gf SEMICOLON .)
+    $end            reduce using rule 40 (goal_form -> DCOL gf SEMICOLON .)
+
+
+state 81
+
+    (47) gf -> gf IFF . gf
+    (41) gf -> . NAME
+    (42) gf -> . TRUE
+    (43) gf -> . FALSE
+    (44) gf -> . gf OR gf
+    (45) gf -> . gf AND gf
+    (46) gf -> . gf IMPLIES gf
+    (47) gf -> . gf IFF gf
+    (48) gf -> . G gf
+    (49) gf -> . F gf
+    (50) gf -> . X gf
+    (51) gf -> . U gf
+    (52) gf -> . NOT gf
+    (53) gf -> . LB gf RB
+
+    NAME            shift and go to state 56
+    TRUE            shift and go to state 64
+    FALSE           shift and go to state 55
+    G               shift and go to state 59
+    F               shift and go to state 57
+    X               shift and go to state 62
+    U               shift and go to state 61
+    NOT             shift and go to state 63
+    LB              shift and go to state 58
+
+    gf                             shift and go to state 94
+
+state 82
+
+    (44) gf -> gf OR . gf
+    (41) gf -> . NAME
+    (42) gf -> . TRUE
+    (43) gf -> . FALSE
+    (44) gf -> . gf OR gf
+    (45) gf -> . gf AND gf
+    (46) gf -> . gf IMPLIES gf
+    (47) gf -> . gf IFF gf
+    (48) gf -> . G gf
+    (49) gf -> . F gf
+    (50) gf -> . X gf
+    (51) gf -> . U gf
+    (52) gf -> . NOT gf
+    (53) gf -> . LB gf RB
+
+    NAME            shift and go to state 56
+    TRUE            shift and go to state 64
+    FALSE           shift and go to state 55
+    G               shift and go to state 59
+    F               shift and go to state 57
+    X               shift and go to state 62
+    U               shift and go to state 61
+    NOT             shift and go to state 63
+    LB              shift and go to state 58
+
+    gf                             shift and go to state 95
+
+state 83
+
+    (51) gf -> U gf .
+    (44) gf -> gf . OR gf
+    (45) gf -> gf . AND gf
+    (46) gf -> gf . IMPLIES gf
+    (47) gf -> gf . IFF gf
+
+  ! shift/reduce conflict for OR resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for IMPLIES resolved as shift
+  ! shift/reduce conflict for IFF resolved as shift
+    SEMICOLON       reduce using rule 51 (gf -> U gf .)
+    RB              reduce using rule 51 (gf -> U gf .)
+    OR              shift and go to state 82
+    AND             shift and go to state 78
+    IMPLIES         shift and go to state 79
+    IFF             shift and go to state 81
+
+  ! OR              [ reduce using rule 51 (gf -> U gf .) ]
+  ! AND             [ reduce using rule 51 (gf -> U gf .) ]
+  ! IMPLIES         [ reduce using rule 51 (gf -> U gf .) ]
+  ! IFF             [ reduce using rule 51 (gf -> U gf .) ]
+
+
+state 84
+
+    (50) gf -> X gf .
+    (44) gf -> gf . OR gf
+    (45) gf -> gf . AND gf
+    (46) gf -> gf . IMPLIES gf
+    (47) gf -> gf . IFF gf
+
+  ! shift/reduce conflict for OR resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for IMPLIES resolved as shift
+  ! shift/reduce conflict for IFF resolved as shift
+    SEMICOLON       reduce using rule 50 (gf -> X gf .)
+    RB              reduce using rule 50 (gf -> X gf .)
+    OR              shift and go to state 82
+    AND             shift and go to state 78
+    IMPLIES         shift and go to state 79
+    IFF             shift and go to state 81
+
+  ! OR              [ reduce using rule 50 (gf -> X gf .) ]
+  ! AND             [ reduce using rule 50 (gf -> X gf .) ]
+  ! IMPLIES         [ reduce using rule 50 (gf -> X gf .) ]
+  ! IFF             [ reduce using rule 50 (gf -> X gf .) ]
+
+
+state 85
+
+    (52) gf -> NOT gf .
+    (44) gf -> gf . OR gf
+    (45) gf -> gf . AND gf
+    (46) gf -> gf . IMPLIES gf
+    (47) gf -> gf . IFF gf
+
+    SEMICOLON       reduce using rule 52 (gf -> NOT gf .)
+    OR              reduce using rule 52 (gf -> NOT gf .)
+    AND             reduce using rule 52 (gf -> NOT gf .)
+    IMPLIES         reduce using rule 52 (gf -> NOT gf .)
+    IFF             reduce using rule 52 (gf -> NOT gf .)
+    RB              reduce using rule 52 (gf -> NOT gf .)
+
+  ! OR              [ shift and go to state 82 ]
+  ! AND             [ shift and go to state 78 ]
+  ! IMPLIES         [ shift and go to state 79 ]
+  ! IFF             [ shift and go to state 81 ]
+
+
+state 86
+
+    (28) update_next_state -> NAME NEXT . EQUALS formula_assign
+
+    EQUALS          shift and go to state 96
+
+
+state 87
+
+    (30) update_next_state -> update_next_state SEMICOLON .
+
+    COMMA           reduce using rule 30 (update_next_state -> update_next_state SEMICOLON .)
+    SEMICOLON       reduce using rule 30 (update_next_state -> update_next_state SEMICOLON .)
+    GOAL            reduce using rule 30 (update_next_state -> update_next_state SEMICOLON .)
+    DCOL            reduce using rule 30 (update_next_state -> update_next_state SEMICOLON .)
+    MODULE          reduce using rule 30 (update_next_state -> update_next_state SEMICOLON .)
+    $end            reduce using rule 30 (update_next_state -> update_next_state SEMICOLON .)
+
+
+state 88
+
+    (29) update_next_state -> update_next_state COMMA . update_next_state
+    (28) update_next_state -> . NAME NEXT EQUALS formula_assign
+    (29) update_next_state -> . update_next_state COMMA update_next_state
+    (30) update_next_state -> . update_next_state SEMICOLON
+
+    NAME            shift and go to state 66
+
+    update_next_state              shift and go to state 97
+
+state 89
+
+    (11) init_next_state -> NAME NEXT EQUALS FALSE .
+
+    COMMA           reduce using rule 11 (init_next_state -> NAME NEXT EQUALS FALSE .)
+    SEMICOLON       reduce using rule 11 (init_next_state -> NAME NEXT EQUALS FALSE .)
+    UPDATE          reduce using rule 11 (init_next_state -> NAME NEXT EQUALS FALSE .)
+    DCOL            reduce using rule 11 (init_next_state -> NAME NEXT EQUALS FALSE .)
+
+
+state 90
+
+    (10) init_next_state -> NAME NEXT EQUALS TRUE .
+
+    COMMA           reduce using rule 10 (init_next_state -> NAME NEXT EQUALS TRUE .)
+    SEMICOLON       reduce using rule 10 (init_next_state -> NAME NEXT EQUALS TRUE .)
+    UPDATE          reduce using rule 10 (init_next_state -> NAME NEXT EQUALS TRUE .)
+    DCOL            reduce using rule 10 (init_next_state -> NAME NEXT EQUALS TRUE .)
+
+
+state 91
+
+    (53) gf -> LB gf RB .
+
+    SEMICOLON       reduce using rule 53 (gf -> LB gf RB .)
+    OR              reduce using rule 53 (gf -> LB gf RB .)
+    AND             reduce using rule 53 (gf -> LB gf RB .)
+    IMPLIES         reduce using rule 53 (gf -> LB gf RB .)
+    IFF             reduce using rule 53 (gf -> LB gf RB .)
+    RB              reduce using rule 53 (gf -> LB gf RB .)
+
+
+state 92
+
+    (45) gf -> gf AND gf .
+    (44) gf -> gf . OR gf
+    (45) gf -> gf . AND gf
+    (46) gf -> gf . IMPLIES gf
+    (47) gf -> gf . IFF gf
+
+    SEMICOLON       reduce using rule 45 (gf -> gf AND gf .)
+    OR              reduce using rule 45 (gf -> gf AND gf .)
+    AND             reduce using rule 45 (gf -> gf AND gf .)
+    IMPLIES         reduce using rule 45 (gf -> gf AND gf .)
+    IFF             reduce using rule 45 (gf -> gf AND gf .)
+    RB              reduce using rule 45 (gf -> gf AND gf .)
+
+  ! OR              [ shift and go to state 82 ]
+  ! AND             [ shift and go to state 78 ]
+  ! IMPLIES         [ shift and go to state 79 ]
+  ! IFF             [ shift and go to state 81 ]
+
+
+state 93
+
+    (46) gf -> gf IMPLIES gf .
+    (44) gf -> gf . OR gf
+    (45) gf -> gf . AND gf
+    (46) gf -> gf . IMPLIES gf
+    (47) gf -> gf . IFF gf
+
+    SEMICOLON       reduce using rule 46 (gf -> gf IMPLIES gf .)
+    IMPLIES         reduce using rule 46 (gf -> gf IMPLIES gf .)
+    IFF             reduce using rule 46 (gf -> gf IMPLIES gf .)
+    RB              reduce using rule 46 (gf -> gf IMPLIES gf .)
+    OR              shift and go to state 82
+    AND             shift and go to state 78
+
+  ! OR              [ reduce using rule 46 (gf -> gf IMPLIES gf .) ]
+  ! AND             [ reduce using rule 46 (gf -> gf IMPLIES gf .) ]
+  ! IMPLIES         [ shift and go to state 79 ]
+  ! IFF             [ shift and go to state 81 ]
+
+
+state 94
+
+    (47) gf -> gf IFF gf .
+    (44) gf -> gf . OR gf
+    (45) gf -> gf . AND gf
+    (46) gf -> gf . IMPLIES gf
+    (47) gf -> gf . IFF gf
+
+    SEMICOLON       reduce using rule 47 (gf -> gf IFF gf .)
+    IMPLIES         reduce using rule 47 (gf -> gf IFF gf .)
+    IFF             reduce using rule 47 (gf -> gf IFF gf .)
+    RB              reduce using rule 47 (gf -> gf IFF gf .)
+    OR              shift and go to state 82
+    AND             shift and go to state 78
+
+  ! OR              [ reduce using rule 47 (gf -> gf IFF gf .) ]
+  ! AND             [ reduce using rule 47 (gf -> gf IFF gf .) ]
+  ! IMPLIES         [ shift and go to state 79 ]
+  ! IFF             [ shift and go to state 81 ]
+
+
+state 95
+
+    (44) gf -> gf OR gf .
+    (44) gf -> gf . OR gf
+    (45) gf -> gf . AND gf
+    (46) gf -> gf . IMPLIES gf
+    (47) gf -> gf . IFF gf
+
+    SEMICOLON       reduce using rule 44 (gf -> gf OR gf .)
+    OR              reduce using rule 44 (gf -> gf OR gf .)
+    AND             reduce using rule 44 (gf -> gf OR gf .)
+    IMPLIES         reduce using rule 44 (gf -> gf OR gf .)
+    IFF             reduce using rule 44 (gf -> gf OR gf .)
+    RB              reduce using rule 44 (gf -> gf OR gf .)
+
+  ! OR              [ shift and go to state 82 ]
+  ! AND             [ shift and go to state 78 ]
+  ! IMPLIES         [ shift and go to state 79 ]
+  ! IFF             [ shift and go to state 81 ]
+
+
+state 96
+
+    (28) update_next_state -> NAME NEXT EQUALS . formula_assign
+    (31) formula_assign -> . NAME
+    (32) formula_assign -> . TRUE
+    (33) formula_assign -> . FALSE
+    (34) formula_assign -> . formula_assign OR formula_assign
+    (35) formula_assign -> . formula_assign AND formula_assign
+    (36) formula_assign -> . formula_assign IMPLIES formula_assign
+    (37) formula_assign -> . formula_assign IFF formula_assign
+    (38) formula_assign -> . NOT formula_assign
+    (39) formula_assign -> . LB formula_assign RB
+
+    NAME            shift and go to state 99
+    TRUE            shift and go to state 103
+    FALSE           shift and go to state 98
+    NOT             shift and go to state 102
+    LB              shift and go to state 100
+
+    formula_assign                 shift and go to state 101
+
+state 97
+
+    (29) update_next_state -> update_next_state COMMA update_next_state .
+    (29) update_next_state -> update_next_state . COMMA update_next_state
+    (30) update_next_state -> update_next_state . SEMICOLON
+
+  ! shift/reduce conflict for COMMA resolved as shift
+  ! shift/reduce conflict for SEMICOLON resolved as shift
+    GOAL            reduce using rule 29 (update_next_state -> update_next_state COMMA update_next_state .)
+    DCOL            reduce using rule 29 (update_next_state -> update_next_state COMMA update_next_state .)
+    MODULE          reduce using rule 29 (update_next_state -> update_next_state COMMA update_next_state .)
+    $end            reduce using rule 29 (update_next_state -> update_next_state COMMA update_next_state .)
+    COMMA           shift and go to state 88
+    SEMICOLON       shift and go to state 87
+
+  ! COMMA           [ reduce using rule 29 (update_next_state -> update_next_state COMMA update_next_state .) ]
+  ! SEMICOLON       [ reduce using rule 29 (update_next_state -> update_next_state COMMA update_next_state .) ]
+
+
+state 98
+
+    (33) formula_assign -> FALSE .
+
+    OR              reduce using rule 33 (formula_assign -> FALSE .)
+    AND             reduce using rule 33 (formula_assign -> FALSE .)
+    IMPLIES         reduce using rule 33 (formula_assign -> FALSE .)
+    IFF             reduce using rule 33 (formula_assign -> FALSE .)
+    COMMA           reduce using rule 33 (formula_assign -> FALSE .)
+    SEMICOLON       reduce using rule 33 (formula_assign -> FALSE .)
+    GOAL            reduce using rule 33 (formula_assign -> FALSE .)
+    DCOL            reduce using rule 33 (formula_assign -> FALSE .)
+    MODULE          reduce using rule 33 (formula_assign -> FALSE .)
+    $end            reduce using rule 33 (formula_assign -> FALSE .)
+    RB              reduce using rule 33 (formula_assign -> FALSE .)
+
+
+state 99
+
+    (31) formula_assign -> NAME .
+
+    OR              reduce using rule 31 (formula_assign -> NAME .)
+    AND             reduce using rule 31 (formula_assign -> NAME .)
+    IMPLIES         reduce using rule 31 (formula_assign -> NAME .)
+    IFF             reduce using rule 31 (formula_assign -> NAME .)
+    COMMA           reduce using rule 31 (formula_assign -> NAME .)
+    SEMICOLON       reduce using rule 31 (formula_assign -> NAME .)
+    GOAL            reduce using rule 31 (formula_assign -> NAME .)
+    DCOL            reduce using rule 31 (formula_assign -> NAME .)
+    MODULE          reduce using rule 31 (formula_assign -> NAME .)
+    $end            reduce using rule 31 (formula_assign -> NAME .)
+    RB              reduce using rule 31 (formula_assign -> NAME .)
+
+
+state 100
+
+    (39) formula_assign -> LB . formula_assign RB
+    (31) formula_assign -> . NAME
+    (32) formula_assign -> . TRUE
+    (33) formula_assign -> . FALSE
+    (34) formula_assign -> . formula_assign OR formula_assign
+    (35) formula_assign -> . formula_assign AND formula_assign
+    (36) formula_assign -> . formula_assign IMPLIES formula_assign
+    (37) formula_assign -> . formula_assign IFF formula_assign
+    (38) formula_assign -> . NOT formula_assign
+    (39) formula_assign -> . LB formula_assign RB
+
+    NAME            shift and go to state 99
+    TRUE            shift and go to state 103
+    FALSE           shift and go to state 98
+    NOT             shift and go to state 102
+    LB              shift and go to state 100
+
+    formula_assign                 shift and go to state 104
+
+state 101
+
+    (28) update_next_state -> NAME NEXT EQUALS formula_assign .
+    (34) formula_assign -> formula_assign . OR formula_assign
+    (35) formula_assign -> formula_assign . AND formula_assign
+    (36) formula_assign -> formula_assign . IMPLIES formula_assign
+    (37) formula_assign -> formula_assign . IFF formula_assign
+
+    COMMA           reduce using rule 28 (update_next_state -> NAME NEXT EQUALS formula_assign .)
+    SEMICOLON       reduce using rule 28 (update_next_state -> NAME NEXT EQUALS formula_assign .)
+    GOAL            reduce using rule 28 (update_next_state -> NAME NEXT EQUALS formula_assign .)
+    DCOL            reduce using rule 28 (update_next_state -> NAME NEXT EQUALS formula_assign .)
+    MODULE          reduce using rule 28 (update_next_state -> NAME NEXT EQUALS formula_assign .)
+    $end            reduce using rule 28 (update_next_state -> NAME NEXT EQUALS formula_assign .)
+    OR              shift and go to state 108
+    AND             shift and go to state 105
+    IMPLIES         shift and go to state 106
+    IFF             shift and go to state 107
+
+
+state 102
+
+    (38) formula_assign -> NOT . formula_assign
+    (31) formula_assign -> . NAME
+    (32) formula_assign -> . TRUE
+    (33) formula_assign -> . FALSE
+    (34) formula_assign -> . formula_assign OR formula_assign
+    (35) formula_assign -> . formula_assign AND formula_assign
+    (36) formula_assign -> . formula_assign IMPLIES formula_assign
+    (37) formula_assign -> . formula_assign IFF formula_assign
+    (38) formula_assign -> . NOT formula_assign
+    (39) formula_assign -> . LB formula_assign RB
+
+    NAME            shift and go to state 99
+    TRUE            shift and go to state 103
+    FALSE           shift and go to state 98
+    NOT             shift and go to state 102
+    LB              shift and go to state 100
+
+    formula_assign                 shift and go to state 109
+
+state 103
+
+    (32) formula_assign -> TRUE .
+
+    OR              reduce using rule 32 (formula_assign -> TRUE .)
+    AND             reduce using rule 32 (formula_assign -> TRUE .)
+    IMPLIES         reduce using rule 32 (formula_assign -> TRUE .)
+    IFF             reduce using rule 32 (formula_assign -> TRUE .)
+    COMMA           reduce using rule 32 (formula_assign -> TRUE .)
+    SEMICOLON       reduce using rule 32 (formula_assign -> TRUE .)
+    GOAL            reduce using rule 32 (formula_assign -> TRUE .)
+    DCOL            reduce using rule 32 (formula_assign -> TRUE .)
+    MODULE          reduce using rule 32 (formula_assign -> TRUE .)
+    $end            reduce using rule 32 (formula_assign -> TRUE .)
+    RB              reduce using rule 32 (formula_assign -> TRUE .)
+
+
+state 104
+
+    (39) formula_assign -> LB formula_assign . RB
+    (34) formula_assign -> formula_assign . OR formula_assign
+    (35) formula_assign -> formula_assign . AND formula_assign
+    (36) formula_assign -> formula_assign . IMPLIES formula_assign
+    (37) formula_assign -> formula_assign . IFF formula_assign
+
+    RB              shift and go to state 110
+    OR              shift and go to state 108
+    AND             shift and go to state 105
+    IMPLIES         shift and go to state 106
+    IFF             shift and go to state 107
+
+
+state 105
+
+    (35) formula_assign -> formula_assign AND . formula_assign
+    (31) formula_assign -> . NAME
+    (32) formula_assign -> . TRUE
+    (33) formula_assign -> . FALSE
+    (34) formula_assign -> . formula_assign OR formula_assign
+    (35) formula_assign -> . formula_assign AND formula_assign
+    (36) formula_assign -> . formula_assign IMPLIES formula_assign
+    (37) formula_assign -> . formula_assign IFF formula_assign
+    (38) formula_assign -> . NOT formula_assign
+    (39) formula_assign -> . LB formula_assign RB
+
+    NAME            shift and go to state 99
+    TRUE            shift and go to state 103
+    FALSE           shift and go to state 98
+    NOT             shift and go to state 102
+    LB              shift and go to state 100
+
+    formula_assign                 shift and go to state 111
+
+state 106
+
+    (36) formula_assign -> formula_assign IMPLIES . formula_assign
+    (31) formula_assign -> . NAME
+    (32) formula_assign -> . TRUE
+    (33) formula_assign -> . FALSE
+    (34) formula_assign -> . formula_assign OR formula_assign
+    (35) formula_assign -> . formula_assign AND formula_assign
+    (36) formula_assign -> . formula_assign IMPLIES formula_assign
+    (37) formula_assign -> . formula_assign IFF formula_assign
+    (38) formula_assign -> . NOT formula_assign
+    (39) formula_assign -> . LB formula_assign RB
+
+    NAME            shift and go to state 99
+    TRUE            shift and go to state 103
+    FALSE           shift and go to state 98
+    NOT             shift and go to state 102
+    LB              shift and go to state 100
+
+    formula_assign                 shift and go to state 112
+
+state 107
+
+    (37) formula_assign -> formula_assign IFF . formula_assign
+    (31) formula_assign -> . NAME
+    (32) formula_assign -> . TRUE
+    (33) formula_assign -> . FALSE
+    (34) formula_assign -> . formula_assign OR formula_assign
+    (35) formula_assign -> . formula_assign AND formula_assign
+    (36) formula_assign -> . formula_assign IMPLIES formula_assign
+    (37) formula_assign -> . formula_assign IFF formula_assign
+    (38) formula_assign -> . NOT formula_assign
+    (39) formula_assign -> . LB formula_assign RB
+
+    NAME            shift and go to state 99
+    TRUE            shift and go to state 103
+    FALSE           shift and go to state 98
+    NOT             shift and go to state 102
+    LB              shift and go to state 100
+
+    formula_assign                 shift and go to state 113
+
+state 108
+
+    (34) formula_assign -> formula_assign OR . formula_assign
+    (31) formula_assign -> . NAME
+    (32) formula_assign -> . TRUE
+    (33) formula_assign -> . FALSE
+    (34) formula_assign -> . formula_assign OR formula_assign
+    (35) formula_assign -> . formula_assign AND formula_assign
+    (36) formula_assign -> . formula_assign IMPLIES formula_assign
+    (37) formula_assign -> . formula_assign IFF formula_assign
+    (38) formula_assign -> . NOT formula_assign
+    (39) formula_assign -> . LB formula_assign RB
+
+    NAME            shift and go to state 99
+    TRUE            shift and go to state 103
+    FALSE           shift and go to state 98
+    NOT             shift and go to state 102
+    LB              shift and go to state 100
+
+    formula_assign                 shift and go to state 114
+
+state 109
+
+    (38) formula_assign -> NOT formula_assign .
+    (34) formula_assign -> formula_assign . OR formula_assign
+    (35) formula_assign -> formula_assign . AND formula_assign
+    (36) formula_assign -> formula_assign . IMPLIES formula_assign
+    (37) formula_assign -> formula_assign . IFF formula_assign
+
+    OR              reduce using rule 38 (formula_assign -> NOT formula_assign .)
+    AND             reduce using rule 38 (formula_assign -> NOT formula_assign .)
+    IMPLIES         reduce using rule 38 (formula_assign -> NOT formula_assign .)
+    IFF             reduce using rule 38 (formula_assign -> NOT formula_assign .)
+    COMMA           reduce using rule 38 (formula_assign -> NOT formula_assign .)
+    SEMICOLON       reduce using rule 38 (formula_assign -> NOT formula_assign .)
+    GOAL            reduce using rule 38 (formula_assign -> NOT formula_assign .)
+    DCOL            reduce using rule 38 (formula_assign -> NOT formula_assign .)
+    MODULE          reduce using rule 38 (formula_assign -> NOT formula_assign .)
+    $end            reduce using rule 38 (formula_assign -> NOT formula_assign .)
+    RB              reduce using rule 38 (formula_assign -> NOT formula_assign .)
+
+  ! OR              [ shift and go to state 108 ]
+  ! AND             [ shift and go to state 105 ]
+  ! IMPLIES         [ shift and go to state 106 ]
+  ! IFF             [ shift and go to state 107 ]
+
+
+state 110
+
+    (39) formula_assign -> LB formula_assign RB .
+
+    OR              reduce using rule 39 (formula_assign -> LB formula_assign RB .)
+    AND             reduce using rule 39 (formula_assign -> LB formula_assign RB .)
+    IMPLIES         reduce using rule 39 (formula_assign -> LB formula_assign RB .)
+    IFF             reduce using rule 39 (formula_assign -> LB formula_assign RB .)
+    COMMA           reduce using rule 39 (formula_assign -> LB formula_assign RB .)
+    SEMICOLON       reduce using rule 39 (formula_assign -> LB formula_assign RB .)
+    GOAL            reduce using rule 39 (formula_assign -> LB formula_assign RB .)
+    DCOL            reduce using rule 39 (formula_assign -> LB formula_assign RB .)
+    MODULE          reduce using rule 39 (formula_assign -> LB formula_assign RB .)
+    $end            reduce using rule 39 (formula_assign -> LB formula_assign RB .)
+    RB              reduce using rule 39 (formula_assign -> LB formula_assign RB .)
+
+
+state 111
+
+    (35) formula_assign -> formula_assign AND formula_assign .
+    (34) formula_assign -> formula_assign . OR formula_assign
+    (35) formula_assign -> formula_assign . AND formula_assign
+    (36) formula_assign -> formula_assign . IMPLIES formula_assign
+    (37) formula_assign -> formula_assign . IFF formula_assign
+
+    OR              reduce using rule 35 (formula_assign -> formula_assign AND formula_assign .)
+    AND             reduce using rule 35 (formula_assign -> formula_assign AND formula_assign .)
+    IMPLIES         reduce using rule 35 (formula_assign -> formula_assign AND formula_assign .)
+    IFF             reduce using rule 35 (formula_assign -> formula_assign AND formula_assign .)
+    COMMA           reduce using rule 35 (formula_assign -> formula_assign AND formula_assign .)
+    SEMICOLON       reduce using rule 35 (formula_assign -> formula_assign AND formula_assign .)
+    GOAL            reduce using rule 35 (formula_assign -> formula_assign AND formula_assign .)
+    DCOL            reduce using rule 35 (formula_assign -> formula_assign AND formula_assign .)
+    MODULE          reduce using rule 35 (formula_assign -> formula_assign AND formula_assign .)
+    $end            reduce using rule 35 (formula_assign -> formula_assign AND formula_assign .)
+    RB              reduce using rule 35 (formula_assign -> formula_assign AND formula_assign .)
+
+  ! OR              [ shift and go to state 108 ]
+  ! AND             [ shift and go to state 105 ]
+  ! IMPLIES         [ shift and go to state 106 ]
+  ! IFF             [ shift and go to state 107 ]
+
+
+state 112
+
+    (36) formula_assign -> formula_assign IMPLIES formula_assign .
+    (34) formula_assign -> formula_assign . OR formula_assign
+    (35) formula_assign -> formula_assign . AND formula_assign
+    (36) formula_assign -> formula_assign . IMPLIES formula_assign
+    (37) formula_assign -> formula_assign . IFF formula_assign
+
+    IMPLIES         reduce using rule 36 (formula_assign -> formula_assign IMPLIES formula_assign .)
+    IFF             reduce using rule 36 (formula_assign -> formula_assign IMPLIES formula_assign .)
+    COMMA           reduce using rule 36 (formula_assign -> formula_assign IMPLIES formula_assign .)
+    SEMICOLON       reduce using rule 36 (formula_assign -> formula_assign IMPLIES formula_assign .)
+    GOAL            reduce using rule 36 (formula_assign -> formula_assign IMPLIES formula_assign .)
+    DCOL            reduce using rule 36 (formula_assign -> formula_assign IMPLIES formula_assign .)
+    MODULE          reduce using rule 36 (formula_assign -> formula_assign IMPLIES formula_assign .)
+    $end            reduce using rule 36 (formula_assign -> formula_assign IMPLIES formula_assign .)
+    RB              reduce using rule 36 (formula_assign -> formula_assign IMPLIES formula_assign .)
+    OR              shift and go to state 108
+    AND             shift and go to state 105
+
+  ! OR              [ reduce using rule 36 (formula_assign -> formula_assign IMPLIES formula_assign .) ]
+  ! AND             [ reduce using rule 36 (formula_assign -> formula_assign IMPLIES formula_assign .) ]
+  ! IMPLIES         [ shift and go to state 106 ]
+  ! IFF             [ shift and go to state 107 ]
+
+
+state 113
+
+    (37) formula_assign -> formula_assign IFF formula_assign .
+    (34) formula_assign -> formula_assign . OR formula_assign
+    (35) formula_assign -> formula_assign . AND formula_assign
+    (36) formula_assign -> formula_assign . IMPLIES formula_assign
+    (37) formula_assign -> formula_assign . IFF formula_assign
+
+    IMPLIES         reduce using rule 37 (formula_assign -> formula_assign IFF formula_assign .)
+    IFF             reduce using rule 37 (formula_assign -> formula_assign IFF formula_assign .)
+    COMMA           reduce using rule 37 (formula_assign -> formula_assign IFF formula_assign .)
+    SEMICOLON       reduce using rule 37 (formula_assign -> formula_assign IFF formula_assign .)
+    GOAL            reduce using rule 37 (formula_assign -> formula_assign IFF formula_assign .)
+    DCOL            reduce using rule 37 (formula_assign -> formula_assign IFF formula_assign .)
+    MODULE          reduce using rule 37 (formula_assign -> formula_assign IFF formula_assign .)
+    $end            reduce using rule 37 (formula_assign -> formula_assign IFF formula_assign .)
+    RB              reduce using rule 37 (formula_assign -> formula_assign IFF formula_assign .)
+    OR              shift and go to state 108
+    AND             shift and go to state 105
+
+  ! OR              [ reduce using rule 37 (formula_assign -> formula_assign IFF formula_assign .) ]
+  ! AND             [ reduce using rule 37 (formula_assign -> formula_assign IFF formula_assign .) ]
+  ! IMPLIES         [ shift and go to state 106 ]
+  ! IFF             [ shift and go to state 107 ]
+
+
+state 114
+
+    (34) formula_assign -> formula_assign OR formula_assign .
+    (34) formula_assign -> formula_assign . OR formula_assign
+    (35) formula_assign -> formula_assign . AND formula_assign
+    (36) formula_assign -> formula_assign . IMPLIES formula_assign
+    (37) formula_assign -> formula_assign . IFF formula_assign
+
+    OR              reduce using rule 34 (formula_assign -> formula_assign OR formula_assign .)
+    AND             reduce using rule 34 (formula_assign -> formula_assign OR formula_assign .)
+    IMPLIES         reduce using rule 34 (formula_assign -> formula_assign OR formula_assign .)
+    IFF             reduce using rule 34 (formula_assign -> formula_assign OR formula_assign .)
+    COMMA           reduce using rule 34 (formula_assign -> formula_assign OR formula_assign .)
+    SEMICOLON       reduce using rule 34 (formula_assign -> formula_assign OR formula_assign .)
+    GOAL            reduce using rule 34 (formula_assign -> formula_assign OR formula_assign .)
+    DCOL            reduce using rule 34 (formula_assign -> formula_assign OR formula_assign .)
+    MODULE          reduce using rule 34 (formula_assign -> formula_assign OR formula_assign .)
+    $end            reduce using rule 34 (formula_assign -> formula_assign OR formula_assign .)
+    RB              reduce using rule 34 (formula_assign -> formula_assign OR formula_assign .)
+
+  ! OR              [ shift and go to state 108 ]
+  ! AND             [ shift and go to state 105 ]
+  ! IMPLIES         [ shift and go to state 106 ]
+  ! IFF             [ shift and go to state 107 ]
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for MODULE in state 5 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 16 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 65 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 74 resolved as shift
+WARNING: shift/reduce conflict for SEMICOLON in state 74 resolved as shift
+WARNING: shift/reduce conflict for OR in state 75 resolved as shift
+WARNING: shift/reduce conflict for AND in state 75 resolved as shift
+WARNING: shift/reduce conflict for IMPLIES in state 75 resolved as shift
+WARNING: shift/reduce conflict for IFF in state 75 resolved as shift
+WARNING: shift/reduce conflict for OR in state 77 resolved as shift
+WARNING: shift/reduce conflict for AND in state 77 resolved as shift
+WARNING: shift/reduce conflict for IMPLIES in state 77 resolved as shift
+WARNING: shift/reduce conflict for IFF in state 77 resolved as shift
+WARNING: shift/reduce conflict for OR in state 83 resolved as shift
+WARNING: shift/reduce conflict for AND in state 83 resolved as shift
+WARNING: shift/reduce conflict for IMPLIES in state 83 resolved as shift
+WARNING: shift/reduce conflict for IFF in state 83 resolved as shift
+WARNING: shift/reduce conflict for OR in state 84 resolved as shift
+WARNING: shift/reduce conflict for AND in state 84 resolved as shift
+WARNING: shift/reduce conflict for IMPLIES in state 84 resolved as shift
+WARNING: shift/reduce conflict for IFF in state 84 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 97 resolved as shift
+WARNING: shift/reduce conflict for SEMICOLON in state 97 resolved as shift

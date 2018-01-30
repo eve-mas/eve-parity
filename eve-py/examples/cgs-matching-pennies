@@ -1,0 +1,35 @@
+-- This is matching pennies example with CGS model
+-- alice (resp. bob) holds coin ca (resp. cb)
+-- They can flip their coins to either true or false
+-- init state s0, if pennies match, go to s0, otherwise to s1
+-- p is true at s0, false at s1
+
+ module alice controls ca
+   init
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   update
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   goal
+   :: G F !p;
+ 
+  module bob controls cb
+   init
+   :: true ~> cb' := true;
+   :: true ~> cb' := false;
+   update
+   :: true ~> cb' := true;
+   :: true ~> cb' := false;
+   goal
+   :: G F p;
+
+  module environment controls p,s0,s1
+   init
+   :: true ~> p' := true, s0' := true, s1' := false;
+   update
+   :: (ca <-> cb) ~> p' := true, s0' := true, s1' := false;
+   :: !(ca <-> cb) ~> p' := false, s0' := false, s1' := true;
+
+  property
+  :: true;

@@ -1,0 +1,26 @@
+-- peer-to-peer network example presented in [Toumi et al., 2015]
+
+-- Ref:
+-- [Toumi et al., 2015] Alexis Toumi, Julian Gutierrez, and Michael Wooldridge. 
+-- 	A tool for the automated verification of nash equilibria in concurrent games. 
+-- 	In ICTAC, volume 9399 of LNCS, pages 583–594, Cali, Colombia, 2015. Springer.
+
+ module ma controls ua,da
+   init
+   :: true ~> ua' := true, da':=false;
+   :: true ~> ua' := false, da':=true;
+   update
+   :: true ~> ua' := true, da':=false;
+   :: true ~> ua' := false, da':=true;
+   goal
+   :: G F (da and ub);
+
+ module mb controls ub,db
+   init
+   :: true ~> ub' := true, db':=false;
+   :: true ~> ub' := false, db':=true;
+   update
+   :: true ~> ub' := true, db':=false;
+   :: true ~> ub' := false, db':=true;
+   goal
+   :: G F (db and ua);

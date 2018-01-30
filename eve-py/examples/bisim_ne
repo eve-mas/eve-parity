@@ -1,0 +1,57 @@
+-- A motivating example (Fig. 1) in [Gutierrez et al., 2017]
+
+-- Ref:
+-- [Gutierrez et al., 2017] Julian Gutierrez, Paul Harrenstein, Giuseppe Perelli, and Michael Wooldridge. 
+-- 	Nash equilibrium and bisimulation invariance. 
+-- 	In CONCUR, volume 85 of LIPIcs, pages 17:1–17:16, Berlin, Germany, 2017. Schloss Dagstuhl.
+
+ module alice controls ca
+   init
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   update
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   goal
+   :: F p;
+   
+  module bob controls cb
+   init
+   :: true ~> cb' := false;
+   :: true ~> cb' := true;
+   update
+   :: true ~> cb' := true;
+   :: true ~> cb' := false;
+   goal
+   :: F q;
+
+  module charlie controls c0,c1
+   init
+   :: true ~> c0' := false, c1' := false;
+   :: true ~> c0' := false, c1' := true;
+   :: true ~> c0' := true, c1' := false;
+   :: true ~> c0' := true, c1' := true;
+   update
+   :: true ~> c0' := false, c1' := false;
+   :: true ~> c0' := false, c1' := true;
+   :: true ~> c0' := true, c1' := false;
+   :: true ~> c0' := true, c1' := true;
+   goal
+   :: G !(p or q);
+
+  module environment controls s0,s1,s11,s2,s3,s4,p,q
+   init
+   :: true ~> s0' := true, s1' := false, s11' := false, s2' := false, s3' := false, s4' := false, p' := false, q' := false;
+   update
+   :: s0 and ((ca and !cb and ((!c1 and !c0) or (!c1 and c0))) or (!ca and cb and ((c1 and !c0) or (c1 and c0)))) ~> s0' := false, s1' := true, s11' := false, s2' := false, s3' := false, s4' := false, p' := false, q' := false;
+   :: s0 and ((!ca and cb and ((!c1 and !c0) or (!c1 and c0))) or (ca and !cb and ((c1 and !c0) or (c1 and c0)))) ~> s0' := false, s1' := false, s11' := true, s2' := false, s3' := false, s4' := false, p' := false, q' := false;
+   :: s0 and (ca <-> cb) ~> s0' := false, s1' := false, s11' := false, s2' := false, s3' := false, s4' := true, p' := false, q' := false;
+   :: s1 and ((ca and (!c1 and !c0)) or (!ca and (c1 and !c0))) ~> s0' := false, s1' := false, s11' := false, s2' := true, s3' := false, s4' := false, p' := true, q' := false;
+   :: s1 and ((cb and (!c1 and c0)) or (!cb and (c1 and c0))) ~> s0' := false, s1' := false, s11' := false, s2' := false, s3' := true, s4' := false, p' := false, q' := true;
+   :: s1 and ((!ca and (!c1 and !c0)) or (ca and (c1 and !c0)) or (!cb and (!c1 and c0) or (cb and (c1 and c0)))) ~> s0' := false, s1' := false, s11' := false, s2' := false, s3' := false, s4' := true, p' := false, q' := false;
+   :: s11 and ((ca and (!c1 and !c0)) or (!ca and (c1 and !c0))) ~> s0' := false, s1' := false, s11' := false, s2' := true, s3' := false, s4' := false, p' := true, q' := false;
+   :: s11 and ((cb and (!c1 and c0)) or (!cb and (c1 and c0))) ~> s0' := false, s1' := false, s11' := false, s2' := false, s3' := true, s4' := false, p' := false, q' := true;
+   :: s11 and ((!ca and (!c1 and !c0)) or (ca and (c1 and !c0)) or (!cb and (!c1 and c0) or (cb and (c1 and c0)))) ~> s0' := false, s1' := false, s11' := false, s2' := false, s3' := false, s4' := true, p' := false, q' := false;
+   :: s2 ~> s0' := false, s1' := false, s11' := false, s2' := true, s3' := false, s4' := false, p' := true, q' := false;
+   :: s3 ~> s0' := false, s1' := false, s11' := false, s2' := false, s3' := true, s4' := false, p' := false, q' := true;
+   :: s4 ~> s0' := false, s1' := false, s11' := false, s2' := false, s3' := false, s4' := true, p' := false, q' := false;

@@ -47,12 +47,16 @@ __EVE__ has been tested on the following platforms:
 
 - List of problems:
    
-   a 	 Solve A-Nash
+   `a` 	 Solve A-Nash
    
-   e 	 Solve E-Nash
+   `e` 	 Solve E-Nash
    
-   n 	 Solve Non-Emptiness
+   `n` 	 Solve Non-Emptiness
    
 - List of optional arguments:
    
-   -d 	 Draw the structures
+   `-d`	 Draw the structures
+
+- Example:
+
+   `$ main.py a .../examples/a-nash_1 -d` solves A-Nash problem and draw the structures

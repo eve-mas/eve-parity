@@ -3,6 +3,10 @@ Equilibrium Verification Environment
 
 __EVE__ (Equilibrium Verification Environment) is a formal verification tool for the automated analysis of temporal equilibrium properties of concurrent and multi-agent systems represented as multi-player games. Systems are modelled using the {Simple Reactive Module Language} (SRML) as a collection of independent system components (players/agents in a game), which are assumed to have goals expressed using Linear Temporal Logic (LTL) formulae. In particular, __EVE__ checks for the existence of Nash equilibria in such systems and can be used to do rational synthesis and verification automatically.
 
+__EVE__ has been tested on the following platforms:
+- Fedora
+- Ubuntu
+
 ## Prerequisites
 1. python 2.x
 2. IGraph version 0.7 (http://igraph.org/python/) (version 0.6 or older does not work)

@@ -1,7 +1,7 @@
 # eve-parity
 Equilibrium Verification Environment
 
-__EVE__ (Equilibrium Verification Environment) is a formal verification tool for the automated analysis of temporal equilibrium properties of concurrent and multi-agent systems represented as multi-player games. Systems are modelled using the {Simple Reactive Module Language} (SRML) as a collection of independent system components (players/agents in a game), which are assumed to have goals expressed using Linear Temporal Logic (LTL) formulae. In particular, __EVE__ checks for the existence of Nash equilibria in such systems and can be used to do rational synthesis and verification automatically.
+__EVE__ (Equilibrium Verification Environment) is a formal verification tool for the automated analysis of temporal equilibrium properties of concurrent and multi-agent systems represented as multi-player games. Systems are modelled using the Simple Reactive Module Language (SRML) as a collection of independent system components (players/agents in a game), which are assumed to have goals expressed using Linear Temporal Logic (LTL) formulae. In particular, __EVE__ checks for the existence of Nash equilibria in such systems and can be used to do rational synthesis and verification automatically.
 
 __EVE__ has been tested on the following platforms:
 - Fedora
@@ -10,8 +10,8 @@ __EVE__ has been tested on the following platforms:
 ## Prerequisites
 1. python 2.x
 2. IGraph version 0.7 (http://igraph.org/python/) (version 0.6 or older does not work)
-	You need to have C/C++ compiler installed on your machine.
-	for Ubuntu: if needed 'sudo apt-get install -y libigraph0-dev'
+	You need to have a C/C++ compiler installed on your machine.
+	For Ubuntu: if needed 'sudo apt-get install -y libigraph0-dev'
 3. Cairo (https://cairographics.org/download/)
 	or from sourcecode (https://cairographics.org/releases/) --MacOS usually runs into trouble with auto install:
 		- uncompress/unzip the source code folder
@@ -47,16 +47,16 @@ __EVE__ has been tested on the following platforms:
 
 - List of problems:
    
-   `a` 	 Solve A-Nash
+   `a` 	 Parameter to solve A-Nash
    
-   `e` 	 Solve E-Nash
+   `e` 	 Parameter to solve E-Nash
    
-   `n` 	 Solve Non-Emptiness
+   `n` 	 Parameter to solve Non-Emptiness
    
 - List of optional arguments:
    
-   `-d`	 Draw the structures
+   `-d`	 Option to draw the structures
 
 - Example:
 
-   `$ main.py a .../examples/a-nash_1 -d` solves A-Nash problem and draw the structures
+   `$ main.py a .../examples/a-nash_1 -d` solves the A-Nash problem and draws the structures

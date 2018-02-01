@@ -36,9 +36,9 @@ __EVE__ has been tested on the following platforms:
 3. Run shell script ./config.sh
    Make sure OCaml is version 4.03.x or later before running config.sh
    If you have OPAM installed in your machine, you can upgrade OCaml by executing these in terminal:
-	opam update
-	opam upgrade
-	opam switch 4.03.0
+	- opam update
+	- opam upgrade
+	- opam switch 4.03.0
 
 ## How to use
 - usage:

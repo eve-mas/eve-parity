@@ -10,24 +10,22 @@ __EVE__ has been tested on the following platforms:
 ## Prerequisites
 1. python 2.x
 2. IGraph version 0.7 (http://igraph.org/python/) (version 0.6 or older does not work)
-	You need to have a C/C++ compiler installed on your machine.
-	For Ubuntu: if needed 'sudo apt-get install -y libigraph0-dev'
+	- You need to have a C/C++ compiler installed on your machine.
+	- For Ubuntu: if needed 'sudo apt-get install -y libigraph0-dev'
 3. Cairo (https://cairographics.org/download/)
 	or from sourcecode (https://cairographics.org/releases/) --MacOS usually runs into trouble with auto install:
-		- uncompress/unzip the source code folder
-		- go inside the folder
-		- run on terminal: 
-				[your pc]$ ./configure --prefix=/usr/local --disable-dependency-tracking
-				[your pc]$ make install
-				install pkg-config if needed
+	- uncompress/unzip the source code folder
+	- go inside the folder
+	- run on terminal: 
+		- [your pc]$ ./configure --prefix=/usr/local --disable-dependency-tracking
+		- [your pc]$ make install
+		- install pkg-config if needed
 
 4. OCaml version 4.03.x or later (https://ocaml.org/docs/install.html)
-5. OPAM (https://opam.ocaml.org/doc/Install.html)
-	can be installed from binaries (download from https://github.com/ocaml/opam/releases)
-	or from source code (download from https://github.com/ocaml/opam/releases)
-		- uncompress/unzip the source code folder
-		- go inside the folder
-		- follow installation instructions on README file and dont forget to initalise OPAM with current installation of OCaml (https://opam.ocaml.org/doc/Usage.html)
+5. OPAM (https://opam.ocaml.org/doc/Install.html) can be installed from binaries (download from https://github.com/ocaml/opam/releases) or from source code (download from https://github.com/ocaml/opam/releases)
+	- uncompress/unzip the source code folder
+	- go inside the folder
+	- follow installation instructions on README file and dont forget to initalise OPAM with current installation of OCaml (https://opam.ocaml.org/doc/Usage.html)
 	Make sure OCaml is version 4.03.x or later before running config
 
 ## Configurations

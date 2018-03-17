@@ -11,7 +11,7 @@ __EVE__ has been tested on the following platforms:
 1. python 2.x
 2. IGraph version 0.7 (http://igraph.org/python/) (version 0.6 or older does not work)
 	- You need to have a C/C++ compiler installed on your machine.
-	- For Ubuntu: if needed 'sudo apt-get install -y libigraph0-dev'
+	- For Ubuntu: if IGraph installation failed, execute 'sudo apt-get install -y libigraph0-dev' before attempting to reinstall
 3. Cairo (https://cairographics.org/download/)
 	or from sourcecode (https://cairographics.org/releases/) --MacOS usually runs into trouble with auto install:
 	- uncompress/unzip the source code folder
@@ -33,7 +33,7 @@ __EVE__ has been tested on the following platforms:
 2. Go inside eve-py folder
 3. Run shell script ./config.sh
    Make sure OCaml is version 4.03.x or later before running config.sh
-   If you have OPAM installed in your machine, you can upgrade OCaml by executing these in terminal:
+   If you have OPAM installed and initialised (ref: https://opam.ocaml.org/doc/Usage.html#Basics) in your machine, you can upgrade OCaml by executing these in terminal:
 	- opam update
 	- opam upgrade
 	- opam switch 4.03.0
@@ -57,4 +57,4 @@ __EVE__ has been tested on the following platforms:
 
 - Example:
 
-   `$ main.py a .../examples/a-nash_1 -d` solves the A-Nash problem and draws the structures
+   `$ main.py a ../examples/a-nash_1 -d` solves the A-Nash problem and draws the structures

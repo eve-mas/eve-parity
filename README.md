@@ -7,6 +7,8 @@ __EVE__ has been tested on the following platforms:
 - Fedora
 - Ubuntu
 
+__EVE__ also available preinstalled in Open Virtual Appliance (OVA) image with Ubuntu as its OS base. This image can be downloaded from https://goo.gl/kvdjvH (size: 3.3 GB) and can be directly run on VirtualBox (https://www.virtualbox.org/).
+
 ## Prerequisites
 1. python 2.x
 2. IGraph version 0.7 (http://igraph.org/python/) (version 0.6 or older does not work)

@@ -627,8 +627,10 @@ def delta_dpw(dpw,qidx,d):
     
 def get_qidx(stup,player_name):
     for q in stup:
-        if player_name in q:
+        if player_name == q.split('-')[0]:
+            #return int(q.split('-')[1])
             return int(q.split('-')[1])
+            
                 
 def get_mstate(stup):
     for s in stup:

@@ -7,7 +7,12 @@ __EVE__ has been tested on the following platforms:
 1. Fedora
 2. Ubuntu
 
-## Prerequisites
+__EVE__ also available preinstalled in Open Virtual Appliance (OVA) image running Lubuntu (lightweight Linux based on Ubuntu). This image (1.5 GB) can be downloaded from https://goo.gl/ikdSnw and can be directly run on VirtualBox (https://www.virtualbox.org/).
+
+***
+##INSTALLATION
+
+### Prerequisites
 1. python 2.7
 2. OPAM  (https://opam.ocaml.org/doc/Install.html) + OCaml version 4.03.x or later (https://ocaml.org/docs/install.html).
    To install OPAM (along with OCaml):
@@ -40,14 +45,14 @@ __EVE__ has been tested on the following platforms:
 	- Ubuntu
 		+ `sudo apt-get install python-igraph`
 
-## Configurations
+### Configurations
 1. Make sure you have all of the prerequisites
 2. Go inside eve-py folder
-3. Run shell script ./config.sh
+3. Run shell script **./config.sh**
    Make sure OCaml is version 4.03.x or later before running config.sh
    
 
-## How to use
+### How to use
 - usage:
 From  inside folder **eve-py/src** execute the following command:
 ` $ main.py [problem] [path/name of the file] [options]`
@@ -68,7 +73,7 @@ From  inside folder **eve-py/src** execute the following command:
 
    `$ main.py a ../examples/a-nash_1 -d` solves the A-Nash problem and draws the structures
    
-## Running experiments
+### Running experiments
 1. Go to folder **eve-py/src/experiments**, there are 8 scripts:
 	+ bisim_ne_emptiness.sh
 	+ bisim_none_emptiness.sh

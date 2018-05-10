@@ -1,0 +1,64 @@
+ module alice controls ca
+   init
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   update
+   :: true ~> ca' := true;
+   :: true ~> ca' := false;
+   goal
+   :: F p;
+   
+  module bob controls cb
+   init
+   :: true ~> cb' := false;
+   :: true ~> cb' := true;
+   update
+   :: true ~> cb' := true;
+   :: true ~> cb' := false;
+   goal
+   :: F q;
+
+  module charlie controls c0,c1
+   init
+   :: true ~> c0' := false, c1' := false;
+   :: true ~> c0' := false, c1' := true;
+   :: true ~> c0' := true, c1' := false;
+   :: true ~> c0' := true, c1' := true;
+   update
+   :: true ~> c0' := false, c1' := false;
+   :: true ~> c0' := false, c1' := true;
+   :: true ~> c0' := true, c1' := false;
+   :: true ~> c0' := true, c1' := true;
+   goal
+   :: G !(p or q);
+
+  module environment controls s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,p,q
+   init
+   :: true ~> s0' := true, s1' := false, s2' := false, s3' := false, s4' := false, s5' := false, p' := false, q' := false;
+   update
+   :: s0 and ((ca and !cb and ((!c1 and !c0) or (!c1 and c0))) or (!ca and cb and ((c1 and !c0) or (c1 and c0)))) ~> s0' := false, s1' := true, s2' := false, s3':=false , s4':=false, s5':=false, s6':=false , s7':=false, s8':=false, s9':=false , s10':=false, s11':=false, p' := false, q' := false;
+   :: s0 and ((!ca and cb and ((!c1 and !c0) or (!c1 and c0))) or (ca and !cb and ((c1 and !c0) or (c1 and c0)))) ~> s0' := false, s1' := false, s2' := true, s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=false, s11':=false, p' := false, q' := false;
+   :: s0 and (ca <-> cb) ~> s0' := false, s1' := false, s2' := false, s3' := true, s4' := false, s5' := false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=false, s11':=false, p' := false, q' := false;
+   :: s1 and ((ca and (!c1 and !c0)) or (!ca and (c1 and !c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=true, s5':=false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=false, s11':=false, p' := true, q' := false;
+   :: s1 and ((cb and (!c1 and c0)) or (!cb and (c1 and c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=true, s6':=false, s7':=false, s8':=false, s9':=false, s10':=false, s11':=false, p' := false, q' := true;
+   :: s1 and ((!ca and (!c1 and !c0)) or (ca and (c1 and !c0)) or (!cb and (!c1 and c0) or (cb and (c1 and c0)))) ~> s0' := false, s1' := false, s2' := false,s3':=true, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=false, s11':=false, p' := false, q' := false;
+   :: s2 and ((ca and (!c1 and !c0)) or (!ca and (c1 and !c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=true, s5':=false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=false, s11':=false, p' := true, q' := false;
+   :: s2 and ((cb and (!c1 and c0)) or (!cb and (c1 and c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=true, s6':=false, s7':=false, s8':=false, s9':=false, s10':=false, s11':=false, p' := false, q' := true;
+   :: s2 and ((!ca and (!c1 and !c0)) or (ca and (c1 and !c0)) or (!cb and (!c1 and c0) or (cb and (c1 and c0)))) ~> s0' := false, s1' := false, s2' := false,s3':=true, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=false, s11':=false, p' := false, q' := false;
+   :: s3 ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=true, s7':=false, s8':=false, s9':=false, s10':=false, s11':=false, p' := false, q' := false;
+   :: s4 and ((ca and (!c1 and !c0)) or (!ca and (c1 and !c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=true, s8':=false, s9':=false, s10':=false, s11':=false, p' := true, q' := false;
+   :: s4 and ((cb and (!c1 and c0)) or (!cb and (c1 and c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=true, s9':=false, s10':=false, s11':=false, p' := false, q' := true;
+   :: s4 and ((!ca and (!c1 and !c0)) or (ca and (c1 and !c0)) or (!cb and (!c1 and c0) or (cb and (c1 and c0)))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=true, s7':=false, s8':=false, s9':=false, s10':=false, s11':=false, p' := false, q' := false;
+   :: s5 and ((ca and (!c1 and !c0)) or (!ca and (c1 and !c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=true, s8':=false, s9':=false, s10':=false, s11':=false, p' := true, q' := false;
+   :: s5 and ((cb and (!c1 and c0)) or (!cb and (c1 and c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=true, s9':=false, s10':=false, s11':=false, p' := false, q' := true;
+   :: s5 and ((!ca and (!c1 and !c0)) or (ca and (c1 and !c0)) or (!cb and (!c1 and c0) or (cb and (c1 and c0)))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=true, s7':=false, s8':=false, s9':=false, s10':=false, s11':=false, p' := false, q' := false;
+   :: s6 ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=true, s10':=false, s11':=false, p' := false, q' := false;
+   :: s7 and ((ca and (!c1 and !c0)) or (!ca and (c1 and !c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=true, s11':=false, p' := true, q' := false;
+   :: s7 and ((cb and (!c1 and c0)) or (!cb and (c1 and c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=false, s11':=true, p' := false, q' := true;
+   :: s7 and ((!ca and (!c1 and !c0)) or (ca and (c1 and !c0)) or (!cb and (!c1 and c0) or (cb and (c1 and c0)))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=true, s10':=false, s11':=false, p' := false, q' := false;
+   :: s8 and ((ca and (!c1 and !c0)) or (!ca and (c1 and !c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=true, s11':=false, p' := true, q' := false;
+   :: s8 and ((cb and (!c1 and c0)) or (!cb and (c1 and c0))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=false, s11':=true, p' := false, q' := true;
+   :: s8 and ((!ca and (!c1 and !c0)) or (ca and (c1 and !c0)) or (!cb and (!c1 and c0) or (cb and (c1 and c0)))) ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=true, s10':=false, s11':=false, p' := false, q' := false;
+   :: s9 ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=true, s10':=false, s11':=false, p' := false, q' := false;
+   :: s10 ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=true, s11':=false, p' := true, q' := false;
+   :: s11 ~> s0' := false, s1' := false, s2' := false,s3':=false, s4':=false, s5':=false, s6':=false, s7':=false, s8':=false, s9':=false, s10':=false, s11':=true, p' := false, q' := true;

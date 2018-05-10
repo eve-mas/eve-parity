@@ -1,0 +1,30 @@
+module RM1 controls s1
+init
+:: true ~> s1' := true;
+update
+:: s1 ~> s1' := false;
+:: s1 ~> s1' := true;
+:: !s1 and ( !s2 or !s3) ~> s1' := true;
+goal
+:: (G F !s1);
+
+module RM2 controls s2
+init
+:: true ~> s2' := true;
+update
+:: s2 ~> s2' := false;
+:: s2 ~> s2' := true;
+:: !s2 and ( !s1 or !s3) ~> s2' := true;
+goal
+:: (G F !s2);
+
+module RM3 controls s3
+init
+:: true ~> s3' := true;
+update
+:: s3 ~> s3' := false;
+:: s3 ~> s3' := true;
+:: !s3 and ( !s1 or !s2) ~> s3' := true;
+goal
+:: (G F !s3);
+

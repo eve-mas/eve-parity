@@ -9,10 +9,12 @@ def productInit(mdl):
         for n in m[3]:
             initStates=[]
             for p in eval(n):
+#                print p
                 for q in p:
+#                    print (">>"+q)
                     initStates.append(q)
             initSet.append(initStates) 
-
+#    print ("initset: ", initSet)
     return jointEnabled(initSet)
                      
 '''returns cartesian product/joint actions'''
@@ -26,18 +28,20 @@ def getValuation(s):
         for k, v in ast.literal_eval(var).iteritems():
             invert_dict[v] = invert_dict.get(v, [])
             invert_dict[v].append(k)
-
+#    print (invert_dict.get(True))
     return (invert_dict.get(True))
     
 '''returns guard evaluation wrt current state'''
 def guardEval(s,mdl):
     enabled=[]
     for m in mdl:
+#        print ('fstack',readGuard(m))
         commands=[]
         for u in m[4]:
+#            print ('updates',u)
             for command in eval(u).items():
                 gEvaluation = parse_rpn(s,command[1]['guard'])
-
+#                print gEvaluation
                 if gEvaluation:                
                     commands.append(command)
                     
@@ -52,9 +56,10 @@ def envTransition(s,env):
     enabled=[]
     commands=[]
     for u in env[4]:
+#            print ('updates',u)
         for command in eval(u).items():
             gEvaluation = parse_rpn(s,command[1]['guard'])
-
+#                print gEvaluation
             if gEvaluation:                
                 commands.append(command)
                 
@@ -85,8 +90,10 @@ def without_keys(d, keys):
 '''evaluate propositional formula (in: guard)'''
 def parse_rpn(s,xprs):
     stack = []
-
+#    print s,xprs
     for l in xprs:
+#        print ('L',l)
+#        print ('stack: ',stack)
         if l in ['or', 'and', '->','<->']:
             l1 = stack.pop()
             l2 = stack.pop()
@@ -106,10 +113,13 @@ def parse_rpn(s,xprs):
         else:
             try:
                 if str(l) not in s:
+#                    print (l,'IS FALSE')
                     stack.append(False)
                 else:
+#                    print (l,'is TRUE')
                     stack.append(True)
             except TypeError:
+#                print (l,'IS FALSE')
                 stack.append(False)
  
     return stack.pop()
@@ -122,6 +132,7 @@ def merge_two_dicts(x, y):
     
 def drawM(M):
     layout = M.layout("kk")
+#    M.es["label"] = [direction for direction in M.es["direction"]]
     plot(M, layout=layout, bbox =(800,800), margin=40, color="white")
     
 def updateLabM(M):

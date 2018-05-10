@@ -1,0 +1,74 @@
+module RM1 controls v1
+init
+:: true ~> v1':= false;
+update
+:: s1 ~> v1':= true;
+:: !s1 ~> v1':= true;
+:: !s1 ~> v1':= false;
+goal
+:: (G F (s1 and X s0));
+
+module RM2 controls v2
+init
+:: true ~> v2':= false;
+update
+:: s2 ~> v2':= true;
+:: !s2 ~> v2':= true;
+:: !s2 ~> v2':= false;
+goal
+:: (G F (s2 and X s0));
+
+module RM3 controls v3
+init
+:: true ~> v3':= false;
+update
+:: s3 ~> v3':= true;
+:: !s3 ~> v3':= true;
+:: !s3 ~> v3':= false;
+goal
+:: (G F (s3 and X s0));
+
+module RM4 controls v4
+init
+:: true ~> v4':= false;
+update
+:: s4 ~> v4':= true;
+:: !s4 ~> v4':= true;
+:: !s4 ~> v4':= false;
+goal
+:: (G F (s4 and X s0));
+
+module RM5 controls v5
+init
+:: true ~> v5':= false;
+update
+:: s5 ~> v5':= true;
+:: !s5 ~> v5':= true;
+:: !s5 ~> v5':= false;
+goal
+:: (G F (s5 and X s0));
+
+module RM6 controls v6
+init
+:: true ~> v6':= false;
+update
+:: s6 ~> v6':= true;
+:: !s6 ~> v6':= true;
+:: !s6 ~> v6':= false;
+goal
+:: (G F (s6 and X s0));
+
+module environment controls s1,s2,s3,s4,s5,s6,s0
+init
+:: true ~> s1':=false,s2':=false,s3':=false,s4':=false,s5':=false,s6':=false,s0':=true;
+update
+:: s0 ~> s1':=true,s2':=false,s3':=false,s4':=false,s5':=false,s6':=false,s0':=false;
+:: ( s1 or s2 or s3 or s4 or s5) and (( v1 and v2 and v3 and v4) or ( v1 and v2 and v3 and v5) or ( v1 and v2 and v3 and v6) or ( v1 and v2 and v4 and v5) or ( v1 and v2 and v4 and v6) or ( v1 and v2 and v5 and v6) or ( v1 and v3 and v4 and v5) or ( v1 and v3 and v4 and v6) or ( v1 and v3 and v5 and v6) or ( v1 and v4 and v5 and v6) or ( v2 and v3 and v4 and v5) or ( v2 and v3 and v4 and v6) or ( v2 and v3 and v5 and v6) or ( v2 and v4 and v5 and v6) or ( v3 and v4 and v5 and v6 )) ~> s1':=false,s2':=false,s3':=false,s4':=false,s5':=false,s6':=false,s0':=true;
+:: s1 and !(( v1 and v2 and v3 and v4) or ( v1 and v2 and v3 and v5) or ( v1 and v2 and v3 and v6) or ( v1 and v2 and v4 and v5) or ( v1 and v2 and v4 and v6) or ( v1 and v2 and v5 and v6) or ( v1 and v3 and v4 and v5) or ( v1 and v3 and v4 and v6) or ( v1 and v3 and v5 and v6) or ( v1 and v4 and v5 and v6) or ( v2 and v3 and v4 and v5) or ( v2 and v3 and v4 and v6) or ( v2 and v3 and v5 and v6) or ( v2 and v4 and v5 and v6) or ( v3 and v4 and v5 and v6)) ~> s1':=false,s2':=true,s3':=false,s4':=false,s5':=false,s6':=false,s0':=false;
+:: s2 and !(( v1 and v2 and v3 and v4) or ( v1 and v2 and v3 and v5) or ( v1 and v2 and v3 and v6) or ( v1 and v2 and v4 and v5) or ( v1 and v2 and v4 and v6) or ( v1 and v2 and v5 and v6) or ( v1 and v3 and v4 and v5) or ( v1 and v3 and v4 and v6) or ( v1 and v3 and v5 and v6) or ( v1 and v4 and v5 and v6) or ( v2 and v3 and v4 and v5) or ( v2 and v3 and v4 and v6) or ( v2 and v3 and v5 and v6) or ( v2 and v4 and v5 and v6) or ( v3 and v4 and v5 and v6)) ~> s1':=false,s2':=false,s3':=true,s4':=false,s5':=false,s6':=false,s0':=false;
+:: s3 and !(( v1 and v2 and v3 and v4) or ( v1 and v2 and v3 and v5) or ( v1 and v2 and v3 and v6) or ( v1 and v2 and v4 and v5) or ( v1 and v2 and v4 and v6) or ( v1 and v2 and v5 and v6) or ( v1 and v3 and v4 and v5) or ( v1 and v3 and v4 and v6) or ( v1 and v3 and v5 and v6) or ( v1 and v4 and v5 and v6) or ( v2 and v3 and v4 and v5) or ( v2 and v3 and v4 and v6) or ( v2 and v3 and v5 and v6) or ( v2 and v4 and v5 and v6) or ( v3 and v4 and v5 and v6)) ~> s1':=false,s2':=false,s3':=false,s4':=true,s5':=false,s6':=false,s0':=false;
+:: s4 and !(( v1 and v2 and v3 and v4) or ( v1 and v2 and v3 and v5) or ( v1 and v2 and v3 and v6) or ( v1 and v2 and v4 and v5) or ( v1 and v2 and v4 and v6) or ( v1 and v2 and v5 and v6) or ( v1 and v3 and v4 and v5) or ( v1 and v3 and v4 and v6) or ( v1 and v3 and v5 and v6) or ( v1 and v4 and v5 and v6) or ( v2 and v3 and v4 and v5) or ( v2 and v3 and v4 and v6) or ( v2 and v3 and v5 and v6) or ( v2 and v4 and v5 and v6) or ( v3 and v4 and v5 and v6)) ~> s1':=false,s2':=false,s3':=false,s4':=false,s5':=true,s6':=false,s0':=false;
+:: s5 and !(( v1 and v2 and v3 and v4) or ( v1 and v2 and v3 and v5) or ( v1 and v2 and v3 and v6) or ( v1 and v2 and v4 and v5) or ( v1 and v2 and v4 and v6) or ( v1 and v2 and v5 and v6) or ( v1 and v3 and v4 and v5) or ( v1 and v3 and v4 and v6) or ( v1 and v3 and v5 and v6) or ( v1 and v4 and v5 and v6) or ( v2 and v3 and v4 and v5) or ( v2 and v3 and v4 and v6) or ( v2 and v3 and v5 and v6) or ( v2 and v4 and v5 and v6) or ( v3 and v4 and v5 and v6)) ~> s1':=false,s2':=false,s3':=false,s4':=false,s5':=false,s6':=true,s0':=false;
+:: s6~> s1':=false,s2':=false,s3':=false,s4':=false,s5':=false,s6':=false,s0':=true;
+property
+::(G F s1) and (G F s2) and (G F s3) and (G F s4) and (G F s5) and (G F s6);

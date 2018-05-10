@@ -1,0 +1,62 @@
+module RM1 controls s1
+init
+:: true ~> s1' := true;
+update
+:: s1 ~> s1' := false;
+:: s1 ~> s1' := true;
+:: !s1 and ( !s2 or !s3 or !s4 or !s5 or !s6) ~> s1' := true;
+goal
+:: (G F !s1);
+
+module RM2 controls s2
+init
+:: true ~> s2' := true;
+update
+:: s2 ~> s2' := false;
+:: s2 ~> s2' := true;
+:: !s2 and ( !s1 or !s3 or !s4 or !s5 or !s6) ~> s2' := true;
+goal
+:: (G F !s2);
+
+module RM3 controls s3
+init
+:: true ~> s3' := true;
+update
+:: s3 ~> s3' := false;
+:: s3 ~> s3' := true;
+:: !s3 and ( !s1 or !s2 or !s4 or !s5 or !s6) ~> s3' := true;
+goal
+:: (G F !s3);
+
+module RM4 controls s4
+init
+:: true ~> s4' := true;
+update
+:: s4 ~> s4' := false;
+:: s4 ~> s4' := true;
+:: !s4 and ( !s1 or !s2 or !s3 or !s5 or !s6) ~> s4' := true;
+goal
+:: (G F !s4);
+
+module RM5 controls s5
+init
+:: true ~> s5' := true;
+update
+:: s5 ~> s5' := false;
+:: s5 ~> s5' := true;
+:: !s5 and ( !s1 or !s2 or !s3 or !s4 or !s6) ~> s5' := true;
+goal
+:: (G F !s5);
+
+module RM6 controls s6
+init
+:: true ~> s6' := true;
+update
+:: s6 ~> s6' := false;
+:: s6 ~> s6' := true;
+:: !s6 and ( !s1 or !s2 or !s3 or !s4 or !s5) ~> s6' := true;
+goal
+:: (G F !s6);
+
+property
+:: F G (! s1 and ! s2 and ! s3 and ! s4 and ! s5 and ! s6);

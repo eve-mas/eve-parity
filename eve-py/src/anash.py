@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-from igraph import *
 from utils import *
 from gltl2gpar import drawGPar,sequencer_rmg_single,sequencer_cgs_single
 from generatepun import compute_pun
 import time
 
-def anash(modules,GPar,draw_flag,cgsFlag,pf):
+def anash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
     TTPG_vmax=0 #count the max number of vertices in TTPG/GPar sequentialisation
     TTPG_emax=0 #count the max number of edges in TTPG/GPar sequentialisation
     TTPG = Graph(directed=True) #init GPar sequentialisation
@@ -22,20 +21,30 @@ def anash(modules,GPar,draw_flag,cgsFlag,pf):
     NE_flag=False
     PUN = {}
     for w in W:
-        if len(w)==len(modules):
 
+        if len(w)==len(modules):
             '''trivial cases all win/lose'''
             s_Alpha = build_streett_prod(GPar,w,modules)
+
             L,L_sigma = Streett_emptyness(GPar,s_Alpha,modules)
 
             '''if not empty'''
             if L.vcount()!=0:
-                print '>>> NO, the property '+pf+' is not satisfied in ALL NE <<<'
-                NE_flag=True
-                if draw_flag:
-                    '''draw & printout strategy progile \vec{sigma}'''
-                    drawGPar(L_sigma)
-                break
+
+                DPW_product = graph_product(L_sigma, DPW_prop, alphabets, cgsFlag)
+                e_Alpha = build_streett_prod(DPW_product, w + (len(modules),), modules + [{1: set(['environment'])}])
+                E, E_sigma = Streett_emptyness(DPW_product, e_Alpha, modules + [{1: set(['environment'])}])
+
+                if E.vcount() != 0:
+                    print '>>> NO, the property '+pf+' is not satisfied in ALL NE <<<'
+                    print 'Winning Coalition',(num2name(w,modules))
+                    NE_flag=True
+                    if draw_flag:
+                        '''draw & printout strategy progile \vec{sigma}'''
+                        drawGPar(E_sigma)
+                        printGParDetails(E_sigma)
+                    break
+
         else:
             l = get_l(list(w),modules)
             PUN_L = set([v.index for v in GPar.vs])
@@ -66,30 +75,33 @@ def anash(modules,GPar,draw_flag,cgsFlag,pf):
                     PUN=compute_pun(pl_name,PUN,TTPG)
                     perfPGSolver = perfPGSolver + time.time()*1000 - startPGSolver
                 PUN_L = PUN_L.intersection(set(PUN[pl_name]))
-
                 '''init state s0 not included in PUN_L'''
                 if 0 in PUN_L:        
                     GPar_L[frozenset(l)]=build_GPar_L(GPar,w,l,PUN_L)
                 else:
                     GPar_L[frozenset(l)]=Graph(directed=True)
-            if GPar_L[frozenset(l)].vcount()!=0:
 
+            if GPar_L[frozenset(l)].vcount()!=0:
                 '''build the product of streett automata'''
                 s_Alpha = build_streett_prod(GPar_L[frozenset(l)],w,modules)
-
                 '''check street automaton emptiness'''
                 L,L_sigma = Streett_emptyness(GPar_L[frozenset(l)],s_Alpha,modules)
-
                 '''if not empty'''
-                if L.vcount()!=0:    
-                    print '>>> NO, the property '+pf+' is not satisfied in ALL NE <<<'
-                    if draw_flag:
-                        '''draw & printout strategy progile \vec{sigma}'''
-                        drawGPar(L_sigma)
-                    NE_flag=True
-                    break
+                if L.vcount()!=0:
+                    DPW_product = graph_product(L_sigma, DPW_prop, alphabets, cgsFlag)
+                    e_Alpha = build_streett_prod(DPW_product, w + (len(modules),), modules + [{1: set(['environment'])}])
+                    E, E_sigma = Streett_emptyness(DPW_product, e_Alpha, modules + [{1: set(['environment'])}])
+
+                    if E.vcount() != 0:
+                        print '>>> NO, the property '+pf+' is not satisfied in ALL NE <<<'
+                        print 'Winning Coalition',num2name(w,modules)
+                        if draw_flag:
+                            '''draw & printout strategy progile \vec{sigma}'''
+                            drawGPar(E_sigma)
+                            printGParDetails(E_sigma)
+                        NE_flag=True
+                        break
                 
     if not NE_flag:
         print '>>> YES, the property '+pf+' is satisfied in ALL NE <<<'
-
     return perfPGSolver,TTPG_vmax,TTPG_emax

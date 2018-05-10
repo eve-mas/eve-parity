@@ -11,6 +11,7 @@ import time, sys, getopt
 from ltl2nbw import *
 from nbw2dpw import *
 from gltl2gpar import convertG,drawGPar,convertG_cgs
+from utils import *
 from nonemptiness import *
 from enash import *
 from anash import *
@@ -27,12 +28,12 @@ def print_performance(perfConstruction,perfParser,perfPGSolver,empCheck,GPar_v,G
     print 'Max TTPG states', TTPG_vmax
     print 'Max TTPG edges', TTPG_emax
     
+
 def printhelp():
     print "usage: main.py [problem] [path/name of the file] [options]\n"
     print "List of problems:"
     print "a \t Solve A-Nash"
     print "e \t Solve E-Nash"
-#    print "m \t Solve Membership"
     print "n \t Solve Non-Emptiness"
     print "\nList of optional arguments:"
     print "-d \t Draw the structures"
@@ -41,7 +42,8 @@ def printhelp():
     
 
 def main(argv):
-    
+
+
     args_list = list(sys.argv)
     file_name = args_list[2]
     prob  = str(args_list[1])
@@ -94,47 +96,27 @@ def main(argv):
         '''we can directly modify list modules by adding two players, can we?'''
         '''but the kripke structure will obviously change, is it a problem?'''
         q_flag=1
+
+        '''convert \phi to NBW'''
+        NBW_prop = ltl2nbw(propFormula[0],PFAlphabets[0])
+        DPW_prop = nbw2dpw(NBW_prop,PFAlphabets[0])
+
+        '''NEED TO BUILD DSW FROM DPW_prop'''
         
         '''add 2 MP players'''
-        if cgsFlag:
-            '''adding MP players for CGSs'''
-            addMPPlayers_cgs(file_name,pf)
-        else:
-            '''adding MP players for RMGs'''
-            addMPPlayers_rmg(file_name,pf)
-        
-        del modules[:] #delete modules
-        yacc.parse(open(str("../temp/add_mp")).read()) #reread SRML file added with 2 MP Players
     elif prob=="a":
         if pf==None:
             print "No property formula input..."
         else:
             print "Checking A-Nash property formula: "+pf
-        '''need to add two players playing matching pennies with goal: \phi or (matching pennies goal)'''
-        '''we can directly modify list modules by adding two players, can we?'''
-        '''but the kripke structure will obviously change, is it a problem?'''
-        
-        '''add 2 MP players and \lnot \phi'''
-        if cgsFlag:
-            '''adding MP players for CGSs'''
-            addMPPlayers_cgs(file_name,"! "+pf)
-        else:
-            '''adding MP players for RMGs'''
-            addMPPlayers_rmg(file_name,"! "+pf)
-        
-        del modules[:] #delete modules
-        yacc.parse(open(str("../temp/add_mp")).read()) #reread SRML file added with 2 MP Players
+
+        '''convert \phi to NBW'''
+        NBW_prop = ltl2nbw('!'+propFormula[0], PFAlphabets[0])
+        DPW_prop = nbw2dpw(NBW_prop, PFAlphabets[0])
         q_flag=2
-    elif prob=="m":
-        print "Membership is still under construction"
-        q_flag=3
-        return True
     elif prob=="n":
         print "Solving Non-Emptiness of "+file_name
         q_flag=4
-    elif prob=="mn":
-        print "Solving Memoryless Non-Emptiness of "+file_name
-        q_flag=5
     else:
         print "ERROR: Undefined problem"
         printhelp()
@@ -156,28 +138,36 @@ def main(argv):
     if q_flag in [1,2,4]:
         NBWs = Graph(directed=True)
         DPWs = Graph(directed=True)
+
         '''Convert NBWs to DPWs'''
         for m in modules:
-            NBWs[list(m[1])[0]]=ltl2nbw(m,list(m[6]))
+    #        states = []
+            NBWs[list(m[1])[0]]=ltl2nbw(list(m[5])[0],list(m[6]))
+    #           print list(m[5])[0],list(m[1])[0]
             NBWs[list(m[1])[0]]['goal']=list(m[5])[0]
             print list(m[1])[0],NBWs[list(m[1])[0]]['goal']
+    #        print list(m[1])[0]
             DPWs[list(m[1])[0]] = nbw2dpw(NBWs[list(m[1])[0]],list(m[6]))
-
+    #        for v in DPWs[list(m[1])[0]].vs:
+    #            states.append(list(m[1])[0]+'-'+str(v.index))
+    #        print states
+    #        dpw_states[list(m[1])[0]]=states
+    #    st_prod = stateprod(dpw_states,M)
+        
         if not cgsFlag:
             print "\n Convert G_{LTL} to G_{PAR}...\n"
             GPar = convertG(modules,DPWs,M)
-            
+
         else:
-            '''Are we going to use CGS?'''
             print "\n Convert G_{LTL} to G_{PAR}...\n"
             GPar = convertG_cgs(modules,DPWs,M)
-
         GPar_v = GPar.vcount()
         GPar_e = GPar.ecount()
         perfConstruction = time.time()*1000 - start
-
     else:
-        print "MEMORYLESS"
+        print "ERROR: Undefined problem"
+        printhelp()
+    
     
 
     if q_flag==1:
@@ -187,7 +177,7 @@ def main(argv):
         TTPG_vmax=0
         TTPG_emax=0
         start = time.time()*1000
-        perfPGSolver,TTPG_vmax,TTPG_emax=enash(modules,GPar,draw_flag,cgsFlag,pf)
+        perfPGSolver,TTPG_vmax,TTPG_emax=enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,PFAlphabets[0])
         empCheck = time.time()*1000 - start
     elif q_flag==2:
         '''A-Nash'''
@@ -196,10 +186,8 @@ def main(argv):
         TTPG_vmax=0
         TTPG_emax=0
         start = time.time()*1000
-        perfPGSolver,TTPG_vmax,TTPG_emax=anash(modules,GPar,draw_flag,cgsFlag,pf)
+        perfPGSolver,TTPG_vmax,TTPG_emax=anash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,PFAlphabets[0])
         empCheck = time.time()*1000 - start
-    elif q_flag==3:
-        return True #under construction
     elif q_flag==4:
         '''Solving Non-Emptiness'''    
         empCheck = 0.0
@@ -209,17 +197,12 @@ def main(argv):
         start = time.time()*1000
         perfPGSolver,TTPG_vmax,TTPG_emax=nonemptiness(modules,GPar,draw_flag,cgsFlag)        
         empCheck = time.time()*1000 - start
-    elif q_flag==5:
-        '''Testing Memoryless Non-Emptiness'''
-        for v in M.vs():
-            if set(['y','x']).intersection(set(v['label'][1])):
-                print v
-        jointGoal(modules)
-        return True
     else:
         print "Undefined Problem!"
+        printhelp()
         return True
-    if not draw_flag:
+
+    if not draw_flag and (q_flag not in [6,7,8]):
         print_performance(perfConstruction,perfParser,perfPGSolver,empCheck,GPar_v,GPar_e,TTPG_vmax,TTPG_emax,q_flag)
     
 if __name__ == "__main__":

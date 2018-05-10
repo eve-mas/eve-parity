@@ -1,0 +1,39 @@
+module RM1 controls v1
+init
+:: true ~> v1':= false;
+update
+:: s1 ~> v1':= true;
+:: !s1 ~> v1':= true;
+:: !s1 ~> v1':= false;
+goal
+:: (G F (s1 and X s0));
+
+module RM2 controls v2
+init
+:: true ~> v2':= false;
+update
+:: s2 ~> v2':= true;
+:: !s2 ~> v2':= true;
+:: !s2 ~> v2':= false;
+goal
+:: (G F (s2 and X s0));
+
+module RM3 controls v3
+init
+:: true ~> v3':= false;
+update
+:: s3 ~> v3':= true;
+:: !s3 ~> v3':= true;
+:: !s3 ~> v3':= false;
+goal
+:: (G F (s3 and X s0));
+
+module environment controls s1,s2,s3,s0
+init
+:: true ~> s1':=false,s2':=false,s3':=false,s0':=true;
+update
+:: s0 ~> s1':=true,s2':=false,s3':=false,s0':=false;
+:: ( s1 or s2) and (( v1 and v2) or ( v1 and v3) or ( v2 and v3 )) ~> s1':=false,s2':=false,s3':=false,s0':=true;
+:: s1 and !(( v1 and v2) or ( v1 and v3) or ( v2 and v3)) ~> s1':=false,s2':=true,s3':=false,s0':=false;
+:: s2 and !(( v1 and v2) or ( v1 and v3) or ( v2 and v3)) ~> s1':=false,s2':=false,s3':=true,s0':=false;
+:: s3~> s1':=false,s2':=false,s3':=false,s0':=true;

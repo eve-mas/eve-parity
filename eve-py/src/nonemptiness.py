@@ -10,14 +10,14 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
     TTPG_vmax=0 #count the max number of vertices in TTPG/GPar sequentialisation
     TTPG_emax=0 #count the max number of edges in TTPG/GPar sequentialisation
     TTPG = Graph(directed=True) #init GPar sequentialisation
-    perfPGSolver = 0.0    
+    perfPGSolver = 0.0
+
     '''
     generate W (winning coalitions)
     reverse the list to generate from big to small
     hence always gets pareto optimal if NE exists    
     '''
     W = list(reversed(generate_set_W(modules)))
-
     '''Compute G^{-L}_{PAR}'''
     GPar_L = Graph(directed=True)
     NE_flag=False
@@ -26,9 +26,7 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
         if len(w)==len(modules):
             '''trivial cases all win/lose'''
             s_Alpha = build_streett_prod(GPar,w,modules)
-
             L,L_sigma = Streett_emptyness(GPar,s_Alpha,modules)
-
             '''if not empty'''
             if L.vcount()!=0:
                 print '>>> YES, there exists NE <<<'
@@ -39,8 +37,6 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                     drawGPar(L_sigma)
                     printGParDetails(L_sigma)
                 break
-#        elif len(w)==0:
-#            pass
         else:
             l = get_l(list(w),modules)
             PUN_L = set([v.index for v in GPar.vs])
@@ -72,9 +68,7 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                 if pl_name not in PUN:
                     print "\n Computing punishing region for <"+pl_name+">"
                     PUN=compute_pun(pl_name,PUN,TTPG)
-
                 PUN_L = PUN_L.intersection(set(PUN[pl_name]))
-
                 '''init state s0 not included in PUN_L'''
                 if 0 in PUN_L:        
                     GPar_L[frozenset(l)]=build_GPar_L(GPar,w,l,PUN_L)
@@ -84,7 +78,6 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
             if GPar_L[frozenset(l)].vcount()!=0:
                 '''build the product of streett automata'''
                 s_Alpha = build_streett_prod(GPar_L[frozenset(l)],w,modules)
-
                 '''check street automaton emptiness'''
                 L,L_sigma = Streett_emptyness(GPar_L[frozenset(l)],s_Alpha,modules)
 
@@ -101,5 +94,4 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                 
     if not NE_flag:
         print '>>> NO, there exists no NE <<<'
-
     return perfPGSolver,TTPG_vmax,TTPG_emax

@@ -20,11 +20,13 @@ def Arena2Kripke(mdl):
         else:
             stateLabel=frozenset(stateLabel)
         KripkeStruct.add_vertex(label=stateLabel)
-
         '''set of init states'''
+        
+#        KripkeStruct.vs
         try:
             S0.add(frozenset(stateLabel))
             S.add(frozenset(stateLabel))
+            
         except TypeError:
             S0.add(frozenset())
             S.add(frozenset())
@@ -33,20 +35,23 @@ def Arena2Kripke(mdl):
     while prevS != S:
         prevS = copy.copy(S)
         for state in KripkeStruct.vs:
+#            print 'state[]',state['label']
             for updateCommand in jointEnabled(guardEval(state['label'],mdl)):
                 commands=[]
+#                print 'updateCommand',updateCommand
                 for k,v in updateCommand:
                     '''for each jointEnabled update command'''
                     updateCommand_noguard = without_keys(v,'guard') #remove dict key 'guard'
+#                    print 'updateCommand_noguard',updateCommand_noguard
                     for k,l in updateCommand_noguard.items():
                         '''for each variable'''
+#                        print k,l
                         commands.append(str({k:parse_rpn(state['label'],l)}))
-
                 try:
                     nextState = frozenset(getValuation(tuple(commands)))
+#                    print '>>>',commands,nextState
                 except TypeError:
                     nextState = frozenset()
-
                 if not nextState in S:
                     S.add(nextState)
                     KripkeStruct.add_vertex(label=nextState)
@@ -79,6 +84,7 @@ def Arena2Kripke(mdl):
 #                    KripkeStruct.add_edge(currentState.index,nextState.index)
     '''this method of adding edges seems to be faster'''
     for currentState in KripkeStruct.vs:
+#        print currentState
         for state in jointEnabled(guardEval(list(currentState['label']),mdl)):
                 commands=[]
                 for k,v in state:
@@ -86,14 +92,16 @@ def Arena2Kripke(mdl):
                     updateCommand_noguard = without_keys(v,'guard')
                     for k,l in updateCommand_noguard.items():
                         commands.append(str({k:parse_rpn(currentState['label'],l)}))
+#                print nextState['label'],getValuation(commands)
                 cmdval = getValuation(commands)
-
+#                print cmdval
                 if cmdval==None:
+#                    cmdval=[]
                     cmdval=frozenset()
                 else:
                     cmdval=frozenset(cmdval)
-
                 KripkeStruct.add_edge(currentState,KripkeStruct.vs.find(label=cmdval))
+#    print_K(KripkeStruct)
     
     return KripkeStruct
     

@@ -1,0 +1,12 @@
+module RM1 controls s1
+init
+:: true ~> s1' := true;
+update
+:: s1 ~> s1' := false;
+:: s1 ~> s1' := true;
+:: !s1 and () ~> s1' := true;
+goal
+:: (G F !s1);
+
+property
+:: G (s1);

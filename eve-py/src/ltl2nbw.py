@@ -4,12 +4,11 @@ import subprocess as sp
 from igraph import *
 from utils import alpha2wordset,evalNBWedge
 
-def ltl2nbw(m,alphabets):
+def ltl2nbw(ltl_fml,alphabets):
 
-        lines = sp.Popen(['../ltl2ba/ltl2ba', '-f', '"%s"' % list(m[5])[0]], stdout=sp.PIPE, stderr=sp.PIPE)
+        lines = sp.Popen(['../ltl2ba/ltl2ba', '-f', '"%s"' % ltl_fml], stdout=sp.PIPE, stderr=sp.PIPE)
 
         out, err = lines.communicate()
-        
         wordset = alpha2wordset(alphabets)
         
         out = out.splitlines()
@@ -33,6 +32,8 @@ def ltl2nbw(m,alphabets):
             if line[0]=="<tr>":
                 next_state = line[3]
 #                symbols = set(str(line[1]).strip('[]').split(','))
+#                print 'SYM',symbols,current_state,next_state
+#                print '###',str(line[1]).strip('[]').split(','),wordset
                 AP = str(line[1]).strip('[]').split(',')
                 '''eval for each word'''
                 for w in wordset:
@@ -43,17 +44,29 @@ def ltl2nbw(m,alphabets):
                             if len(w)==0:
                                 w=set([''])
                             NBW.add_edge(NBW.vs.find(label=current_state).index,NBW.vs.find(label=next_state).index,word=set(w))
-
+#                NBW.add_edge(NBW.vs.find(label=current_state).index,NBW.vs.find(label=next_state).index,word=set(AP))
+        
+        # print NBW.get_edgelist()
+        # for v in NBW.vs():
+        #     print v['accepting']
+        # for e in NBW.es():
+        #     print e
+        # drawnbw(NBW)
         return NBW
         
 def drawnbw(NBW):
-    layout = NBW.layout("kk")
-    color_dict = {True:"green", False:"yellow"}
-    NBW.vs["color"] = [color_dict[accepting] for accepting in NBW.vs["accepting"]]
-    NBW.es["label"] = [word for word in NBW.es["word"]]
+    layout = NBW.layout("kamada_kawai")
+    color_dict = {True:"green", False:"red"}
+    # NBW.es['label'] = [word for word in NBW.es["word"]]
+    for v in NBW.vs():
+        v['color'] = color_dict[v['accepting']]
+    for e in NBW.es():
+        e['label'] = e['word']
     visual_style = {}
-    visual_style['layout']=layout
-    visual_style['bbox']=(600,600)
-    visual_style['margin']=40
-    visual_style['vertex_label_dist']=2
+    visual_style['layout'] = layout
+    visual_style['bbox'] = (600, 600)
+    visual_style['margin'] = 80
+    visual_style['vertex_label_dist'] = 2
+    visual_style['autocurve'] = True
+    # visual_style['vertex_label_dist']=2
     plot(NBW,**visual_style)

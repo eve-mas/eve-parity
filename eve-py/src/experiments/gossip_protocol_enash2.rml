@@ -1,0 +1,22 @@
+module RM1 controls s1
+init
+:: true ~> s1' := true;
+update
+:: s1 ~> s1' := false;
+:: s1 ~> s1' := true;
+:: !s1 and ( !s2) ~> s1' := true;
+goal
+:: (G F !s1);
+
+module RM2 controls s2
+init
+:: true ~> s2' := true;
+update
+:: s2 ~> s2' := false;
+:: s2 ~> s2' := true;
+:: !s2 and ( !s1) ~> s2' := true;
+goal
+:: (G F !s2);
+
+property
+:: F G (! s1 and ! s2);

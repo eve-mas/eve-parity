@@ -1,49 +1,56 @@
-# eve-parity
+# EVE
 Equilibrium Verification Environment
 
 __EVE__ (Equilibrium Verification Environment) is a formal verification tool for the automated analysis of temporal equilibrium properties of concurrent and multi-agent systems represented as multi-player games. Systems are modelled using the Simple Reactive Module Language (SRML) as a collection of independent system components (players/agents in a game), which are assumed to have goals expressed using Linear Temporal Logic (LTL) formulae. In particular, __EVE__ checks for the existence of Nash equilibria in such systems and can be used to do rational synthesis and verification automatically.
 
 __EVE__ has been tested on the following platforms:
-- Fedora
-- Ubuntu
-
-__EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image with Ubuntu as its OS base. This image can be downloaded from https://goo.gl/kvdjvH (size: 3.3 GB) and can be directly run on VirtualBox (https://www.virtualbox.org/).
+1. Fedora
+2. Ubuntu
 
 ## Prerequisites
-1. python 2.x
-2. IGraph version 0.7 (http://igraph.org/python/) (version 0.6 or older does not work)
+1. python 2.7
+2. OPAM  (https://opam.ocaml.org/doc/Install.html) + OCaml version 4.03.x or later (https://ocaml.org/docs/install.html).
+   To install OPAM (along with OCaml):
+	- Fedora
+		-  `sudo yum install patch`
+		-  `sudo yum install m4`
+		- `sudo wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin`
+		- `echo "y" | opam init`
+		- ``eval `opam config env` `` 
+	- Ubuntu
+		+ `sudo apt-get install m4`
+		+ `sudo wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin`
+		+ `echo "y" | opam init`
+		+ ``eval `opam config env` ``
+		
+3. Cairo (https://cairographics.org/download/) or from sourcecode (https://cairographics.org/releases/)
+	To install Cairo:
+	- Fedora
+		+ `sudo yum install cairo-devel`
+		+ `sudo yum install pycairo`
+	- Ubuntu
+		+ `sudo apt-get install libcairo2-dev`
+		+ `sudo apt-get install python-cairo`
+		
+4. IGraph version 0.7 (http://igraph.org/python/) (version 0.6 or older does not work)
 	- You need to have a C/C++ compiler installed on your machine.
-	- For Ubuntu: if IGraph installation failed, execute 'sudo apt-get install -y libigraph0-dev' before attempting to reinstall
-3. Cairo (https://cairographics.org/download/)
-	or from sourcecode (https://cairographics.org/releases/) --MacOS usually runs into trouble with auto install:
-	- uncompress/unzip the source code folder
-	- go inside the folder
-	- run on terminal: 
-		- [your pc]$ ./configure --prefix=/usr/local --disable-dependency-tracking
-		- [your pc]$ make install
-		- install pkg-config if needed
-
-4. OCaml version 4.03.x or later (https://ocaml.org/docs/install.html)
-5. OPAM (https://opam.ocaml.org/doc/Install.html) can be installed from binaries (download from https://github.com/ocaml/opam/releases) or from source code (download from https://github.com/ocaml/opam/releases)
-	- uncompress/unzip the source code folder
-	- go inside the folder
-	- follow installation instructions on README file and dont forget to initalise OPAM with current installation of OCaml (https://opam.ocaml.org/doc/Usage.html)
-	Make sure OCaml is version 4.03.x or later before running config
+	To install 
+	- Fedora
+		+ `sudo yum install python-igraph`
+	- Ubuntu
+		+ `sudo apt-get install python-igraph`
 
 ## Configurations
 1. Make sure you have all of the prerequisites
 2. Go inside eve-py folder
 3. Run shell script ./config.sh
    Make sure OCaml is version 4.03.x or later before running config.sh
-   If you have OPAM installed and initialised (ref: https://opam.ocaml.org/doc/Usage.html#Basics) in your machine, you can upgrade OCaml by executing these in terminal:
-	- opam update
-	- opam upgrade
-	- opam switch 4.03.0
+   
 
 ## How to use
 - usage:
-
-  $ main.py [problem] [path/name of the file] [options]
+From  inside folder **eve-py/src** execute the following command:
+` $ main.py [problem] [path/name of the file] [options]`
 
 - List of problems:
    
@@ -60,3 +67,26 @@ __EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image wit
 - Example:
 
    `$ main.py a ../examples/a-nash_1 -d` solves the A-Nash problem and draws the structures
+   
+## Running experiments
+1. Go to folder **eve-py/src/experiments**, there are 8 scripts:
+	+ bisim_ne_emptiness.sh
+	+ bisim_none_emptiness.sh
+	+ gossip_protocol_emptiness.sh
+	+ gossip_protocol_enash.sh
+	+ gossip_protocol_anash.sh
+	+ replica_control_emptiness.sh
+	+ replica_control_enash.sh
+	+ replica_control_anash.sh
+2. Execute the script "experiment_name".sh using the command `./experiment_name.sh 8`
+3. This will run the experiment "experiment_name" up until 8 steps.
+4. The experiment results are reported in the generated file **exetime_experiment_name.txt** with the following respective values separated by semicolons:
+	+ parser performance (ms)
+	+ construction peformance (ms)
+	+ PGSolver performance (ms)
+	+ non-emptiness/E-Nash/A-Nash performance (ms)
+	+ total number of parity game states
+	+ total number of parity game edges
+	+ maximum total number of sequentialised parity game states
+	+ maximum total number of sequentialised parity game edges
+	+ total time performance (ms)

@@ -10,7 +10,7 @@ __EVE__ has been tested on the following platforms:
 __EVE__ also available preinstalled in Open Virtual Appliance (OVA) image running Lubuntu (lightweight Linux based on Ubuntu). This image (1.5 GB) can be downloaded from https://goo.gl/ikdSnw and can be directly run on VirtualBox (https://www.virtualbox.org/).
 
 ***
-##INSTALLATION
+## INSTALLATION
 
 ### Prerequisites
 1. python 2.7

@@ -28,8 +28,7 @@ __EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image run
 		+ `echo "y" | opam init`
 		+ ``eval `opam config env` ``
 		
-3. Cairo (https://cairographics.org/download/) or from sourcecode (https://cairographics.org/releases/)
-	To install Cairo:
+3. Cairo (https://cairographics.org/download/) or from sourcecode (https://cairographics.org/releases/). To install Cairo:
 	- Fedora
 		+ `sudo yum install cairo-devel`
 		+ `sudo yum install pycairo`
@@ -37,7 +36,7 @@ __EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image run
 		+ `sudo apt-get install libcairo2-dev`
 		+ `sudo apt-get install python-cairo`
 		
-4. IGraph version 0.7 (http://igraph.org/python/) (version 0.6 or older does not work)
+4. IGraph version 0.7 (http://igraph.org/python/)
 	- You need to have a C/C++ compiler installed on your machine.
 	To install 
 	- Fedora

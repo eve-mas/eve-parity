@@ -632,8 +632,8 @@ def convertG(modules,DPWs,M):
     #                stup_next = get_next_qtup(cur,d,DPWs,modules,stup_next)
     #                GPar.add_edge(cur,GPar.vs.find(label=set(stup_next)),label=set(d))
     update_labs(GPar)
-    if check_draw_flag():
-        drawGPar(GPar)
+    # if check_draw_flag():
+    #     drawGPar(GPar)
     return GPar
     
     """this function converts G_LTL to G_Par"""
@@ -745,8 +745,8 @@ def convertG_cgs(modules,DPWs,M):
     
     update_labs(GPar)
 
-    if check_draw_flag():
-        drawGPar(GPar)
+    # if check_draw_flag():
+        # drawGPar(GPar)
 
     return GPar
 
@@ -867,11 +867,13 @@ def drawGPar(GPar):
     visual_style['vertex_size']=300/(GPar.vcount()+1)
 #    visual_style['edge_width']=2
 #    colour_dict = {0:"green"}
-    plot(GPar, **visual_style)
-    
+    out = plot(GPar, **visual_style)
+    out.save('../../../outputs/synth_sigma.png')
+
 def update_labs(GPar):
     GPar.es['word']=[label for label in GPar.es["label"]]
     GPar.es['label']=[None for word in GPar.es["word"]]
+    # GPar.es['label'] = [e.index for e in GPar.es]
     GPar.vs['name']=[v.index for v in GPar.vs]
     
 def max_colour(GPar):

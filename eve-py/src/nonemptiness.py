@@ -35,7 +35,7 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                 if draw_flag:
                     '''draw & printout strategy progile \vec{sigma}'''
                     drawGPar(L_sigma)
-                    printGParDetails(L_sigma)
+                    printSynthSigmaDetails(L_sigma)
                 break
         else:
             l = get_l(list(w),modules)
@@ -88,7 +88,7 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                     if draw_flag:
                         '''draw & printout strategy progile \vec{sigma}'''
                         drawGPar(L_sigma)
-                        printGParDetails(L_sigma)
+                        printSynthSigmaDetails(L_sigma)
                     NE_flag=True
                     break
                 

@@ -1,6 +1,7 @@
 from itertools import product
 import ast
 from igraph import *
+from subprocess import call
 
 '''returns set of init states'''
 def productInit(mdl):
@@ -132,8 +133,11 @@ def merge_two_dicts(x, y):
     
 def drawM(M):
     layout = M.layout("kk")
-#    M.es["label"] = [direction for direction in M.es["direction"]]
-    plot(M, layout=layout, bbox =(800,800), margin=40, color="white")
-    
+#    M.es["label"] = [direction for direction in M.es["direction"]
+    out = plot(M, layout=layout, bbox =(800,800), margin=40, color="white")
+    # out.save('coba.png')
+    # Plot.__init__(M)
+    # out.save('coba.png')
+
 def updateLabM(M):
     M.vs['label']=[('M-'+str(v.index),list(v['label'])) for v in M.vs]

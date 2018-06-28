@@ -39,10 +39,6 @@ def anash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                     print '>>> NO, the property '+pf+' is not satisfied in ALL NE <<<'
                     print 'Winning Coalition',(num2name(w,modules))
                     NE_flag=True
-                    if draw_flag:
-                        '''draw & printout strategy progile \vec{sigma}'''
-                        drawGPar(E_sigma)
-                        printGParDetails(E_sigma)
                     break
 
         else:
@@ -95,13 +91,13 @@ def anash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                     if E.vcount() != 0:
                         print '>>> NO, the property '+pf+' is not satisfied in ALL NE <<<'
                         print 'Winning Coalition',num2name(w,modules)
-                        if draw_flag:
-                            '''draw & printout strategy progile \vec{sigma}'''
-                            drawGPar(E_sigma)
-                            printGParDetails(E_sigma)
                         NE_flag=True
                         break
                 
     if not NE_flag:
         print '>>> YES, the property '+pf+' is satisfied in ALL NE <<<'
+	if draw_flag:
+        	'''draw & printout strategy progile \vec{sigma}'''
+                drawGPar(L_sigma)
+                printSynthSigmaDetails(L_sigma)
     return perfPGSolver,TTPG_vmax,TTPG_emax

@@ -178,11 +178,55 @@ def addMPPlayers_rmg(file_name,pf):
                 f.write(f_ori.read())
 
 def printGParDetails(GPar):
+    print ("\n######## Vertex List ########")
     for v in GPar.vs():
         print v
+    print ("############################################################\n")
+
+    print ("\n######## Edge List ########")
     print GPar.get_edgelist()
+    print ("############################################################\n")
+
+    print ("\n######## Edge labels ########")
     for e in GPar.es():
         print e
+    print ("############################################################\n")
+
+    return True
+
+def printSynthSigmaDetails(GPar):
+    print ("\n\n######## Vertex List ########")
+    for v in GPar.vs():
+        # print v
+        if v['val'] is None:
+            v['val'] = []
+
+        print "state:", v['label'], "| val:", list(v['val'])
+        # try:
+        #     print "state:", v['label'], "| val:", list(v['val'])
+        # except TypeError:
+        #     # print "state:", v['label'], "| val:", list([''])
+        #     print "\n"
+
+    print ("############################################################\n")
+
+    print ("\n######## Edge List ########")
+    print GPar.get_edgelist()
+    print ("############################################################\n")
+
+    # for e in GPar.es:
+    #     del e['label']
+    # try:
+    #     del GPar.es['label']
+    # except KeyError:
+    #     pass
+    # GPar.es['Action Profile'] = GPar.es['word']
+
+    print ("\n######## Transition Profile ########")
+    for e in GPar.es():
+        print e.source, " --(", list(e['word']), ")--> ", e.target
+    print ("############################################################\n")
+
     return True
 
 def num2name(w,modules):

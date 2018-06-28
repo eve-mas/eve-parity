@@ -384,8 +384,8 @@ def nbw2dpw(NBW,alphabets):
 #    print DPW.get_edgelist()
 #    for e in DPW.es:
 #        print e
-    if check_draw_flag():
-        drawdpw(DPW)
+#     if check_draw_flag():
+        # drawdpw(DPW)
     return DPW
     
 #def flattener(DPW):

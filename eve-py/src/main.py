@@ -131,8 +131,8 @@ def main(argv):
     updateLabM(M)
     print "Kripke states", M.vcount()
     print "Kripke edges", M.ecount()
-    if draw_flag:
-        drawM(M)
+    # if draw_flag:
+    #     drawM(M)
         
     '''Don't need to do LTL2DPW conversion for memoryless case'''
     if q_flag in [1,2,4]:

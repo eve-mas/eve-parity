@@ -38,7 +38,8 @@ def Arena2LTS(mdl):
             t = envTransition(label,environment[0])
         if len(t)==1:
             for k,v in without_keys(dict(t[0][0][1]),'guard').items():
-                cmd.append(str({k:parse_rpn(label,v)}))
+                if k != 0:  # exclude checking name
+                    cmd.append(str({k:parse_rpn(label,v)}))
         nextLabel = getValuation(cmd)
         try:
             M.vs.find(label=nextLabel)
@@ -60,7 +61,8 @@ def Arena2LTS(mdl):
                     updateCommand_noguard = without_keys(v,'guard') #remove dict key 'guard'
                     for key,l in updateCommand_noguard.items():
                         '''for each variable'''
-                        commands.append(str({key:parse_rpn((list(state)),l)}))
+                        if k != 0:  # exclude checking name
+                            commands.append(str({key:parse_rpn((list(state)),l)}))
                 direction = getValuation(commands)
                 nextState=[]
                 try:
@@ -69,7 +71,8 @@ def Arena2LTS(mdl):
                     t = envTransition(list(state),environment[0])
                 if len(t)==1:
                     for k,v in without_keys(dict(t[0][0][1]),'guard').items():
-                        nextState.append(str({k:parse_rpn(list(state),v)}))
+                        if k != 0:  # exclude checking name
+                            nextState.append(str({k:parse_rpn(list(state),v)}))
                 nextLabel = getValuation(nextState)
 #                print 'nextLabel', nextLabel
                 if direction!=None:
@@ -95,7 +98,8 @@ def Arena2LTS(mdl):
                     updateCommand_noguard = without_keys(v,'guard') #remove dict key 'guard'
                     for key,l in updateCommand_noguard.items():
                         '''for each variable'''
-                        commands.append(str({key:parse_rpn(currentState['label'],l)}))
+                        if k != 0:  # exclude checking name
+                            commands.append(str({key:parse_rpn(currentState['label'],l)}))
                 direction = getValuation(commands)
 #                print direction
                 sNext=[]
@@ -106,7 +110,8 @@ def Arena2LTS(mdl):
 #                print t
                 if len(t)==1:
                     for k,v in without_keys(dict(t[0][0][1]),'guard').items():
-                        sNext.append(str({k:parse_rpn(currentState['label'],v)}))
+                        if k != 0:  # exclude checking name
+                            sNext.append(str({k:parse_rpn(currentState['label'],v)}))
                 nextLabel = getValuation(sNext)
 #                print nextLabel
                 if nextLabel==None:

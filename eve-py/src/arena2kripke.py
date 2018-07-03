@@ -46,7 +46,8 @@ def Arena2Kripke(mdl):
                     for k,l in updateCommand_noguard.items():
                         '''for each variable'''
 #                        print k,l
-                        commands.append(str({k:parse_rpn(state['label'],l)}))
+                        if k != 0:  # exclude checking name
+                            commands.append(str({k:parse_rpn(state['label'],l)}))
                 try:
                     nextState = frozenset(getValuation(tuple(commands)))
 #                    print '>>>',commands,nextState
@@ -91,7 +92,8 @@ def Arena2Kripke(mdl):
                     '''for each jointEnabled update command'''
                     updateCommand_noguard = without_keys(v,'guard')
                     for k,l in updateCommand_noguard.items():
-                        commands.append(str({k:parse_rpn(currentState['label'],l)}))
+                        if k != 0:  # exclude checking name
+                            commands.append(str({k:parse_rpn(currentState['label'],l)}))
 #                print nextState['label'],getValuation(commands)
                 cmdval = getValuation(commands)
 #                print cmdval

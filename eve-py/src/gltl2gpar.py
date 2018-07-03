@@ -993,7 +993,8 @@ def gltl_tau_cgs(sidx,d,M):
 #    print 'TT',t
     if len(t)==1:
         for k,v in without_keys(dict(t[0][0][1]),'guard').items():
-            nextState.append(str({k:parse_rpn(list(val),v)}))
+            if k != 0:  # exclude checking name
+                nextState.append(str({k:parse_rpn(list(val),v)}))
     nextLabel = getValuation(nextState)
 #    print 'NNN', nextState, nextLabel
     

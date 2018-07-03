@@ -442,7 +442,8 @@ def generate_coal_dir(prev_val,coalition):
                 for k,l in updateCommand_noguard.items():
                     '''for each variable'''
 #                        print k,l
-                    commands.append(str({k:parse_rpn(frozenset(list(prev_val)),l)}))
+                    if k != 0:
+                        commands.append(str({k:parse_rpn(frozenset(list(prev_val)),l)}))
             try:
                 nextState = frozenset(getValuation(tuple(commands)))
 #                    print '>>>',commands,nextState

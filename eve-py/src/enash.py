@@ -40,8 +40,8 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                     NE_flag=True
                     if draw_flag:
                         '''draw & printout strategy progile \vec{sigma}'''
-                        drawGPar(E)
-                        printSynthSigmaDetails(E)
+                        drawGPar(E_sigma)
+                        printSynthSigmaDetails(E_sigma)
                     break
         else:
             l = get_l(list(w),modules)

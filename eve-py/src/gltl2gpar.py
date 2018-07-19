@@ -855,7 +855,8 @@ def drawGPar(GPar):
     for e in GPar.es:
 #        v['color']=(int(v.index)*r,int(v.index)*r,int(v.index)*r)
         e['color']=GPar.vs[e.source]['color']
-    GPar.vs['label']=[v['name'] for v in GPar.vs]
+    # GPar.vs['label']=[v['name'] for v in GPar.vs]
+    GPar.vs['label'] = [v.index for v in GPar.vs]
 #    GPar.vs[0]['label']='S0'
     visual_style = {}
     visual_style['layout']=layout

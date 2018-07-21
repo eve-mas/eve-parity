@@ -869,8 +869,8 @@ def drawGPar(GPar):
     visual_style['vertex_size']=300/(GPar.vcount()+1)
 #    visual_style['edge_width']=2
 #    colour_dict = {0:"green"}
-    out = plot(GPar, **visual_style)
-    out.save('../../../outputs/synth_sigma.png')
+#     out = plot(GPar, **visual_style)
+#     out.save('../../../outputs/synth_sigma.png')
 
 def update_labs(GPar):
     GPar.es['word']=[label for label in GPar.es["label"]]

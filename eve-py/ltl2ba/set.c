@@ -171,7 +171,8 @@ void print_set_eve(int *l, int type) /* prints the content of a set */
         switch(type) {
           case 0: case 2:
             if(!start) fprintf(tl_out, ",");
-            fprintf(tl_out, "%i", mod * i + j);
+            /*fprintf(tl_out, "%i", mod * i + j);*/
+            fprintf(tl_out, "~%s", sym_table[mod * i + j]);
             break;
           case 1:
             if(!start) fprintf(tl_out, ",");
@@ -180,6 +181,7 @@ void print_set_eve(int *l, int type) /* prints the content of a set */
 	  case 4:
 	    if(!start) fprintf(tl_out, ",");
             fprintf(tl_out, "~%s", sym_table[mod * i + j]);
+	    break;
         }
         start = 0;
       }

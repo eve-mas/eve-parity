@@ -533,7 +533,7 @@ void print_buchi_eve(BState *s) /* dumps the Buchi automaton */
     if(s->final == accept)
       fprintf(tl_out, "f%i acc", s->id);
     else
-      fprintf(tl_out, "s%i noacc", s->id);
+      fprintf(tl_out, "s%i noacc", s->final);
   }
   fprintf(tl_out, "\n");
   for(t = s->trans->nxt; t != s->trans; t = t->nxt) {
@@ -543,7 +543,7 @@ void print_buchi_eve(BState *s) /* dumps the Buchi automaton */
     print_set_eve(t->pos, 1);
     if (!empty_set(t->pos, 1) && !empty_set(t->neg, 1)) fprintf(tl_out, ",");
     {
-    print_set_eve(t->neg, 4);
+    print_set_eve(t->neg, 2);
     }
     fprintf(tl_out, "] -> ");
     if(t->to->id == -1) 

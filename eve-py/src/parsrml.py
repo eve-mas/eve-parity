@@ -107,7 +107,7 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 # A string containing ignored characters (spaces and tabs)
-t_ignore  = ' \t'
+t_ignore  = ' \t\r'
 
 # Error handling rule
 def t_error(t):

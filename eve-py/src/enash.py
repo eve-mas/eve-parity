@@ -35,7 +35,7 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                 E, E_sigma = Streett_emptyness(DPW_product, e_Alpha, modules+[{1:set(['environment'])}])
 
                 if E.vcount() != 0:
-                    print '>>> YES, the property '+pf+' is satisfied in some NE <<<'
+                    print '>>> YES, the property '+ replace_symbols(pf) +' is satisfied in some NE <<<'
                     print 'Winning Coalition',(num2name(w,modules))
                     NE_flag=True
                     if draw_flag:
@@ -100,7 +100,7 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                     E, E_sigma = Streett_emptyness(DPW_product, e_Alpha, modules + [{1: set(['environment'])}])
 
                     if E.vcount() != 0:
-                        print '>>> YES, the property ' + pf + ' is satisfied in some NE <<<'
+                        print '>>> YES, the property ' + replace_symbols(pf) + ' is satisfied in some NE <<<'
                         print 'Winning Coalition', (num2name(w, modules))
                         NE_flag = True
                         if draw_flag:
@@ -110,6 +110,6 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                         break
 
     if not NE_flag:
-        print '>>> NO, the property '+pf+' is not satisfied in any NE <<<'
+        print '>>> NO, the property '+ replace_symbols(pf) +' is not satisfied in any NE <<<'
     return perfPGSolver,TTPG_vmax,TTPG_emax
 

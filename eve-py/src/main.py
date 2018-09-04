@@ -99,7 +99,7 @@ def main(argv):
         if pf==None:
             print "No property formula input..."
         else:
-            print "Checking E-Nash property formula: "+pf
+            print "Checking E-Nash property formula: "+replace_symbols(pf)
         '''need to add two players playing matching pennies with goal: \lnot \phi or (matching pennies goal)'''
         '''we can directly modify list modules by adding two players, can we?'''
         '''but the kripke structure will obviously change, is it a problem?'''
@@ -116,7 +116,7 @@ def main(argv):
         if pf==None:
             print "No property formula input..."
         else:
-            print "Checking A-Nash property formula: "+pf
+            print "Checking A-Nash property formula: "+replace_symbols(pf)
 
         '''convert \phi to NBW'''
         NBW_prop = ltl2nbw('!'+propFormula[0], PFAlphabets[0])
@@ -153,7 +153,9 @@ def main(argv):
             NBWs[list(m[1])[0]]=ltl2nbw(list(m[5])[0],list(m[6]))
     #           print list(m[5])[0],list(m[1])[0]
             NBWs[list(m[1])[0]]['goal']=list(m[5])[0]
-            print list(m[1])[0],NBWs[list(m[1])[0]]['goal']
+            goal = list(m[5])[0]
+            goal = replace_symbols(goal)
+            print list(m[1])[0], goal
     #        print list(m[1])[0]
             DPWs[list(m[1])[0]] = nbw2dpw(NBWs[list(m[1])[0]],list(m[6]))
     #        for v in DPWs[list(m[1])[0]].vs:

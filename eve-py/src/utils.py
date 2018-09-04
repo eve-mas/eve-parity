@@ -477,3 +477,11 @@ def drawTTPG_kk(TTPG):
     visual_style['autocurve']=True
     visual_style['vertex_frame_width']=0
     plot(TTPG, **visual_style)
+
+
+def replace_symbols(string):
+    old = ['&&', '||', '[]', '<>']
+    new = ['and', 'or', 'G', 'F']
+    for i, j in enumerate(old):  ## replace symbols into 'normal' ones
+        string = string.replace(j, new[i])
+    return string

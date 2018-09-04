@@ -36,7 +36,7 @@ def anash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                 E, E_sigma = Streett_emptyness(DPW_product, e_Alpha, modules + [{1: set(['environment'])}])
 
                 if E.vcount() != 0:
-                    print '>>> NO, the property '+pf+' is not satisfied in ALL NE <<<'
+                    print '>>> NO, the property '+ replace_symbols(pf) +' is not satisfied in ALL NE <<<'
                     print 'Winning Coalition',(num2name(w,modules))
                     NE_flag=True
                     break
@@ -91,13 +91,13 @@ def anash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                     E, E_sigma = Streett_emptyness(DPW_product, e_Alpha, modules + [{1: set(['environment'])}])
 
                     if E.vcount() != 0:
-                        print '>>> NO, the property '+pf+' is not satisfied in ALL NE <<<'
+                        print '>>> NO, the property '+ replace_symbols(pf) +' is not satisfied in ALL NE <<<'
                         print 'Winning Coalition',num2name(w,modules)
                         NE_flag=True
                         break
                 
     if not NE_flag:
-        print '>>> YES, the property '+pf+' is satisfied in ALL NE <<<'
+        print '>>> YES, the property '+ replace_symbols(pf) +' is satisfied in ALL NE <<<'
 	if draw_flag:
         	'''draw & printout strategy progile \vec{sigma}'''
                 drawGPar(L_sigma)

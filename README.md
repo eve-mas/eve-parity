@@ -73,6 +73,8 @@ From  inside folder **eve-py/src** execute the following command:
 - List of optional arguments:
    
    `-d`	 Option to draw the structures
+   
+   `-v` Option to execute in verbose mode
 
 - Example:
 

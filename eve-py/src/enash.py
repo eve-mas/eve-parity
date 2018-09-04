@@ -52,7 +52,8 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                     if TTPG[pl_name]:
                         pass
                 except KeyError:
-                    print "\n Sequentialising GPar for punishing <"+pl_name+">"
+                    if check_verbose_flag():
+                        print "\n Sequentialising GPar for punishing <"+pl_name+">"
                     if not cgsFlag:
                         startPGSolver = time.time()*1000
                         sequencer_rmg_single(pl,GPar,TTPG,modules)
@@ -73,7 +74,8 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                 '''compute pl_name pun region'''
 #                print pl_name,PUN
                 if pl_name not in PUN:
-                    print "\n Computing punishing region for <"+pl_name+">"
+                    if check_verbose_flag():
+                        print "\n Computing punishing region for <"+pl_name+">"
                     PUN=compute_pun(pl_name,PUN,TTPG)
 #                print 'pl_name',pl_name
                 PUN_L = PUN_L.intersection(set(PUN[pl_name]))

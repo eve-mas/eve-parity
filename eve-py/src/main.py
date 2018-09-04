@@ -37,9 +37,9 @@ def printhelp():
     print "n \t Solve Non-Emptiness"
     print "\nList of optional arguments:"
     print "-d \t Draw the structures"
+    print "-v \t verbose mode"
     print "\n"
     sys.exit()
-    
 
 def main(argv):
 
@@ -48,21 +48,29 @@ def main(argv):
     file_name = args_list[2]
     prob  = str(args_list[1])
     q_flag=0
+
+    with open("verbose_flag","w") as f:
+        f.write("0")
+    verbose = False
     
     with open("draw_flag","w") as f:
         f.write("0")
     draw_flag=False
     
     try:
-        opts, args = getopt.getopt(argv,"hd")
+        opts, args = getopt.getopt(argv,"vd")
     except getopt.GetoptError:
         printhelp()
         
-    for o,a in  opts:
-        if o=="-d":
+    for o,a in opts:
+        if o == "-d":
             with open("draw_flag","w") as f:
                 f.write("1")
                 draw_flag=True
+        elif o == "-v":
+            with open("verbose_flag","w") as f:
+                f.write("1")
+            verbose = True
         else:
             print "ERROR: Undefined option"
             printhelp()
@@ -155,11 +163,13 @@ def main(argv):
     #    st_prod = stateprod(dpw_states,M)
         
         if not cgsFlag:
-            print "\n Convert G_{LTL} to G_{PAR}...\n"
+            if verbose:
+                print "\n Convert G_{LTL} to G_{PAR}...\n"
             GPar = convertG(modules,DPWs,M)
 
         else:
-            print "\n Convert G_{LTL} to G_{PAR}...\n"
+            if verbose:
+                print "\n Convert G_{LTL} to G_{PAR}...\n"
             GPar = convertG_cgs(modules,DPWs,M)
         GPar_v = GPar.vcount()
         GPar_e = GPar.ecount()
@@ -202,7 +212,7 @@ def main(argv):
         printhelp()
         return True
 
-    if not draw_flag and (q_flag not in [6,7,8]):
+    if (q_flag not in [6,7,8]) and verbose:
         print_performance(perfConstruction,perfParser,perfPGSolver,empCheck,GPar_v,GPar_e,TTPG_vmax,TTPG_emax,q_flag)
     
 if __name__ == "__main__":

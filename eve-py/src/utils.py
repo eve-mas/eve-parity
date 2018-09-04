@@ -238,7 +238,15 @@ def num2name(w,modules):
 def check_draw_flag():
     with open("draw_flag","r") as f:
         data = f.read()
-        if data=="1":
+        if data == "1":
+            return True
+        else:
+            return False
+
+def check_verbose_flag():
+    with open("verbose_flag","r") as f:
+        data = f.read()
+        if data == "1":
             return True
         else:
             return False

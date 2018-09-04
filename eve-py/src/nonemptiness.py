@@ -46,7 +46,8 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                     if TTPG[pl_name]:
                         pass
                 except KeyError:
-                    print "\n Sequentialising GPar for punishing <"+pl_name+">"
+                    if check_verbose_flag():
+                        print "\n Sequentialising GPar for punishing <"+pl_name+">"
                     if not cgsFlag:
                         startPGSolver = time.time()*1000
                         sequencer_rmg_single(pl,GPar,TTPG,modules)
@@ -66,7 +67,8 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                             
                 '''compute pl_name pun region'''
                 if pl_name not in PUN:
-                    print "\n Computing punishing region for <"+pl_name+">"
+                    if check_verbose_flag():
+                        print "\n Computing punishing region for <"+pl_name+">"
                     PUN=compute_pun(pl_name,PUN,TTPG)
                 PUN_L = PUN_L.intersection(set(PUN[pl_name]))
                 '''init state s0 not included in PUN_L'''

@@ -5,7 +5,7 @@ from igraph import *
 import copy
 from srmlutil import *
 from parsrml import *
-from utils import check_draw_flag
+from utils import check_draw_flag, check_verbose_flag
 
 
 '''sequentialisation of GPar to two-player zero-sum parity game'''
@@ -95,7 +95,8 @@ def sequencer(GPar,modules):
 ##            if v['colour']==None:
 ##                v['colour']=1
 #            print v
-        print summary(TTPG[pl_name])
+        if check_verbose_flag():
+            print summary(TTPG[pl_name])
         
         '''get max size of TTPG'''
         if TTPG_vmax<TTPG[pl_name].vcount():
@@ -223,7 +224,8 @@ def sequencer_rmg(GPar,modules):
 ##            if v['colour']==None:
 ##                v['colour']=1
 #            print v
-        print summary(TTPG[pl_name])
+        if check_verbose_flag():
+            print summary(TTPG[pl_name])
         
         '''get max size of TTPG'''
         if TTPG_vmax<TTPG[pl_name].vcount():
@@ -314,7 +316,8 @@ def sequencer_cgs_single(idx,GPar,TTPG,modules):
 ##            if v['colour']==None:
 ##                v['colour']=1
 #            print v
-    print summary(TTPG[pl_name])
+    if check_verbose_flag():
+        print summary(TTPG[pl_name])
     return True
     
 def sequencer_rmg_single(idx,GPar,TTPG,modules):
@@ -426,7 +429,8 @@ def sequencer_rmg_single(idx,GPar,TTPG,modules):
 ##            if v['colour']==None:
 ##                v['colour']=1
 #            print v
-    print summary(TTPG[pl_name])
+    if check_verbose_flag():
+        print summary(TTPG[pl_name])
     return TTPG[pl_name].vcount(), TTPG[pl_name].ecount()
     
 '''this function generates direction based on players/modules coalition'''
@@ -855,7 +859,7 @@ def drawGPar(GPar):
     for e in GPar.es:
 #        v['color']=(int(v.index)*r,int(v.index)*r,int(v.index)*r)
         e['color']=GPar.vs[e.source]['color']
-    # GPar.vs['label']=[v['name'] for v in GPar.vs]
+    GPar.vs['label']=[v['name'] for v in GPar.vs]
     GPar.vs['label'] = [v.index for v in GPar.vs]
 #    GPar.vs[0]['label']='S0'
     visual_style = {}
@@ -869,8 +873,8 @@ def drawGPar(GPar):
     visual_style['vertex_size']=300/(GPar.vcount()+1)
 #    visual_style['edge_width']=2
 #    colour_dict = {0:"green"}
-#     out = plot(GPar, **visual_style)
-#     out.save('../../../outputs/synth_sigma.png')
+    out = plot(GPar, **visual_style)
+    # out.save('../../../outputs/synth_sigma.png')
 
 def update_labs(GPar):
     GPar.es['word']=[label for label in GPar.es["label"]]

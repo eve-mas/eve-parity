@@ -533,7 +533,7 @@ void print_buchi_eve(BState *s) /* dumps the Buchi automaton */
     if(s->final == accept)
       fprintf(tl_out, "f%i acc", s->id);
     else
-      fprintf(tl_out, "s%i noacc", s->final);
+      fprintf(tl_out, "s%i noacc", s->id);
   }
   fprintf(tl_out, "\n");
   for(t = s->trans->nxt; t != s->trans; t = t->nxt) {

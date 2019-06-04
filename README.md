@@ -7,7 +7,9 @@ __EVE__ (Equilibrium Verification Environment) is a formal verification tool for
 __EVE__ can be used via webservice from http://eve.cs.ox.ac.uk/eve
 
 ## PUBLICATION
-- J. Gutierrez, M. Najib, G. Perelli, and M. Wooldridge. EVE: A Tool for Temporal Equilibrium Analysis. In *Proceedings of the 16th International Symposium on Automated Technology for Verification and Analysis (ATVA-2018)*, Los Angeles, October 2018. [PDF](http://163.1.88.96/pubs/atva18.pdf)
+- J. Gutierrez, M. Najib, G. Perelli, and M. Wooldridge. Automated Temporal Equilibrium Analysis: Verification and Synthesis of Multi-Player Games. *Under review*, 2019. [PDF](http://eve.cs.ox.ac.uk/pubs/eve.pdf)
+
+- J. Gutierrez, M. Najib, G. Perelli, and M. Wooldridge. EVE: A Tool for Temporal Equilibrium Analysis. In *Proceedings of the 16th International Symposium on Automated Technology for Verification and Analysis (ATVA-2018)*, Los Angeles, October 2018. [PDF](http://eve.cs.ox.ac.uk/pubs/atva18.pdf)
 
 __EVE__ has been tested on the following platforms:
 1. Fedora

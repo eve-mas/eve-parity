@@ -7,7 +7,7 @@ __EVE__ (Equilibrium Verification Environment) is a formal verification tool for
 __EVE__ can be used via webservice from http://eve.cs.ox.ac.uk/eve
 
 ## PUBLICATION
-- J. Gutierrez, M. Najib, G. Perelli, and M. Wooldridge. __Automated Temporal Equilibrium Analysis: Verification and Synthesis of Multi-Player Games__. *Artificial Intelligence*, 2020. In Press. [PDF](https://valvestate.github.io/files/aij20.pdf)
+- J. Gutierrez, M. Najib, G. Perelli, and M. Wooldridge. __Automated Temporal Equilibrium Analysis: Verification and Synthesis of Multi-Player Games__. In *Artificial Intelligence*, 2020. In Press. [PDF](https://valvestate.github.io/files/aij20.pdf)
 
 - J. Gutierrez, M. Najib, G. Perelli, and M. Wooldridge. __EVE: A Tool for Temporal Equilibrium Analysis__. In *Proceedings of the 16th International Symposium on Automated Technology for Verification and Analysis (ATVA-2018)*, Los Angeles, October 2018. [PDF](https://valvestate.github.io/files/atva18.pdf)
 

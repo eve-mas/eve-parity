@@ -6,7 +6,7 @@ from utils import alpha2wordset,evalNBWedge
 
 def ltl2nbw(ltl_fml,alphabets):
 
-        lines = sp.Popen(['../ltl2ba/ltl2ba', '-f', '"%s"' % ltl_fml], stdout=sp.PIPE, stderr=sp.PIPE)
+        lines = sp.Popen(['../ltl2ba/ltl2ba', '-f', '"%s"' % ltl_fml], stdout=sp.PIPE, stderr=sp.PIPE, encoding='utf8')
 
         out, err = lines.communicate()
         wordset = alpha2wordset(alphabets)

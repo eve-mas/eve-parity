@@ -44,7 +44,7 @@ def sequencer(GPar,modules):
 
         '''check possible d_exi'''
 #        for state in TTPG[pl_name].vs:
-        for i in xrange(oriv_count):
+        for i in range(oriv_count):
 #            print v['val']
 #            print 'state[]',state['label']
             for d in generate_coal_dir(TTPG[pl_name].vs[i]['val'],modules_exi):
@@ -96,7 +96,7 @@ def sequencer(GPar,modules):
 ##                v['colour']=1
 #            print v
         if check_verbose_flag():
-            print summary(TTPG[pl_name])
+            print(summary(TTPG[pl_name]))
         
         '''get max size of TTPG'''
         if TTPG_vmax<TTPG[pl_name].vcount():
@@ -144,7 +144,7 @@ def sequencer_rmg(GPar,modules):
 
         '''check possible d_exi'''
 #        for state in TTPG[pl_name].vs:
-        for i in xrange(oriv_count):
+        for i in range(oriv_count):
 #            print v['val']
 #            print 'state[]',state['label']
             """(pre)init state"""
@@ -225,7 +225,7 @@ def sequencer_rmg(GPar,modules):
 ##                v['colour']=1
 #            print v
         if check_verbose_flag():
-            print summary(TTPG[pl_name])
+            print(summary(TTPG[pl_name]))
         
         '''get max size of TTPG'''
         if TTPG_vmax<TTPG[pl_name].vcount():
@@ -265,7 +265,7 @@ def sequencer_cgs_single(idx,GPar,TTPG,modules):
 
     '''check possible d_exi'''
 #        for state in TTPG[pl_name].vs:
-    for i in xrange(oriv_count):
+    for i in range(oriv_count):
 #            print v['val']
 #            print 'state[]',state['label']
         for d in generate_coal_dir(TTPG[pl_name].vs[i]['val'],modules_exi):
@@ -317,7 +317,7 @@ def sequencer_cgs_single(idx,GPar,TTPG,modules):
 ##                v['colour']=1
 #            print v
     if check_verbose_flag():
-        print summary(TTPG[pl_name])
+        print(summary(TTPG[pl_name]))
     return True
     
 def sequencer_rmg_single(idx,GPar,TTPG,modules):
@@ -349,7 +349,7 @@ def sequencer_rmg_single(idx,GPar,TTPG,modules):
 
     '''check possible d_exi'''
 #        for state in TTPG[pl_name].vs:
-    for i in xrange(oriv_count):
+    for i in range(oriv_count):
 #            print v['val']
 #            print 'state[]',state['label']
         """(pre)init state"""
@@ -430,7 +430,7 @@ def sequencer_rmg_single(idx,GPar,TTPG,modules):
 ##                v['colour']=1
 #            print v
     if check_verbose_flag():
-        print summary(TTPG[pl_name])
+        print(summary(TTPG[pl_name]))
     return TTPG[pl_name].vcount(), TTPG[pl_name].ecount()
     
 '''this function generates direction based on players/modules coalition'''
@@ -756,13 +756,13 @@ def convertG_cgs(modules,DPWs,M):
     return GPar
 
 def forpraline(GPar):
-    print "FOR PRALINE"
+    print("FOR PRALINE")
 
 
     f = open('tcgen/update','w')
 
 
-    print GPar.get_edgelist()
+    print(GPar.get_edgelist())
     for e in GPar.es:
         if e.index == 0:
             f.write("if (state ==" + str(e.source) + " && ")
@@ -827,7 +827,7 @@ def forpraline(GPar):
         f.write('}\n')
 
     for v in GPar.vs:
-        print v
+        print (v)
         # for ac in e['word']:
         #     print ac
         #     if ac=='ca':

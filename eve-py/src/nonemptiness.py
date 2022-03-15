@@ -29,8 +29,8 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
             L,L_sigma = Streett_emptyness(GPar,s_Alpha,modules)
             '''if not empty'''
             if L.vcount()!=0:
-                print '>>> YES, there exists NE <<<'
-                print 'Winning Coalition',(num2name(w,modules))
+                print('>>> YES, there exists NE <<<')
+                print('Winning Coalition',(num2name(w,modules)))
                 NE_flag=True
                 if draw_flag:
                     '''draw & printout strategy progile \vec{sigma}'''
@@ -47,7 +47,7 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                         pass
                 except KeyError:
                     if check_verbose_flag():
-                        print "\n Sequentialising GPar for punishing <"+pl_name+">"
+                        print("\n Sequentialising GPar for punishing <"+pl_name+">")
                     if not cgsFlag:
                         startPGSolver = time.time()*1000
                         sequencer_rmg_single(pl,GPar,TTPG,modules)
@@ -68,7 +68,7 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                 '''compute pl_name pun region'''
                 if pl_name not in PUN:
                     if check_verbose_flag():
-                        print "\n Computing punishing region for <"+pl_name+">"
+                        print("\n Computing punishing region for <"+pl_name+">")
                     PUN=compute_pun(pl_name,PUN,TTPG)
                 PUN_L = PUN_L.intersection(set(PUN[pl_name]))
                 '''init state s0 not included in PUN_L'''
@@ -85,8 +85,8 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
 
                 '''if not empty'''
                 if L.vcount()!=0:    
-                    print '>>> YES, there exists NE <<<'
-                    print 'Winning Coalition',num2name(w,modules)
+                    print('>>> YES, there exists NE <<<')
+                    print('Winning Coalition',num2name(w,modules))
                     if draw_flag:
                         '''draw & printout strategy progile \vec{sigma}'''
                         drawGPar(L_sigma)
@@ -95,5 +95,5 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                     break
                 
     if not NE_flag:
-        print '>>> NO, there exists no NE <<<'
+        print('>>> NO, there exists no NE <<<')
     return perfPGSolver,TTPG_vmax,TTPG_emax

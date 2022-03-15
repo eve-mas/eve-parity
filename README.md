@@ -21,7 +21,7 @@ __EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image run
 ## INSTALLATION
 
 ### Prerequisites
-1. python 2.7
+1. python 3.x
 2. OPAM  (https://opam.ocaml.org/doc/Install.html) + OCaml version 4.03.x or later (https://ocaml.org/docs/install.html).
    To install OPAM (along with OCaml):
 	- Fedora
@@ -55,7 +55,7 @@ __EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image run
 ### Configurations
 1. Make sure you have all of the prerequisites
 2. Go inside eve-py folder
-3. Run shell script **./config.sh**
+3. Run shell script **./config.sh** (you may need to run **chmod +x config.sh**)
    Make sure OCaml is version 4.03.x or later before running config.sh
 ***   
 
@@ -83,7 +83,7 @@ From  inside folder **eve-py/src** execute the following command:
    `$ main.py a ../examples/a-nash_1 -d` solves the A-Nash problem and draws the structures
    
 ### Running experiments
-1. Go to folder **eve-py/src/experiments**, there are 8 scripts:
+1. Go to folder **eve-py/src/experiments**, there are 8 scripts (you may need to run **chmod +x <script_filename.sh>** to run these scripts):
 	+ bisim_ne_emptiness.sh
 	+ bisim_none_emptiness.sh
 	+ gossip_protocol_emptiness.sh

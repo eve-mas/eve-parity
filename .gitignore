@@ -1,0 +1,6 @@
+# Compilation artefacts
+*.o
+*.pyc
+
+# pgsolver unzipped
+eve-py/pgsolver-master/

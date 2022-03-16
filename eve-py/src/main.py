@@ -18,27 +18,27 @@ from anash import *
 
 def print_performance(perfConstruction,perfParser,perfPGSolver,empCheck,GPar_v,GPar_e,TTPG_vmax,TTPG_emax,q_flag):
     problem=["E-Nash","A-Nash","Membership","Non-Emptiness"]
-    print 'Parser Performance (milisecond)',perfParser
-    print 'GPar Construction Performance (milisecond)',perfConstruction
-    print 'PGSolver Performance (milisecond)',perfPGSolver
-    print problem[q_flag-1]+' performance (milisecond)',empCheck
-    print 'Total performance (milisecond)', perfParser+perfConstruction+perfPGSolver+empCheck
-    print 'GPar states', GPar_v
-    print 'GPar edges', GPar_e
-    print 'Max TTPG states', TTPG_vmax
-    print 'Max TTPG edges', TTPG_emax
+    print('Parser Performance (milisecond)',perfParser)
+    print('GPar Construction Performance (milisecond)',perfConstruction)
+    print('PGSolver Performance (milisecond)',perfPGSolver)
+    print(problem[q_flag-1]+' performance (milisecond)',empCheck)
+    print('Total performance (milisecond)', perfParser+perfConstruction+perfPGSolver+empCheck)
+    print('GPar states', GPar_v)
+    print('GPar edges', GPar_e)
+    print('Max TTPG states', TTPG_vmax)
+    print('Max TTPG edges', TTPG_emax)
     
 
 def printhelp():
-    print "usage: main.py [problem] [path/name of the file] [options]\n"
-    print "List of problems:"
-    print "a \t Solve A-Nash"
-    print "e \t Solve E-Nash"
-    print "n \t Solve Non-Emptiness"
-    print "\nList of optional arguments:"
-    print "-d \t Draw the structures"
-    print "-v \t verbose mode"
-    print "\n"
+    print("usage: main.py [problem] [path/name of the file] [options]\n")
+    print("List of problems:")
+    print("a \t Solve A-Nash")
+    print("e \t Solve E-Nash")
+    print("n \t Solve Non-Emptiness")
+    print("\nList of optional arguments:")
+    print("-d \t Draw the structures")
+    print("-v \t verbose mode")
+    print("\n")
     sys.exit()
 
 def main(argv):
@@ -72,7 +72,7 @@ def main(argv):
                 f.write("1")
             verbose = True
         else:
-            print "ERROR: Undefined option"
+            print("ERROR: Undefined option")
             printhelp()
             
             
@@ -97,9 +97,9 @@ def main(argv):
     
     if prob=="e":
         if pf==None:
-            print "No property formula input..."
+            print("No property formula input...")
         else:
-            print "Checking E-Nash property formula: "+replace_symbols(pf)
+            print("Checking E-Nash property formula: "+replace_symbols(pf))
         '''need to add two players playing matching pennies with goal: \lnot \phi or (matching pennies goal)'''
         '''we can directly modify list modules by adding two players, can we?'''
         '''but the kripke structure will obviously change, is it a problem?'''
@@ -114,19 +114,19 @@ def main(argv):
         '''add 2 MP players'''
     elif prob=="a":
         if pf==None:
-            print "No property formula input..."
+            print("No property formula input...")
         else:
-            print "Checking A-Nash property formula: "+replace_symbols(pf)
+            print("Checking A-Nash property formula: "+replace_symbols(pf))
 
         '''convert \phi to NBW'''
         NBW_prop = ltl2nbw('!'+propFormula[0], PFAlphabets[0])
         DPW_prop = nbw2dpw(NBW_prop, PFAlphabets[0])
         q_flag=2
     elif prob=="n":
-        print "Solving Non-Emptiness of "+file_name
+        print("Solving Non-Emptiness of "+file_name)
         q_flag=4
     else:
-        print "ERROR: Undefined problem"
+        print("ERROR: Undefined problem")
         printhelp()
 
     if cgsFlag:      
@@ -137,8 +137,8 @@ def main(argv):
         M=(Arena2Kripke(modules))
 
     updateLabM(M)
-    print "Kripke states", M.vcount()
-    print "Kripke edges", M.ecount()
+    print("Kripke states", M.vcount())
+    print("Kripke edges", M.ecount())
     # if draw_flag:
     #     drawM(M)
         
@@ -155,7 +155,7 @@ def main(argv):
             NBWs[list(m[1])[0]]['goal']=list(m[5])[0]
             goal = list(m[5])[0]
             goal = replace_symbols(goal)
-            print list(m[1])[0], goal
+            print(list(m[1])[0], goal)
     #        print list(m[1])[0]
             DPWs[list(m[1])[0]] = nbw2dpw(NBWs[list(m[1])[0]],list(m[6]))
     #        for v in DPWs[list(m[1])[0]].vs:
@@ -166,18 +166,18 @@ def main(argv):
         
         if not cgsFlag:
             if verbose:
-                print "\n Convert G_{LTL} to G_{PAR}...\n"
+                print("\n Convert G_{LTL} to G_{PAR}...\n")
             GPar = convertG(modules,DPWs,M)
 
         else:
             if verbose:
-                print "\n Convert G_{LTL} to G_{PAR}...\n"
+                print("\n Convert G_{LTL} to G_{PAR}...\n")
             GPar = convertG_cgs(modules,DPWs,M)
         GPar_v = GPar.vcount()
         GPar_e = GPar.ecount()
         perfConstruction = time.time()*1000 - start
     else:
-        print "ERROR: Undefined problem"
+        print("ERROR: Undefined problem")
         printhelp()
     
     
@@ -210,7 +210,7 @@ def main(argv):
         perfPGSolver,TTPG_vmax,TTPG_emax=nonemptiness(modules,GPar,draw_flag,cgsFlag)        
         empCheck = time.time()*1000 - start
     else:
-        print "Undefined Problem!"
+        print("Undefined Problem!")
         printhelp()
         return True
 

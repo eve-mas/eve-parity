@@ -26,7 +26,7 @@ def Arena2LTS(mdl):
     
     '''init state can only be 1'''
     if check_init != 1:
-        print "ERROR: Init state cannot be more than 1!!!"
+        print("ERROR: Init state cannot be more than 1!!!")
         sys.exit()
 
     for d in productInit(mdl):

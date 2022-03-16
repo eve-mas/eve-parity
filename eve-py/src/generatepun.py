@@ -37,7 +37,7 @@ def compute_pun(pl_name,PUN,TTPG):
     ttpg2gm(TTPG,pl_name)
     
     '''Call PGSolver subroutine to compute Pun_i'''
-    lines = sp.Popen(['../pgsolver-master/bin/pgsolver', '-global', 'recursive', '../temp/ttpg_%s' % pl_name], stdout=sp.PIPE, stderr=sp.PIPE)
+    lines = sp.Popen(['../pgsolver-master/bin/pgsolver', '-global', 'recursive', '../temp/ttpg_%s' % pl_name], stdout=sp.PIPE, stderr=sp.PIPE, encoding='utf8')
     out, err = lines.communicate()
 
     ttpg_results={}

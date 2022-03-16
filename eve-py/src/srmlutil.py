@@ -26,7 +26,7 @@ def jointEnabled(action):
 def getValuation(s):
     invert_dict={}
     for var in s:
-        for k, v in ast.literal_eval(var).iteritems():
+        for k, v in ast.literal_eval(var).items():
             invert_dict[v] = invert_dict.get(v, [])
             invert_dict[v].append(k)
 #    print (invert_dict.get(True))

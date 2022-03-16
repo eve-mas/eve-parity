@@ -109,6 +109,6 @@ def Arena2Kripke(mdl):
     
 def print_K(KripkeStruct):
     for v in KripkeStruct.vs:
-        print v
+        print(v)
     for e in KripkeStruct.es:
-        print e
+        print(e)

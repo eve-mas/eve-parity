@@ -8,9 +8,9 @@ def jointGoal(modules):
 #    jointGoal=[]
     for m in modules:
 #        jointGoal = jointGoal.append(list)
-        print "player "+str(m[1])+" goal is "+str(m[5])
+        print("player "+str(m[1])+" goal is "+str(m[5]))
         for l in list(m[5])[0].split(" "):
-            print l
+            print(l)
 
 def evalNBWedge(AP,word):
     for a in AP:
@@ -25,7 +25,7 @@ def evalNBWedge(AP,word):
 '''constructs the powerset of a set of alphabets'''
 def alpha2wordset(alphabets):
     wordset = set()
-    for n in xrange(len(alphabets)+1):
+    for n in range(len(alphabets)+1):
         for subset in itertools.combinations(alphabets,n):
             wordset.add(subset)
     return wordset
@@ -180,16 +180,16 @@ def addMPPlayers_rmg(file_name,pf):
 def printGParDetails(GPar):
     print ("\n######## Vertex List ########")
     for v in GPar.vs():
-        print v
+        print(v)
     print ("############################################################\n")
 
     print ("\n######## Edge List ########")
-    print GPar.get_edgelist()
+    print(GPar.get_edgelist())
     print ("############################################################\n")
 
     print ("\n######## Edge labels ########")
     for e in GPar.es():
-        print e
+        print(e)
     print ("############################################################\n")
 
     return True
@@ -201,7 +201,7 @@ def printSynthSigmaDetails(GPar):
         if v['val'] is None:
             v['val'] = []
 
-        print "state:", v['label'], "| val:", list(v['val'])
+        print("state:", v['label'], "| val:", list(v['val']))
         # try:
         #     print "state:", v['label'], "| val:", list(v['val'])
         # except TypeError:
@@ -211,7 +211,7 @@ def printSynthSigmaDetails(GPar):
     print ("############################################################\n")
 
     print ("\n######## Edge List ########")
-    print GPar.get_edgelist()
+    print(GPar.get_edgelist())
     print ("############################################################\n")
 
     # for e in GPar.es:
@@ -224,7 +224,7 @@ def printSynthSigmaDetails(GPar):
 
     print ("\n######## Transition Profile ########")
     for e in GPar.es():
-        print e.source, " --(", list(e['word']), ")--> ", e.target
+        print(e.source, " --(", list(e['word']), ")--> ", e.target)
     print ("############################################################\n")
 
     return True
@@ -253,7 +253,7 @@ def check_verbose_flag():
 
 def generate_set_W(modules):
     W = []
-    for n in xrange(len(modules)+1):
+    for n in range(len(modules)+1):
         for subset in itertools.combinations(list(range(0,len(modules))),n):
 #            print subse t
             #W.add(subset)
@@ -262,9 +262,9 @@ def generate_set_W(modules):
     
 def generate_set_modules(modules):
     W = []
-    for n in xrange(len(modules)+1):
+    for n in range(len(modules)+1):
         for subset in itertools.combinations((modules),n):
-            print subset
+            print(subset)
             #W.add(subset)
             W.append(subset)
     return W
@@ -296,7 +296,7 @@ def build_streett_prod(GPar_L,w,modules):
 #     print '#####w######',w,modules
     for pl in w:
         Alpha=[]
-        for i in xrange(max_colour):
+        for i in range(max_colour):
             j=2*i
             a={}
             if i==0:
@@ -351,7 +351,7 @@ def Streett_emptyness(GPar_L,s_Alpha,modules):
 #            print 'C',c
             del_flag=False
 #            for Alpha in s_Alpha:1
-            for i in xrange(max_colour):
+            for i in range(max_colour):
                 e_to_del=[]
                 v_to_del=[]
 #                for i,a in enumerate(Alpha):

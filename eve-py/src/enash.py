@@ -35,8 +35,8 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                 E, E_sigma = Streett_emptyness(DPW_product, e_Alpha, modules+[{1:set(['environment'])}])
 
                 if E.vcount() != 0:
-                    print '>>> YES, the property '+ replace_symbols(pf) +' is satisfied in some NE <<<'
-                    print 'Winning Coalition',(num2name(w,modules))
+                    print('>>> YES, the property '+ replace_symbols(pf) +' is satisfied in some NE <<<')
+                    print('Winning Coalition',(num2name(w,modules)))
                     NE_flag=True
                     if draw_flag:
                         '''draw & printout strategy progile \vec{sigma}'''
@@ -53,7 +53,7 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                         pass
                 except KeyError:
                     if check_verbose_flag():
-                        print "\n Sequentialising GPar for punishing <"+pl_name+">"
+                        print("\n Sequentialising GPar for punishing <"+pl_name+">")
                     if not cgsFlag:
                         startPGSolver = time.time()*1000
                         sequencer_rmg_single(pl,GPar,TTPG,modules)
@@ -75,7 +75,7 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
 #                print pl_name,PUN
                 if pl_name not in PUN:
                     if check_verbose_flag():
-                        print "\n Computing punishing region for <"+pl_name+">"
+                        print("\n Computing punishing region for <"+pl_name+">")
                     PUN=compute_pun(pl_name,PUN,TTPG)
 #                print 'pl_name',pl_name
                 PUN_L = PUN_L.intersection(set(PUN[pl_name]))
@@ -100,8 +100,8 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                     E, E_sigma = Streett_emptyness(DPW_product, e_Alpha, modules + [{1: set(['environment'])}])
 
                     if E.vcount() != 0:
-                        print '>>> YES, the property ' + replace_symbols(pf) + ' is satisfied in some NE <<<'
-                        print 'Winning Coalition', (num2name(w, modules))
+                        print('>>> YES, the property ' + replace_symbols(pf) + ' is satisfied in some NE <<<')
+                        print('Winning Coalition', (num2name(w, modules)))
                         NE_flag = True
                         if draw_flag:
                             '''draw & printout strategy progile \vec{sigma}'''
@@ -110,6 +110,6 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                         break
 
     if not NE_flag:
-        print '>>> NO, the property '+ replace_symbols(pf) +' is not satisfied in any NE <<<'
+        print('>>> NO, the property '+ replace_symbols(pf) +' is not satisfied in any NE <<<')
     return perfPGSolver,TTPG_vmax,TTPG_emax
 

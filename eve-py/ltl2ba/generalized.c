@@ -42,9 +42,10 @@ extern int tl_verbose, tl_stats, tl_simp_diff, tl_simp_fly, tl_fjtofj,
 extern char **sym_table;
 
 GState *gstack, *gremoved, *gstates, **init;
-GScc *scc_stack;
+static GScc *scc_stack;
 int init_size = 0, gstate_id = 1, gstate_count = 0, gtrans_count = 0;
-int *fin, *final, rank, scc_id, scc_size, *bad_scc;
+int *fin, *final, scc_id, scc_size, *bad_scc;
+static int rank;
 
 void print_generalized();
 

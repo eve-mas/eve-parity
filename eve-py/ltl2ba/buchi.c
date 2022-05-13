@@ -44,8 +44,9 @@ extern int gstate_id;
 
 extern FILE *tl_out;	
 BState *bstack, *bstates, *bremoved;
-BScc *scc_stack;
-int accept, bstate_count = 0, btrans_count = 0, rank;
+static BScc *scc_stack;
+int accept, bstate_count = 0, btrans_count = 0;
+static int rank;
 
 /********************************************************************\
 |*        Simplification of the generalized Buchi automaton         *|

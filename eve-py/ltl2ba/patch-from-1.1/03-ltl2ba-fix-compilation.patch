@@ -1,0 +1,30 @@
+Fix compilation issues.
+--- a/buchi.c
++++ b/buchi.c
+@@ -44,8 +44,9 @@
+ 
+ extern FILE *tl_out;	
+ BState *bstack, *bstates, *bremoved;
+-BScc *scc_stack;
+-int accept, bstate_count = 0, btrans_count = 0, rank;
++static BScc *scc_stack;
++int accept, bstate_count = 0, btrans_count = 0;
++static int rank;
+ 
+ /********************************************************************\
+ |*        Simplification of the generalized Buchi automaton         *|
+--- a/generalized.c
++++ b/generalized.c
+@@ -42,9 +42,10 @@
+ extern char **sym_table;
+ 
+ GState *gstack, *gremoved, *gstates, **init;
+-GScc *scc_stack;
++static GScc *scc_stack;
+ int init_size = 0, gstate_id = 1, gstate_count = 0, gtrans_count = 0;
+-int *fin, *final, rank, scc_id, scc_size, *bad_scc;
++int *fin, *final, scc_id, scc_size, *bad_scc;
++static int rank;
+ 
+ void print_generalized();
+

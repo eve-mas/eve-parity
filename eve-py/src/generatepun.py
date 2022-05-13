@@ -56,7 +56,7 @@ def compute_pun(pl_name,PUN,TTPG):
 
 
     try:
-        PUN[pl_name]=map(int,ttpg_results[0].strip()[1:-1].replace(' ','').split(','))
+        PUN[pl_name]=list(map(int,ttpg_results[0].strip()[1:-1].replace(' ','').split(',')))
     except ValueError:
         PUN[pl_name]=[]
     return PUN

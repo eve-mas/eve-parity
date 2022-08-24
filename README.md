@@ -62,7 +62,7 @@ __EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image run
 ### How to use
 - usage:
 From  inside folder **eve-py/src** execute the following command:
-` $ main.py [problem] [path/name of the file] [options]`
+` $ python main.py [problem] [path/name of the file] [options]`
 
 - List of problems:
    

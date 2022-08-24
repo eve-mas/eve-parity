@@ -80,7 +80,7 @@ From  inside folder **eve-py/src** execute the following command:
 
 - Example:
 
-   `$ main.py a ../examples/a-nash_1 -d` solves the A-Nash problem and draws the structures
+   `$ python main.py a ../examples/a-nash_1 -d` solves the A-Nash problem and draws the structures
    
 ### Running experiments
 1. Go to folder **eve-py/src/experiments**, there are 8 scripts (you may need to run **chmod +x <script_filename.sh>** to run these scripts):

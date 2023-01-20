@@ -3,6 +3,8 @@ Equilibrium Verification Environment
 
 __EVE__ (Equilibrium Verification Environment) is a formal verification tool for the automated analysis of temporal equilibrium properties of concurrent and multi-agent systems represented as multi-player games. Systems are modelled using the Simple Reactive Module Language (SRML) as a collection of independent system components (players/agents in a game), which are assumed to have goals expressed using Linear Temporal Logic (LTL) formulae. In particular, __EVE__ checks for the existence of Nash equilibria in such systems and can be used to do rational synthesis and verification automatically.
 
+We are always interested in improving EVE (e.g., faster techniques, new use cases, etc.), please do [contact us](mailto:m.najib@hw.ac.uk) for a potential collaboration.
+
 ## EVE ONLINE
 __EVE__ can be used via webservice from http://eve.cs.ox.ac.uk/eve
 

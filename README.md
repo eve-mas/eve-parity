@@ -26,8 +26,8 @@ __EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image run
 1. python 3.x
 2. OPAM  (https://opam.ocaml.org/doc/Install.html) + OCaml version 4.03.x or later (https://ocaml.org/docs/install.html).
    To initialise OPAM (along with OCaml):
-		+ `echo "y" | opam init`
-		+ ``eval `opam config env` ``
+   	- `echo "y" | opam init`
+	- ``eval `opam config env` ``
 		
 3. Cairo (https://cairographics.org/download/) or from sourcecode (https://cairographics.org/releases/). To install Cairo:
 	- Fedora

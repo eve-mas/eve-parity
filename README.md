@@ -19,6 +19,9 @@ __EVE__ has been tested on the following platforms:
 
 __EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image running Lubuntu (lightweight Linux based on Ubuntu). This image (1.5 GB) can be downloaded from https://goo.gl/ikdSnw and can be directly run on VirtualBox (https://www.virtualbox.org/).
 
+### Windows Users
+You can run EVE via WSL Ubuntu (https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-10#1-overview)
+
 ***
 ## INSTALLATION
 
@@ -27,23 +30,9 @@ __EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image run
 2. OPAM  (https://opam.ocaml.org/doc/Install.html) + OCaml version 4.03.x or later (https://ocaml.org/docs/install.html).
    To initialise OPAM (along with OCaml):
    	- `echo "y" | opam init`
-	- ``eval `opam config env` ``
-		
-3. Cairo (https://cairographics.org/download/) or from sourcecode (https://cairographics.org/releases/). To install Cairo:
-	- Fedora
-		+ `sudo yum install cairo-devel`
-		+ `sudo yum install pycairo`
-	- Ubuntu
-		+ `sudo apt-get install libcairo2-dev`
-		+ `sudo apt-get install python-cairo`
-		
-4. IGraph version 0.7 (http://igraph.org/python/)
-	- You need to have a C/C++ compiler installed on your machine.
-	To install 
-	- Fedora
-		+ `sudo yum install python-igraph`
-	- Ubuntu
-		+ `sudo apt-get install python-igraph`
+	- ``eval `opam config env` ``		
+3. Cairo (https://cairographics.org/download/), Pycairo (https://pycairo.readthedocs.io/en/latest/index.html) or from sourcecode (https://cairographics.org/releases/). To install Cairo:
+4. IGraph version 0.7 or later (http://igraph.org/python/)
 
 ### Configurations
 1. Make sure you have all of the prerequisites

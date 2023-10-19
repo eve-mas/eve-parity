@@ -25,16 +25,7 @@ __EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image run
 ### Prerequisites
 1. python 3.x
 2. OPAM  (https://opam.ocaml.org/doc/Install.html) + OCaml version 4.03.x or later (https://ocaml.org/docs/install.html).
-   To install OPAM (along with OCaml):
-	- Fedora
-		-  `sudo yum install patch`
-		-  `sudo yum install m4`
-		- `sudo wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin`
-		- `echo "y" | opam init`
-		- ``eval `opam config env` `` 
-	- Ubuntu
-		+ `sudo apt-get install m4`
-		+ `sudo wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin`
+   To initialise OPAM (along with OCaml):
 		+ `echo "y" | opam init`
 		+ ``eval `opam config env` ``
 		

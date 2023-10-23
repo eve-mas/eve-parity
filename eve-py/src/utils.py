@@ -3,6 +3,9 @@
 import itertools
 import copy
 from igraph import *
+import networkx as nx
+import networkx.algorithms.approximation as nx_app
+import matplotlib.pyplot as plt
 
 def jointGoal(modules):
 #    jointGoal=[]
@@ -224,7 +227,7 @@ def printSynthSigmaDetails(GPar):
 
     print ("\n######## Transition Profile ########")
     for e in GPar.es():
-        print(e.source, " --(", list(e['word']), ")--> ", e.target)
+        print(GPar.vs[e.source]['label'], " --(", list(e['word']), ")--> ", GPar.vs[e.target]['label'])
     print ("############################################################\n")
 
     return True
@@ -293,7 +296,7 @@ def build_streett_prod(GPar_L,w,modules):
     s_Alpha=[]
     max_colour = get_max_colour(GPar_L)
 #    print 'MAX',max_colour
-#     print '#####w######',w,modules
+#     print('#####w######',w,modules)
     for pl in w:
         Alpha=[]
         for i in range(max_colour):
@@ -315,7 +318,7 @@ def build_streett_prod(GPar_L,w,modules):
             a['E'+str(i)]=set(a['E'+str(i)])
             Alpha.append(a)
         s_Alpha.append(Alpha)
-    # print '>>>> s_ALPHA',s_Alpha
+    # print('>>>> s_ALPHA',s_Alpha)
     return s_Alpha
     
     
@@ -485,3 +488,168 @@ def replace_symbols(string):
     for i, j in enumerate(old):  ## replace symbols into 'normal' ones
         string = string.replace(j, new[i])
     return string
+
+def synth_lasso(g, s_Alpha, graph_product_for_rgmFlag):
+
+    '''rectifying vertex label'''
+    if not graph_product_for_rgmFlag:
+        for v in g.vs:
+            v['label'] = v['name']
+
+
+    '''check for each SCC in the witness graph/automaton'''
+    for i in g.clusters():
+
+        if not graph_product_for_rgmFlag:
+            # print("EE", idxlist2namelist(g,i))
+            subcyc(idxlist2namelist(g,i), s_Alpha, g, graph_product_for_rgmFlag)
+        else:
+            subcyc(i, s_Alpha, g, graph_product_for_rgmFlag)
+
+'''this method checks for a good subset of a given SCC'''
+def subcyc(scc,s_Alpha,g,graphprodFlag):
+    '''iterate through each subset, starting from the smallest, producing (probably) the smallest lasso'''
+    for n in range(1,len(scc) + 1):
+        for subset in itertools.combinations((scc), n):
+
+            if not graphprodFlag:
+                subset = g.vs.select(name_in=subset)
+
+            subg = g.subgraph(subset)
+
+            '''if the subset is strong connected, then check it whether it is good wrt the Streett condition'''
+            if g.subgraph(subset).is_connected() and len(subg.get_edgelist())>0:
+                if check_good(subset,s_Alpha,g,graphprodFlag):
+                    return True
+
+def check_good(component,s_Alpha,g,graphprodFlag):
+    max_col = get_max_colour(g)
+
+    '''for each index of the Streett condition, check if it is good/satisfying'''
+    for i in range(max_col):
+        for a in s_Alpha:
+            # print(a[i])
+            c_cap_E = a[i]['E' + str(i)].intersection(set(component))
+            c_cap_C = a[i]['C' + str(i)].intersection(set(component))
+
+            '''if bad/unsatisfying then return false'''
+            if c_cap_E and not c_cap_C:
+                return False
+
+    '''if the subset/component is strongly connected, then build the subgraph from it'''
+    if g.subgraph(component).is_connected() and len(g.subgraph(component).get_edgelist())>0:
+        build_subgraph(component,g,graphprodFlag)
+        return True
+    else:
+        return False
+
+def build_subgraph(component,g,graphprodFlag):
+    # print(component)
+    vertex_set = set(component)
+    # print(vertex_set)
+    subg = g.subgraph(vertex_set)
+    # plot(subg, target="subg.png")
+    # build_cycle(subg,vertex_set)
+
+    '''find a cycle within the subgraph'''
+    cycle = subgraph_traversal(subg,vertex_set)
+    # print("CYCLE:", cycle)
+
+    '''build the path of the cycle in the subgraph'''
+    cycle_path, cycle_edges = get_cycle_path(cycle,subg,g)
+
+    print("CYCLE PATH:", cycle_path)
+
+    # for v in cycle_path:
+    #     print(g.vs.select(label_eq=v)[0])
+
+
+    '''if the initial state is not part of the cycle, then we need to find the shortest prefix'''
+    if 0 not in component:
+        prefix, pref_edges = find_prefix(g,cycle)
+        # print("LASSO:", prefix, cycle_path)
+        lasso = prefix[:-1] + cycle_path
+    else:
+        pref_edges = []
+        lasso = cycle_path
+
+    print("LASSO:", lasso)
+
+    '''the edges of the lasso path are composed from the cycle and the prefix edges'''
+    included_edges = cycle_edges + pref_edges
+
+    '''build a subgraph that includes only those edges inlcuded in the lasso'''
+    lasso_graph_edges = g.subgraph_edges(included_edges, delete_vertices=False)
+    # plot(lasso_graph_edges, target="edges.png")
+
+    if not graphprodFlag:
+        lasso = g.vs.select(name_in=lasso)
+
+    '''delete vertices that are not in the lasso'''
+    lasso_graph = lasso_graph_edges.subgraph(lasso)
+
+    '''plot the lasso'''
+    plot(lasso_graph, target="lasso.png")
+
+
+def get_cycle_path(cycle,subg,g):
+    path = [cycle[0]]
+    edges = []
+
+    '''iterate through each pair of connected vertices, and get the edges connecting them'''
+    for i in range(len(cycle)):
+
+        '''if the pair of vertices are adjacent/neighbours, then only need 1 edge'''
+        if subg.are_connected(subg.vs.select(name_eq=cycle[i])[0],subg.vs.select(name_eq=cycle[(i+1)%len(cycle)])[0]):
+            path.append(cycle[(i+1)%len(cycle)])
+            edges.append(g.get_eid(g.vs.select(name_eq=cycle[i])[0],g.vs.select(name_eq=cycle[(i+1)%len(cycle)])[0], directed=True))
+        else:
+            '''else, they are not adjacent/neighbours, then get the set of edges connecting them'''
+            spath = subg.get_shortest_paths(subg.vs.select(name_eq=cycle[i])[0],to=subg.vs.select(name_eq=cycle[(i+1)%len(cycle)])[0], mode=OUT, output='vpath')[0]
+
+            # Convert indices to names
+            path_names = [subg.vs[i]["name"] for i in spath]
+
+            path.extend(path_names[1:])
+
+            for i in range(len(path_names)-1):
+                edges.append(g.get_eid(g.vs.select(name_eq=path_names[i])[0],g.vs.select(name_eq=path_names[(i+1)%len(path_names)])[0], directed=True))
+
+    return path, edges
+
+
+'''this method traverses the given vertex set using DFS to find the cycle path'''
+def subgraph_traversal(subg,vertex_set):
+    result = subg.dfs(0)
+    cycle = []
+
+    for v in result[0]:
+        cycle.append(subg.vs[v]['name'])
+
+    return cycle
+
+'''this method find the shortest prefix connecting the initial state with the cycle in the lasso'''
+def find_prefix(g,cycle):
+    paths = {}
+    edges = []
+
+    for v in cycle:
+        v = g.vs.select(name_eq=v)[0].index
+        paths[v] = g.get_shortest_paths(0,to=v, mode=OUT, output='vpath')
+
+    # get the shortest path
+    shortest_prefix = min(paths, key=lambda x: len(paths[x]))
+
+    prefix = paths[shortest_prefix][0]
+
+    prefix = [g.vs[v]['label'] for v in prefix]
+
+    print("PREFIX:", prefix)
+
+    #get the edges
+    for i in range(len(prefix)-1):
+        edges.append(g.get_eid(g.vs.select(name_eq=prefix[i])[0],
+                               g.vs.select(name_eq=prefix[(i + 1) % len(prefix)])[0], directed=True))
+
+
+    return prefix, edges

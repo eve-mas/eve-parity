@@ -27,6 +27,7 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
             '''trivial cases all win/lose'''
             s_Alpha = build_streett_prod(GPar,w,modules)
             L,L_sigma = Streett_emptyness(GPar,s_Alpha,modules)
+
             '''if not empty'''
             if L.vcount()!=0:
                 print('>>> YES, there exists NE <<<')
@@ -36,6 +37,8 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                     '''draw & printout strategy progile \vec{sigma}'''
                     drawGPar(L_sigma)
                     printSynthSigmaDetails(L_sigma)
+                    '''this method synthesise the lasso corresponding to a strategy profile in NE'''
+                    synth_lasso(L_sigma, s_Alpha, True)
                 break
         else:
             l = get_l(list(w),modules)
@@ -91,7 +94,11 @@ def nonemptiness(modules,GPar,draw_flag,cgsFlag):
                         '''draw & printout strategy progile \vec{sigma}'''
                         drawGPar(L_sigma)
                         printSynthSigmaDetails(L_sigma)
+
+                        '''this method synthesise the lasso corresponding to a strategy profile in NE'''
+                        synth_lasso(L_sigma, s_Alpha, True)
                     NE_flag=True
+
                     break
                 
     if not NE_flag:

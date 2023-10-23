@@ -860,7 +860,7 @@ def drawGPar(GPar):
 #        v['color']=(int(v.index)*r,int(v.index)*r,int(v.index)*r)
         e['color']=GPar.vs[e.source]['color']
     GPar.vs['label']=[v['name'] for v in GPar.vs]
-    GPar.vs['label'] = [v.index for v in GPar.vs]
+    # GPar.vs['label'] = [v.index for v in GPar.vs]
 #    GPar.vs[0]['label']='S0'
     visual_style = {}
     visual_style['layout']=layout
@@ -873,7 +873,7 @@ def drawGPar(GPar):
     visual_style['vertex_size']=300/(GPar.vcount()+1)
 #    visual_style['edge_width']=2
 #    colour_dict = {0:"green"}
-    out = plot(GPar, **visual_style)
+    out = plot(GPar, target='str.png', **visual_style)
     # out.save('../../../outputs/synth_sigma.png')
 
 def update_labs(GPar):

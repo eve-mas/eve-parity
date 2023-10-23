@@ -119,7 +119,7 @@ def main(argv):
             print("Checking A-Nash property formula: "+replace_symbols(pf))
 
         '''convert \phi to NBW'''
-        NBW_prop = ltl2nbw('!'+propFormula[0], PFAlphabets[0])
+        NBW_prop = ltl2nbw('!('+propFormula[0]+')', PFAlphabets[0])
         DPW_prop = nbw2dpw(NBW_prop, PFAlphabets[0])
         q_flag=2
     elif prob=="n":

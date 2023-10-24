@@ -489,6 +489,13 @@ def replace_symbols(string):
         string = string.replace(j, new[i])
     return string
 
+
+'''This method synthesises a lasso witness. However, the lasso does not include punishment actions when applicable. 
+Thus, in some lassos, there may seem to be a beneficial deviation by player i. 
+However, such a deviation may be spurious because there exist punishment actions by the coalition -i 
+that prevent the goal of i from being satisfied. Can we also extract these punishment actions? 
+This is TODO...
+'''
 def synth_lasso(g, s_Alpha, graph_product_for_rgmFlag):
 
     '''rectifying vertex label'''
@@ -499,21 +506,25 @@ def synth_lasso(g, s_Alpha, graph_product_for_rgmFlag):
 
     '''check for each SCC in the witness graph/automaton'''
     for i in g.clusters():
-
-        if not graph_product_for_rgmFlag:
-            # print("EE", idxlist2namelist(g,i))
-            subcyc(idxlist2namelist(g,i), s_Alpha, g, graph_product_for_rgmFlag)
-        else:
-            subcyc(i, s_Alpha, g, graph_product_for_rgmFlag)
+        if subcyc(idxlist2namelist(g, i), s_Alpha, g, graph_product_for_rgmFlag):
+            break
+        # if not graph_product_for_rgmFlag:
+        #     # print("EE", idxlist2namelist(g,i))
+        #     if subcyc(idxlist2namelist(g,i), s_Alpha, g, graph_product_for_rgmFlag):
+        #         break
+        # else:
+        #     # subcyc(i, s_Alpha, g, graph_product_for_rgmFlag)
+        #     if subcyc(idxlist2namelist(g, i), s_Alpha, g, graph_product_for_rgmFlag):
+        #         break
 
 '''this method checks for a good subset of a given SCC'''
 def subcyc(scc,s_Alpha,g,graphprodFlag):
     '''iterate through each subset, starting from the smallest, producing (probably) the smallest lasso'''
     for n in range(1,len(scc) + 1):
         for subset in itertools.combinations((scc), n):
-
-            if not graphprodFlag:
-                subset = g.vs.select(name_in=subset)
+            # print('SUBSET:', subset)
+            # if not graphprodFlag:
+            subset = g.vs.select(name_in=subset)
 
             subg = g.subgraph(subset)
 
@@ -525,15 +536,19 @@ def subcyc(scc,s_Alpha,g,graphprodFlag):
 def check_good(component,s_Alpha,g,graphprodFlag):
     max_col = get_max_colour(g)
 
+    # print("MAX COL", max_col)
+
     '''for each index of the Streett condition, check if it is good/satisfying'''
     for i in range(max_col):
         for a in s_Alpha:
+            # print("COMP:", component)
             # print(a[i])
             c_cap_E = a[i]['E' + str(i)].intersection(set(component))
             c_cap_C = a[i]['C' + str(i)].intersection(set(component))
 
             '''if bad/unsatisfying then return false'''
             if c_cap_E and not c_cap_C:
+                # print("BAD")
                 return False
 
     '''if the subset/component is strongly connected, then build the subgraph from it'''
@@ -580,10 +595,10 @@ def build_subgraph(component,g,graphprodFlag):
 
     '''build a subgraph that includes only those edges inlcuded in the lasso'''
     lasso_graph_edges = g.subgraph_edges(included_edges, delete_vertices=False)
-    # plot(lasso_graph_edges, target="edges.png")
+    plot(lasso_graph_edges, target="edges.png")
 
-    if not graphprodFlag:
-        lasso = g.vs.select(name_in=lasso)
+    # if not graphprodFlag:
+    lasso = g.vs.select(name_in=lasso)
 
     '''delete vertices that are not in the lasso'''
     lasso_graph = lasso_graph_edges.subgraph(lasso)

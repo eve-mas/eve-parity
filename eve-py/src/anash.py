@@ -115,7 +115,7 @@ def anash(modules, GPar, draw_flag, cgsFlag, pf, DPW_prop, alphabets):
 
                         '''the winning coalition depends on the property checked, need to check \phi against players' goals'''
                         # print('Winning Coalition',(num2name(w,modules)))
-                        
+
                         NE_flag = True
                         if draw_flag:
                             '''draw & printout strategy progile \vec{sigma}'''

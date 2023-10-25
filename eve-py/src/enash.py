@@ -31,17 +31,28 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
             '''if not empty'''
             if L.vcount()!= 0:
                 DPW_product = graph_product(GPar, DPW_prop, alphabets,cgsFlag)
+
+                '''this flag is for E/A-Nash RMG to correct vertex labels after calling graph_product method above'''
+                graph_prod_for_rmgFlag = cgsFlag
+
                 e_Alpha = build_streett_prod(DPW_product, w+(len(modules),), modules+[{1:set(['environment'])}])
                 E, E_sigma = Streett_emptyness(DPW_product, e_Alpha, modules+[{1:set(['environment'])}])
 
                 if E.vcount() != 0:
                     print('>>> YES, the property '+ replace_symbols(pf) +' is satisfied in some NE <<<')
-                    print('Winning Coalition',(num2name(w,modules)))
+
+                    '''the winning coalition depends on the property checked, need to check \phi against players' goals'''
+                    # print('Winning Coalition',(num2name(w,modules)))
+
                     NE_flag=True
                     if draw_flag:
                         '''draw & printout strategy progile \vec{sigma}'''
                         drawGPar(E_sigma)
                         printSynthSigmaDetails(E_sigma)
+
+                        '''the method below is for synthesising a lasso run corresponding to the strategy profile'''
+                        synth_lasso(E_sigma, e_Alpha,graph_prod_for_rmgFlag)
+
                     break
         else:
             l = get_l(list(w),modules)
@@ -96,17 +107,29 @@ def enash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,alphabets):
                 '''if not empty'''
                 if L.vcount() != 0:
                     DPW_product = graph_product(L_sigma, DPW_prop, alphabets, cgsFlag)
+
+                    '''this flag is for E/A-Nash RMG to correct vertex labels after calling graph_product method above'''
+                    graph_prod_for_rmgFlag = cgsFlag
+
                     e_Alpha = build_streett_prod(DPW_product, w + (len(modules),), modules + [{1: set(['environment'])}])
                     E, E_sigma = Streett_emptyness(DPW_product, e_Alpha, modules + [{1: set(['environment'])}])
 
                     if E.vcount() != 0:
                         print('>>> YES, the property ' + replace_symbols(pf) + ' is satisfied in some NE <<<')
-                        print('Winning Coalition', (num2name(w, modules)))
+
+                        '''the winning coalition depends on the property checked, need to check \phi against players' goals'''
+                        # print('Winning Coalition',(num2name(w,modules)))
+
+
                         NE_flag = True
                         if draw_flag:
                             '''draw & printout strategy progile \vec{sigma}'''
                             drawGPar(E_sigma)
                             printSynthSigmaDetails(E_sigma)
+
+                            '''the method below is for synthesising a lasso run corresponding to the strategy profile'''
+                            synth_lasso(E_sigma, e_Alpha,graph_prod_for_rmgFlag)
+
                         break
 
     if not NE_flag:

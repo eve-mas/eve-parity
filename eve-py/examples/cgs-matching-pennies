@@ -32,4 +32,4 @@
    :: !(ca <-> cb) ~> p' := false, s0' := false, s1' := true;
 
   property
-  :: true;
+  :: G p;

@@ -70,5 +70,6 @@ update
 :: s4 and !(( v1 and v2 and v3 and v4) or ( v1 and v2 and v3 and v5) or ( v1 and v2 and v3 and v6) or ( v1 and v2 and v4 and v5) or ( v1 and v2 and v4 and v6) or ( v1 and v2 and v5 and v6) or ( v1 and v3 and v4 and v5) or ( v1 and v3 and v4 and v6) or ( v1 and v3 and v5 and v6) or ( v1 and v4 and v5 and v6) or ( v2 and v3 and v4 and v5) or ( v2 and v3 and v4 and v6) or ( v2 and v3 and v5 and v6) or ( v2 and v4 and v5 and v6) or ( v3 and v4 and v5 and v6)) ~> s1':=false,s2':=false,s3':=false,s4':=false,s5':=true,s6':=false,s0':=false;
 :: s5 and !(( v1 and v2 and v3 and v4) or ( v1 and v2 and v3 and v5) or ( v1 and v2 and v3 and v6) or ( v1 and v2 and v4 and v5) or ( v1 and v2 and v4 and v6) or ( v1 and v2 and v5 and v6) or ( v1 and v3 and v4 and v5) or ( v1 and v3 and v4 and v6) or ( v1 and v3 and v5 and v6) or ( v1 and v4 and v5 and v6) or ( v2 and v3 and v4 and v5) or ( v2 and v3 and v4 and v6) or ( v2 and v3 and v5 and v6) or ( v2 and v4 and v5 and v6) or ( v3 and v4 and v5 and v6)) ~> s1':=false,s2':=false,s3':=false,s4':=false,s5':=false,s6':=true,s0':=false;
 :: s6~> s1':=false,s2':=false,s3':=false,s4':=false,s5':=false,s6':=false,s0':=true;
+
 property
 :: G F (s0);

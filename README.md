@@ -31,7 +31,7 @@ Before installing EVE, make sure you have the following prerequisites installed:
 1. python 3.x
 2. OPAM  (https://opam.ocaml.org/doc/Install.html) + OCaml version 4.03.0 >= and <= 4.07.0 (https://ocaml.org/docs/install.html). To see OCaml version `ocaml --version`.
    You may need to donwgrade your OCaml:
-   	- Run `opam switch list`
+   	- Run `opam switch list`, and switch to an available version between 4.03.0 >= and <= 4.07.0.
    	- If there is no OCaml version between 4.03.0 >= and <= 4.07.0, run `opam switch create 4.07.0`
    	  
    To initialise OPAM (along with OCaml):

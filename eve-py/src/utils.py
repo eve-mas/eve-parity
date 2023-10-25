@@ -3,9 +3,6 @@
 import itertools
 import copy
 from igraph import *
-import networkx as nx
-import networkx.algorithms.approximation as nx_app
-import matplotlib.pyplot as plt
 
 def jointGoal(modules):
 #    jointGoal=[]

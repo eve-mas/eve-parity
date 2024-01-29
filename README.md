@@ -6,7 +6,7 @@ __EVE__ (Equilibrium Verification Environment) is a formal verification tool for
 We are always interested in improving EVE (e.g., faster techniques, new use cases, etc.). Please feel free to [contact us](mailto:m.najib@hw.ac.uk) for potential collaborations.
 
 ## EVE ONLINE
-__EVE__ can be used via webservice from http://eve.cs.ox.ac.uk/eve
+__EVE__ can be used via webservice from https://eve.cs.ox.ac.uk/eve
 
 ## PUBLICATION
 - J. Gutierrez, M. Najib, G. Perelli, and M. Wooldridge. [__Automated Temporal Equilibrium Analysis: Verification and Synthesis of Multi-Player Games__](https://doi.org/10.1016/j.artint.2020.103353). In *Artificial Intelligence*, 2020. [PDF](aij20.pdf)

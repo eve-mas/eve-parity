@@ -15,7 +15,7 @@ __EVE__ can be used via webservice from https://eve.cs.ox.ac.uk/eve
 ***
 
 ## 
-__EVE__ works on the following platforms:
+__EVE__ runs on Linux/UNIX platforms, e.g.,:
 1. Fedora
 2. Ubuntu
 3. macOS
@@ -39,9 +39,9 @@ Before installing EVE, make sure you have the following prerequisites installed:
 
 ### Configuration Steps
 1. Ensure all prerequisites are installed.
-2. Go inside eve-py folder
-3. Run shell script **./config.sh** (you may need to run **chmod +x config.sh**)
-   Make sure OCaml is version 4.03.0 >= before running config.sh
+2. Navigate to the `eve-py` folder
+3. Run the executable script **./config.sh** (you may need to run **chmod +x config.sh** first)  
+   Make sure OCaml is version 4.03.0 or later before running config.sh
    
 ***   
 

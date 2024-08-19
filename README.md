@@ -15,9 +15,10 @@ __EVE__ can be used via webservice from https://eve.cs.ox.ac.uk/eve
 ***
 
 ## 
-__EVE__ has been tested on the following platforms:
+__EVE__ works on the following platforms:
 1. Fedora
 2. Ubuntu
+3. macOS
 
 __EVE__ is also available preinstalled in Open Virtual Appliance (OVA) image running Lubuntu (lightweight Linux based on Ubuntu). This image (1.5 GB) can be downloaded from https://goo.gl/ikdSnw and can be directly run on VirtualBox (https://www.virtualbox.org/).
 
@@ -29,11 +30,7 @@ Windows users can run EVE via WSL Ubuntu (https://ubuntu.com/tutorials/install-u
 ### Prerequisites
 Before installing EVE, make sure you have the following prerequisites installed:
 1. python 3.x
-2. OPAM  (https://opam.ocaml.org/doc/Install.html) + OCaml version 4.03.0 >= and <= 4.07.0 (https://ocaml.org/docs/install.html). To see OCaml version `ocaml --version`.
-   You may need to donwgrade your OCaml:
-   	- Run `opam switch list`, and switch to an available version between 4.03.0 >= and <= 4.07.0.
-   	- If there is no OCaml version between 4.03.0 >= and <= 4.07.0, run `opam switch create 4.07.0`
-   	  
+2. OPAM  (https://opam.ocaml.org/doc/Install.html) + OCaml version 4.03.0 >= (https://ocaml.org/docs/install.html). To see OCaml version `ocaml --version`.
    To initialise OPAM (along with OCaml):
    	- `echo "y" | opam init`
 	- ``eval `opam config env` ``		
@@ -44,7 +41,7 @@ Before installing EVE, make sure you have the following prerequisites installed:
 1. Ensure all prerequisites are installed.
 2. Go inside eve-py folder
 3. Run shell script **./config.sh** (you may need to run **chmod +x config.sh**)
-   Make sure OCaml is version 4.03.0 >= and <= 4.07.0 before running config.sh
+   Make sure OCaml is version 4.03.0 >= before running config.sh
    
 ***   
 

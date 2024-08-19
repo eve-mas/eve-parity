@@ -28,7 +28,7 @@
 #       FRANCE                                                               
 
 CC=gcc
-CFLAGS= -O3 -ansi -DNXT
+CFLAGS= -O3 -ansi -DNXT -Wno-error=implicit-function-declaration
 
 LTL2BA=	parse.o lex.o main.o trans.o buchi.o set.o \
 	mem.o rewrt.o cache.o alternating.o generalized.o

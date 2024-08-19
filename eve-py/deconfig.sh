@@ -8,6 +8,6 @@ if [ -d "temp" ]; then
 	rm -rf temp
 fi
 
-if [ -d "pgsolver-master" ]; then
-	rm -rf pgsolver-master
+if [ -d "pgsolver" ]; then
+	rm -rf pgsolver
 fi

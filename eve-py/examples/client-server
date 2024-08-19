@@ -1,0 +1,43 @@
+-- The Dispatch Centre example from Gutierrez, J., Harrenstein, P., & Wooldridge, M. (2017). Reasoning about equilibria in game-like concurrent systems. Annals of Pure and Applied Logic, 168(2), 373-403.
+
+
+  module p1 controls a1
+   init
+   :: true ~> a1' := true;
+   :: true ~> a1' := false;
+   update
+   :: true ~> a1' := true;
+   :: true ~> a1' := false;
+   goal
+   :: G F (s1 or s3);
+ 
+  module p2 controls a2
+   init
+   :: true ~> a2' := true;
+   :: true ~> a2' := false;
+   update
+   :: true ~> a2' := true;
+   :: true ~> a2' := false;
+   goal
+   :: G F (s2 or s4);
+
+  module environment controls s0,s1,s2,s3,s4
+   init
+   :: true ~> s0' := true, s1' := false, s2' := false, s3' := false, s4' := false;
+   update
+   :: s0 and (a1 <-> a2) ~> s0' := true, s1' := false, s2' := false, s3' := false, s4' := false;
+   :: s0 and (a1 and !a2) ~> s0' := false, s1' := true, s2' := false, s3' := false, s4' := false;
+   :: s0 and (!a1 and a2) ~> s0' := false, s1' := false, s2' := true, s3' := false, s4' := false;
+   :: s1 and (a1 <-> a2) ~> s0' := true, s1' := false, s2' := false, s3' := false, s4' := false;
+   :: s2 and (a1 <-> a2) ~> s0' := true, s1' := false, s2' := false, s3' := false, s4' := false;
+   :: s1 and (!a1 and a2) ~> s0' := false, s1' := false, s2' := true, s3' := false, s4' := false;
+   :: s2 and (a1 and !a2) ~> s0' := false, s1' := true, s2' := false, s3' := false, s4' := false;
+   :: s1 and (a1 and !a2) ~> s0' := false, s1' := false, s2' := false, s3' := false, s4' := true;
+   :: s2 and (!a1 and a2) ~> s0' := false, s1' := false, s2' := false, s3' := true, s4' := false;
+   :: s3 ~> s0' := false, s1' := false, s2' := false, s3' := true, s4' := false;
+   :: s4 ~> s0' := false, s1' := false, s2' := false, s3' := false, s4' := true;
+   
+   property
+   --:: G F (s1 or s3) and G F (s2 or s4) ;
+   --:: F ! s0;
+   :: ! G s0;

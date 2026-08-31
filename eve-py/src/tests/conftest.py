@@ -14,6 +14,12 @@ SRC_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EXAMPLES_DIR = os.path.join(os.path.dirname(SRC_DIR), "examples")
 TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# Lets tests import eve-py/src modules (parsrml, srml2lts, checkprofile, ...)
+# directly and in-process, for tests that need to inspect Python objects
+# rather than just main.py's stdout.
+if SRC_DIR not in sys.path:
+    sys.path.insert(0, SRC_DIR)
+
 with open(os.path.join(TESTS_DIR, "golden_examples.json")) as f:
     GOLDEN = json.load(f)
 

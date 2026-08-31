@@ -189,7 +189,13 @@ def p_input_4(p):
 #    print "property: "+p[3]
     propFormula.append(p[3])
 #    print alphabets
-    PFAlphabets.append(alphabets)
+    '''copy, then reset: `alphabets` is a single mutable list reused across
+    every 'property' declaration in the file. Appending it by reference
+    (as opposed to a snapshot) means a file with 2+ 'property' blocks would
+    have every PFAlphabets[i] alias the SAME list -- so parsing a later
+    property's alphabet silently mutates every earlier entry too.'''
+    PFAlphabets.append(copy.copy(alphabets))
+    del alphabets[:]
     
 ################# CONTROLLED VARS ######################################
 def p_var_y_1(p):

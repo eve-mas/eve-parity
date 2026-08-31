@@ -263,6 +263,22 @@ def sequencer_cgs_single(idx,GPar,TTPG,modules):
         v['prior']=v['colour'][pl_name]+1
         v['itd']=False
 
+    '''Intermediate-vertex index: {frozenset([i,d]): vertex index}. Each
+    (i,d) pair here is (an existing-vertex INT index, a frozenset/tuple
+    direction) -- an int can never equal a frozenset/tuple, so
+    set([i,d]) can only collide with another set([i2,d2]) when i==i2 AND
+    d==d2 (the label is never confusable with any of TTPG[pl_name]'s
+    other vertices' labels, which are GPar's own state labels: sets of
+    plain strings, never [int, direction] pairs). generate_coal_dir CAN
+    legitimately return the same direction twice for a fixed i (two
+    distinct joint update commands landing on the same next valuation),
+    so (i,d) is not always fresh -- add_vertex is kept unconditional
+    below (preserving the original vcount/ecount exactly, duplicate
+    "orphan" vertices included), and this index only records the FIRST
+    vertex index seen for a given key (setdefault), exactly matching
+    vs.find()'s own first-match semantics -- never overwritten by a
+    later duplicate the way a plain dict assignment would.'''
+    intermed_index = {}
     '''check possible d_exi'''
 #        for state in TTPG[pl_name].vs:
     for i in range(oriv_count):
@@ -272,8 +288,10 @@ def sequencer_cgs_single(idx,GPar,TTPG,modules):
 #                print d
             '''add intermediate states to TTPG'''
             TTPG[pl_name].add_vertex(label=set([i,d]),prior=(TTPG[pl_name].vs[i]['colour'][pl_name]+1),itd=True)
-            intermed_state = TTPG[pl_name].vs.find(label=set([i,d]))
-            
+            intermed_key = frozenset([i,d])
+            intermed_index.setdefault(intermed_key, TTPG[pl_name].vcount()-1)
+            intermed_state = TTPG[pl_name].vs[intermed_index[intermed_key]]
+
             '''add edge from prev state to intermediate state'''
             TTPG[pl_name].add_edge(TTPG[pl_name].vs[i],intermed_state)
             for d_i in generate_coal_dir(TTPG[pl_name].vs[i]['val'],[m]):
@@ -285,7 +303,7 @@ def sequencer_cgs_single(idx,GPar,TTPG,modules):
 #                                print TTPG[pl_name].vs[e.target]
                             ''''add edge from intermediate state to next state'''
                             TTPG[pl_name].add_edge(intermed_state,TTPG[pl_name].vs[e.target])
-    
+
 #        for d in d_exi:
 ##            print d
 #            for i in xrange(oriv_count):
@@ -347,6 +365,17 @@ def sequencer_rmg_single(idx,GPar,TTPG,modules):
         v['prior']=v['colour'][pl_name]+1
         v['itd']=False
 
+    '''Intermediate-vertex index shared by both branches below -- see
+    sequencer_cgs_single's identical comment for the (i,d)-uniqueness
+    reasoning (i is always an int, d always a frozenset/tuple direction,
+    so a collision can only occur when i==i2 AND d==d2, never across the
+    int/direction type boundary or against TTPG[pl_name]'s other,
+    string-only-labelled vertices). add_vertex stays unconditional
+    (preserving the original vcount/ecount exactly); this index only
+    records the FIRST vertex index per key (setdefault), matching
+    vs.find()'s first-match semantics for the (here too, possible)
+    duplicate-direction case.'''
+    intermed_index = {}
     '''check possible d_exi'''
 #        for state in TTPG[pl_name].vs:
     for i in range(oriv_count):
@@ -364,7 +393,9 @@ def sequencer_rmg_single(idx,GPar,TTPG,modules):
 #                    print "%%%", d
                 '''add init intermed statte'''
                 TTPG[pl_name].add_vertex(label=set([i,d]),prior=(TTPG[pl_name].vs[i]['colour'][pl_name]+1),itd=True)
-                intermed_state = TTPG[pl_name].vs.find(label=set([i,d]))
+                intermed_key = frozenset([i,d])
+                intermed_index.setdefault(intermed_key, TTPG[pl_name].vcount()-1)
+                intermed_state = TTPG[pl_name].vs[intermed_index[intermed_key]]
                 '''add edge from prev state to intermediate state'''
                 TTPG[pl_name].add_edge(TTPG[pl_name].vs[i],intermed_state)
                 for state_i in productInit([m]):
@@ -385,8 +416,10 @@ def sequencer_rmg_single(idx,GPar,TTPG,modules):
 #                    print d
                 '''add intermediate states to TTPG'''
                 TTPG[pl_name].add_vertex(label=set([i,d]),prior=(TTPG[pl_name].vs[i]['colour'][pl_name]+1),itd=True)
-                intermed_state = TTPG[pl_name].vs.find(label=set([i,d]))
-                
+                intermed_key = frozenset([i,d])
+                intermed_index.setdefault(intermed_key, TTPG[pl_name].vcount()-1)
+                intermed_state = TTPG[pl_name].vs[intermed_index[intermed_key]]
+
                 '''add edge from prev state to intermediate state'''
                 TTPG[pl_name].add_edge(TTPG[pl_name].vs[i],intermed_state)
                 for d_i in generate_coal_dir(TTPG[pl_name].vs[i]['val'],[m]):
@@ -491,8 +524,18 @@ def convertG(modules,DPWs,M):
     dpw_states = {}
 #    print M.vs[0]['label'] 
     colour_tuple = {}
-    S = set()
-    
+    '''S doubles as the reachable-state index: {frozenset(label): vertex
+    index}. Every vertex ever added below (init states, then fixpoint-
+    discovered states) is added to GPar and given a unique S entry in the
+    SAME statement pair -- `frozenset(label) not in S` before add_vertex,
+    `S[...] = GPar.vcount()-1` right after -- so S's keys are exactly
+    GPar's vertex labels, with no duplicates by construction (the `not in
+    S` guard is exactly what makes this an index rather than a plain
+    membership set: promoting it from set to dict is free, and matches
+    the O(1) direct lookup the edge-building pass below needs instead of
+    GPar.vs.find(label=...)'s O(|GPar.vs|) scan.'''
+    S = {}
+
     '''add (pre?)init state'''
     for m in modules:
         colour_tuple[list(m[1])[0]]=0
@@ -523,7 +566,7 @@ def convertG(modules,DPWs,M):
 #    print 'stateLabel', getValuation(productInit(modules))
         
     for idx,state in enumerate(productInit(modules)):
-        s0 = ['M-'+str(idx+1)]
+        s0 = ['M-'+str(idx)]
 #        print s0
         stateLabel = getValuation(state)
         if stateLabel==None:
@@ -551,7 +594,7 @@ def convertG(modules,DPWs,M):
 #    print 's0',s0,colour_tuple
         '''convert stateLabel to tuple to match val format'''
         GPar.add_vertex(label=set(s0),colour=copy.copy(colour_tuple),val=tuple(stateLabel))
-        S.add(frozenset(s0))
+        S[frozenset(s0)] = GPar.vcount() - 1
     
     
 #    print stateprod(dpw_states,M)
@@ -561,28 +604,40 @@ def convertG(modules,DPWs,M):
 #    '''Why not directly check update commands???'''
 #    print Direction
     prevS = set()
+    '''vertex 0 is the synthetic 'init' node (never has successors computed
+    for it); real states start at index 1. New vertices are always
+    appended (strictly increasing index) and every GPar.add_vertex below is
+    paired 1:1, in the same order, with the S[...] assignment beside it --
+    so the vertex-index range [frontier_start:frontier_end) exactly
+    identifies the states newly discovered in the previous round.
+    Reprocessing already-expanded states every round (rescanning the full,
+    ever-growing GPar.vs) was pure redundant work; iterating only that
+    frontier is equivalent (same fixpoint, same final GPar) and avoids
+    it.'''
+    frontier_start = 1
     while prevS != S:
         prevS = copy.copy(S)
-        for state in GPar.vs:
+        frontier_end = len(GPar.vs)
+        for state in GPar.vs[frontier_start:frontier_end]:
 #            print "state['label']",state
             '''direction via updatecommand (faster than brute force method)'''
 #            for updateCommand in jointEnabled(guardEval(state['label'],modules)):
 #                commands=[]
-            if state.index!=0:
-                for d in generate_coal_dir(state['val'],modules):
-                    d = tuple(d)
-                    stup_next=[]
-                    next_mstate = get_next_mstate(state,d,M)
+            for d in generate_coal_dir(state['val'],modules):
+                d = tuple(d)
+                stup_next=[]
+                next_mstate = get_next_mstate(state,d,M)
     #                print next_mstate
     #                print 'direction', d
-                    if next_mstate!=None:
-                        stup_next.append(next_mstate)
-                        stup_next = get_next_qtup(state,d,DPWs,modules,stup_next)
-                        colour_tuple = get_colour(state,d,DPWs,modules,stup_next)
-                        if not frozenset(stup_next) in S:
-                            GPar.add_vertex(label=stup_next,colour=copy.copy(colour_tuple),val=d)
-                            S.add(frozenset(stup_next))
-            
+                if next_mstate!=None:
+                    stup_next.append(next_mstate)
+                    stup_next = get_next_qtup(state,d,DPWs,modules,stup_next)
+                    colour_tuple = get_colour(state,d,DPWs,modules,stup_next)
+                    if not frozenset(stup_next) in S:
+                        GPar.add_vertex(label=stup_next,colour=copy.copy(colour_tuple),val=d)
+                        S[frozenset(stup_next)] = GPar.vcount() - 1
+        frontier_start = frontier_end
+
     #            '''direction via brute force'''
     #            for d in Direction:
     ##                print d
@@ -628,7 +683,7 @@ def convertG(modules,DPWs,M):
                 if next_mstate!=None:
                     stup_next.append(next_mstate)
                     stup_next = get_next_qtup(cur,d,DPWs,modules,stup_next)
-                    GPar.add_edge(cur,GPar.vs.find(label=set(stup_next)),label=set(d))
+                    GPar.add_edge(cur,GPar.vs[S[frozenset(stup_next)]],label=set(d))
     #        for d in Direction:
     #            stup_next=[]
     #            next_mstate = get_next_mstate(cur,d,M)
@@ -645,10 +700,16 @@ def convertG(modules,DPWs,M):
 def convertG_cgs(modules,DPWs,M):
     GPar = Graph(directed=True)
     dpw_states = {}
-    s0 = ['M-0'] 
+    s0 = ['M-0']
     colour_tuple = {}
-    S = set()
-    
+    '''S doubles as the reachable-state index, exactly as in convertG
+    above: {frozenset(label): vertex index}, populated in the same
+    statement pair as every GPar.add_vertex below, so its keys are
+    exactly GPar's (unique, by the `not in S` guard) vertex labels --
+    an O(1) replacement for GPar.vs.find(label=...)'s O(|GPar.vs|) scan
+    in the edge-building pass.'''
+    S = {}
+
     for m in modules:
         states = []
         alphabets=set(list(m[6])) #set of symbols in DPW
@@ -682,13 +743,22 @@ def convertG_cgs(modules,DPWs,M):
 #            print e
     '''add init state (s0) in GPar'''
     GPar.add_vertex(label=set(s0),colour=copy.copy(colour_tuple),val=frozenset(M.vs[0]['label'][1]))
-    S.add(frozenset(s0))
-    
+    S[frozenset(s0)] = GPar.vcount() - 1
+
     '''generate GPar states'''
     prevS = set()
+    '''vertex 0 here IS the real init state (unlike convertG's synthetic
+    placeholder), so it does get its successors expanded, starting the
+    frontier at index 0. Same frontier-only reasoning as convertG above:
+    GPar.add_vertex below is always paired 1:1, in the same order, with
+    the S[...] assignment beside it, so [frontier_start:frontier_end)
+    exactly identifies the states newly discovered in the previous round
+    -- reprocessing already-expanded states every round was redundant.'''
+    frontier_start = 0
     while prevS != S:
         prevS = copy.copy(S)
-        for state in GPar.vs:
+        frontier_end = len(GPar.vs)
+        for state in GPar.vs[frontier_start:frontier_end]:
 #            print "state['label']",state['val']
             '''
             this generate direction based on sequence of states/run-based strategies
@@ -721,8 +791,9 @@ def convertG_cgs(modules,DPWs,M):
 #                    print '###',stup_next, colour_tuple
                     if not frozenset(stup_next) in S:
                         GPar.add_vertex(label=stup_next,colour=copy.copy(colour_tuple),val=frozenset(nextLabel))
-                        S.add(frozenset(stup_next))
-                        
+                        S[frozenset(stup_next)] = GPar.vcount() - 1
+        frontier_start = frontier_end
+
     '''adding edges'''
     for cur in GPar.vs:
 #        for nex in GPar.vs:
@@ -746,8 +817,8 @@ def convertG_cgs(modules,DPWs,M):
             if next_mstate!=None:
                 stup_next.append(next_mstate)
                 stup_next = get_next_qtup(cur,tuple(nextLabel),DPWs,modules,stup_next)
-                GPar.add_edge(cur,GPar.vs.find(label=set(stup_next)),label=set(d))
-    
+                GPar.add_edge(cur,GPar.vs[S[frozenset(stup_next)]],label=set(d))
+
     update_labs(GPar)
 
     # if check_draw_flag():
@@ -907,8 +978,7 @@ def get_next_mstate(cur_stup,d,M):
     if idx_next==None:
         return None
     else:
-        '''plus 1 to accommodate (pre)init state'''
-        return 'M-'+str(idx_next+1)
+        return 'M-'+str(idx_next)
         
 '''get next M-state for CGS'''
 def get_next_mstate_cgs(cur_stup,d,M):
@@ -977,8 +1047,7 @@ def gltl_tau(sidx,d,M):
 #    print 'sidx',sidx
 #    if sidx==None:
 #        return None
-    '''minus 1 to accommodate (pre)init state'''
-    for s in M.successors(int(sidx)-1):
+    for s in M.successors(int(sidx)):
 #        print '>>>>',M.vs[s]['label']
         if set(M.vs[s]['label'][1])==set(d):
 #            print M.vs[s]['label'][1]

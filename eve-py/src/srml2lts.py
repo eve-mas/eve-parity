@@ -32,13 +32,26 @@ def Arena2LTS(mdl):
     for d in productInit(mdl):
         direction = getValuation(d)
         cmd=[]
+        # `merged` = the players' just-completed init choice (`direction`)
+        # plus the environment's own current valuation (`label`) -- the same
+        # view envTransition's guard match already uses two lines below, now
+        # reused for evaluating the *selected* branch's RHS too (was
+        # evaluated against `label` alone, silently unable to see any
+        # player-controlled variable on an RHS formula). Safe: by this point
+        # every player's own init choice was already computed independently
+        # of `direction` (productInit(mdl) enumerates each player's own init
+        # branches on its own), so merging it in here only lets the
+        # *environment* observe the completed round -- it cannot leak one
+        # player's choice into another player's own computation, since no
+        # player-choice computation reads `merged`.
         try:
-            t = envTransition(direction+label,environment[0])
+            merged = direction+label
         except TypeError:
-            t = envTransition(label,environment[0])
+            merged = label
+        t = envTransition(merged,environment[0])
         if len(t)==1:
             for k,v in without_keys(dict(t[0][0][1]),'guard').items():
-                cmd.append(str({k:parse_rpn(label,v)}))
+                cmd.append(str({k:parse_rpn(merged,v)}))
         nextLabel = getValuation(cmd)
         try:
             M.vs.find(label=nextLabel)
@@ -48,10 +61,30 @@ def Arena2LTS(mdl):
             Q.add(frozenset(nextLabel))
 
 
-    prevQ = set()
-    while prevQ != Q:
-        prevQ = copy.copy(Q)
-        for state in prevQ:
+    '''Reachability sweep: process each state's own successor-discovery
+    EXACTLY ONCE. guardEval/envTransition's output for a given state
+    depends only on that state's own valuation and the static module
+    definitions (mdl) -- never on which round of the sweep we're in --
+    so re-processing a state already fully expanded in an earlier round
+    (the previous version's `for state in prevQ` re-scanned the WHOLE
+    of Q, which only grows, every single round) recomputes the exact
+    same successor set for no benefit. Tracking just the newly-
+    discovered frontier each round preserves the identical final Q/
+    M.vs (same states discovered, same eventual vertex set) while
+    cutting the number of guardEval/envTransition calls from
+    O(rounds * |Q|) to O(|Q|).
+    sorted, not raw set iteration: iterating a Python set of frozensets
+    orders by hash, which is randomised per-process (PYTHONHASHSEED) for
+    str contents -- that made vertex-discovery order, and therefore each
+    state's assigned M.vs index, differ across otherwise-identical runs.
+    Arena2Kripke avoids this by iterating its own already-built vertex
+    sequence; ordering deterministically here matches that (unchanged
+    from the pre-frontier version -- this property is preserved, not
+    introduced, by this change).'''
+    frontier = set(Q)
+    while frontier:
+        next_frontier = set()
+        for state in sorted(frontier, key=lambda fs: sorted(fs)):
 #            print state
             for updateCommand in jointEnabled(guardEval(list(state),mdl)):
                 commands=[]
@@ -63,13 +96,22 @@ def Arena2LTS(mdl):
                         commands.append(str({key:parse_rpn((list(state)),l)}))
                 direction = getValuation(commands)
                 nextState=[]
+                # See the site-1 comment above: `direction` here is this
+                # round's players' choices, each already computed above
+                # (line 96) purely from `list(state)` -- simultaneity is
+                # intact by construction before we ever reach this point.
+                # Reusing the merged (direction + state) view for the
+                # selected branch's RHS, not just its guard, is what a
+                # formula like `same' := (cp <-> cq)` needs to see the
+                # players' actual current-round choices.
                 try:
-                    t = envTransition(direction+list(state),environment[0])
+                    merged = direction+list(state)
                 except TypeError:
-                    t = envTransition(list(state),environment[0])
+                    merged = list(state)
+                t = envTransition(merged,environment[0])
                 if len(t)==1:
                     for k,v in without_keys(dict(t[0][0][1]),'guard').items():
-                        nextState.append(str({k:parse_rpn(list(state),v)}))
+                        nextState.append(str({k:parse_rpn(merged,v)}))
                 nextLabel = getValuation(nextState)
 #                print 'nextLabel', nextLabel
                 if direction!=None:
@@ -78,46 +120,63 @@ def Arena2LTS(mdl):
                     if 'matching_pennies_player_2_var' in direction:
                         nextLabel.append('matching_pennies_player_2_var') 
 #                print 'nextLabel', nextLabel
-                if frozenset(nextLabel) not in Q:
-                    Q.add(frozenset(nextLabel))
+                next_key = frozenset(nextLabel)
+                if next_key not in Q:
+                    Q.add(next_key)
                     M.add_vertex(label=nextLabel)
-                    
-        '''
-        maybe we can use faster method of adding edges just like in arena2kripke?
-        '''
+                    next_frontier.add(next_key)
+        frontier = next_frontier
+
+    '''Edge-building pass: guardEval(currentState['label'], mdl) and the
+    (direction, nextLabel) it produces do not depend on `nextState` at
+    all, so the previous version's `for nextState in M.vs` inner loop
+    recomputed the identical guardEval/envTransition/parse_rpn work
+    once per candidate target vertex -- O(|S|) redundant recomputation
+    per currentState, O(|S|^2) overall. Computing each currentState's
+    own (direction, nextLabel) pair once and looking the matching
+    target vertex up by label (vertices carry unique labels under
+    frozenset equality -- the same equality the reachability sweep
+    above already deduplicates on) turns this into O(|S|) total,
+    producing the exact same edge set (same (source, target, direction)
+    triples) as the original set(nextState['label']) == set(nextLabel)
+    comparison, just without scanning every vertex to find it.'''
+    label_to_index = {frozenset(v['label'] or []): v.index for v in M.vs}
     for currentState in M.vs:
-        for nextState in M.vs:
-#            print (currentState['label'],nextState['label'])
-            for updateCommand in jointEnabled(guardEval(currentState['label'],mdl)):
+        for updateCommand in jointEnabled(guardEval(currentState['label'],mdl)):
 #                print updateCommand
-                commands=[]
-                for k,v in updateCommand:
-                    updateCommand_noguard = without_keys(v,'guard') #remove dict key 'guard'
-                    for key,l in updateCommand_noguard.items():
-                        '''for each variable'''
-                        commands.append(str({key:parse_rpn(currentState['label'],l)}))
-                direction = getValuation(commands)
+            commands=[]
+            for k,v in updateCommand:
+                updateCommand_noguard = without_keys(v,'guard') #remove dict key 'guard'
+                for key,l in updateCommand_noguard.items():
+                    '''for each variable'''
+                    commands.append(str({key:parse_rpn(currentState['label'],l)}))
+            direction = getValuation(commands)
 #                print direction
-                sNext=[]
-                try:
-                    t = envTransition(direction+currentState['label'],environment[0])
-                except TypeError:
-                    t = envTransition(currentState['label'],environment[0])
+            sNext=[]
+            # Same fix as the two sites above, applied to the edge-building
+            # pass: `direction` is this transition's already-completed
+            # player choice (computed at line 152 purely from
+            # currentState['label']), so merging it into the RHS-evaluation
+            # view here is likewise leak-free.
+            try:
+                merged = direction+currentState['label']
+            except TypeError:
+                merged = currentState['label']
+            t = envTransition(merged,environment[0])
 #                print t
-                if len(t)==1:
-                    for k,v in without_keys(dict(t[0][0][1]),'guard').items():
-                        sNext.append(str({k:parse_rpn(currentState['label'],v)}))
-                nextLabel = getValuation(sNext)
+            if len(t)==1:
+                for k,v in without_keys(dict(t[0][0][1]),'guard').items():
+                    sNext.append(str({k:parse_rpn(merged,v)}))
+            nextLabel = getValuation(sNext)
 #                print nextLabel
-                if nextLabel==None:
-                    nextLabel=[]
-                if nextState['label']==None:
-                    nextState['label']=[]                
-                
-                if(set(nextState['label'])==set(nextLabel)):
+            if nextLabel==None:
+                nextLabel=[]
+
+            target_index = label_to_index.get(frozenset(nextLabel))
+            if target_index is not None:
 #                    if direction not in valuation_table[frozenset(nextLabel)]:
 #                        valuation_table[frozenset(nextLabel)].append(direction)
-                    M.add_edge(currentState.index,nextState.index,direction=direction)
+                M.add_edge(currentState.index,target_index,direction=direction)
 #    print valuation_table
-                                    
+
     return M

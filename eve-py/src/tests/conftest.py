@@ -35,6 +35,42 @@ def run_main(problem, example, extra_args=()):
     return parse_output(proc.stdout, proc.returncode)
 
 
+def build_game(srml_text):
+    """Parse an SRML source string in-process and build the same
+    (modules, environment, M, GPar, cgsFlag) main.py builds for problems
+    e/a/n/m, without going through the CLI/subprocess. Lets semantic tests
+    inspect M/GPar directly (e.g. to find two GPar vertices projecting to
+    the same original-arena state)."""
+    import parsrml
+    from parsrml import yacc
+    from arena2kripke import Arena2Kripke
+    from srml2lts import Arena2LTS
+    from srmlutil import updateLabM
+    from spot_backend import ltl2dpw
+    from gltl2gpar import convertG, convertG_cgs
+    from igraph import Graph
+
+    for name in ("modules", "environment", "propFormula", "PFAlphabets"):
+        getattr(parsrml, name).clear()
+    yacc.parse(srml_text)
+    modules = parsrml.modules
+    environment = parsrml.environment
+    cgsFlag = len(environment) != 0
+
+    M = Arena2LTS(modules) if cgsFlag else Arena2Kripke(modules)
+    updateLabM(M)
+
+    valuations = [frozenset(M.vs[i]['label'][1]) for i in range(M.vcount())]
+    DPWs = Graph(directed=True)
+    for m in modules:
+        pl = list(m[1])[0]
+        goal = list(m[5])[0]
+        DPWs[pl] = ltl2dpw(goal, list(m[6]), valuations)
+
+    GPar = convertG_cgs(modules, DPWs, M) if cgsFlag else convertG(modules, DPWs, M)
+    return modules, environment, M, GPar, cgsFlag
+
+
 def parse_output(text, exit_code):
     entry = {"exit": exit_code}
     for key, pattern in [

@@ -1,0 +1,188 @@
+{
+  "bisim_ne": {
+    "n": {
+      "exit": 0,
+      "gpar_edges": 128,
+      "gpar_states": 8,
+      "kripke_edges": 96,
+      "kripke_states": 6,
+      "verdict": "YES"
+    }
+  },
+  "bisim_none": {
+    "n": {
+      "exit": 0,
+      "gpar_edges": 112,
+      "gpar_states": 7,
+      "kripke_edges": 80,
+      "kripke_states": 5,
+      "verdict": "YES"
+    }
+  },
+  "cgs-matching-pennies": {
+    "a": {
+      "exit": 0,
+      "gpar_edges": 24,
+      "gpar_states": 6,
+      "kripke_edges": 8,
+      "kripke_states": 2,
+      "verdict": "NO"
+    },
+    "e": {
+      "exit": 0,
+      "gpar_edges": 24,
+      "gpar_states": 6,
+      "kripke_edges": 8,
+      "kripke_states": 2,
+      "verdict": "NO"
+    },
+    "n": {
+      "exit": 0,
+      "gpar_edges": 24,
+      "gpar_states": 6,
+      "kripke_edges": 8,
+      "kripke_states": 2,
+      "verdict": "YES"
+    }
+  },
+  "client-server": {
+    "a": {
+      "exit": 0,
+      "gpar_edges": 52,
+      "gpar_states": 13,
+      "kripke_edges": 20,
+      "kripke_states": 5,
+      "verdict": "YES"
+    },
+    "e": {
+      "exit": 0,
+      "gpar_edges": 52,
+      "gpar_states": 13,
+      "kripke_edges": 20,
+      "kripke_states": 5,
+      "verdict": "YES"
+    },
+    "n": {
+      "exit": 0,
+      "gpar_edges": 52,
+      "gpar_states": 13,
+      "kripke_edges": 20,
+      "kripke_states": 5,
+      "verdict": "YES"
+    }
+  },
+  "gifford": {
+    "a": {
+      "exit": 0,
+      "gpar_edges": 256,
+      "gpar_states": 7,
+      "kripke_edges": 256,
+      "kripke_states": 7,
+      "verdict": "YES"
+    },
+    "e": {
+      "exit": 0,
+      "gpar_edges": 256,
+      "gpar_states": 7,
+      "kripke_edges": 256,
+      "kripke_states": 7,
+      "verdict": "YES"
+    },
+    "n": {
+      "exit": 0,
+      "gpar_edges": 256,
+      "gpar_states": 7,
+      "kripke_edges": 256,
+      "kripke_states": 7,
+      "verdict": "YES"
+    }
+  },
+  "gossip": {
+    "a": {
+      "exit": 0,
+      "gpar_edges": 147,
+      "gpar_states": 37,
+      "kripke_edges": 27,
+      "kripke_states": 8,
+      "verdict": "YES"
+    },
+    "e": {
+      "exit": 0,
+      "gpar_edges": 147,
+      "gpar_states": 37,
+      "kripke_edges": 27,
+      "kripke_states": 8,
+      "verdict": "YES"
+    },
+    "n": {
+      "exit": 0,
+      "gpar_edges": 147,
+      "gpar_states": 37,
+      "kripke_edges": 27,
+      "kripke_states": 8,
+      "verdict": "YES"
+    }
+  },
+  "matching_pennies": {
+    "a": {
+      "exit": 0,
+      "gpar_edges": 52,
+      "gpar_states": 13,
+      "kripke_edges": 16,
+      "kripke_states": 4,
+      "verdict": "NO"
+    },
+    "e": {
+      "exit": 0,
+      "gpar_edges": 52,
+      "gpar_states": 13,
+      "kripke_edges": 16,
+      "kripke_states": 4,
+      "verdict": "YES"
+    },
+    "n": {
+      "exit": 0,
+      "gpar_edges": 52,
+      "gpar_states": 13,
+      "kripke_edges": 16,
+      "kripke_states": 4,
+      "verdict": "YES"
+    }
+  },
+  "p2p": {
+    "n": {
+      "exit": 0,
+      "gpar_edges": 52,
+      "gpar_states": 13,
+      "kripke_edges": 16,
+      "kripke_states": 4,
+      "verdict": "YES"
+    }
+  },
+  "ring-based": {
+    "a": {
+      "exit": 0,
+      "gpar_edges": 241,
+      "gpar_states": 121,
+      "kripke_edges": 16,
+      "kripke_states": 8,
+      "verdict": "NO"
+    },
+    "e": {
+      "exit": 0,
+      "gpar_edges": 241,
+      "gpar_states": 121,
+      "kripke_edges": 16,
+      "kripke_states": 8,
+      "verdict": "YES"
+    },
+    "n": {
+      "exit": 0,
+      "gpar_edges": 241,
+      "gpar_states": 121,
+      "kripke_edges": 16,
+      "kripke_states": 8,
+      "verdict": "YES"
+    }
+  }
+}

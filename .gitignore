@@ -4,3 +4,11 @@
 
 # pgsolver unzipped
 eve-py/pgsolver-master/
+
+# runtime state/cache written by every `main.py` invocation
+eve-py/src/verbose_flag
+eve-py/src/draw_flag
+eve-py/src/parser.out
+eve-py/src/parsetab.py
+eve-py/src/__pycache__/
+.pytest_cache/

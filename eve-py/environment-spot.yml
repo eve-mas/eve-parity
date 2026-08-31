@@ -1,0 +1,11 @@
+name: eve-spot
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - spot          # includes buddy Python bindings
+  - python-igraph
+  - pytest
+  - pip
+  - pip:
+      - ply

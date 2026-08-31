@@ -14,6 +14,10 @@ from utils import *
 from nonemptiness import *
 from enash import *
 from anash import *
+from checkprofile import (
+    check_profile_memoryless, load_profile_json, load_aliases,
+    print_profile_report, to_json_result, resolve_system_property,
+    UnsupportedModelError, ProfileError)
 
 def print_performance(perfConstruction,perfParser,perfPGSolver,empCheck,GPar_v,GPar_e,TTPG_vmax,TTPG_emax,q_flag):
     problem=["E-Nash","A-Nash","Membership","Non-Emptiness"]
@@ -34,9 +38,14 @@ def printhelp():
     print("a \t Solve A-Nash")
     print("e \t Solve E-Nash")
     print("n \t Solve Non-Emptiness")
+    print("m \t Check a pure-memoryless strategy profile (requires -p)")
     print("\nList of optional arguments:")
     print("-d \t Draw the structures")
     print("-v \t verbose mode")
+    print("-p \t path to a profile JSON file (required for problem 'm')")
+    print("-a \t path to an optional alias JSON file for problem 'm' "
+          "({\"actions\": {...}, \"states\": {...}})")
+    print("-j \t path to write a machine-readable JSON result for problem 'm'")
     print("\n")
     sys.exit()
 
@@ -55,12 +64,16 @@ def main(argv):
     with open("draw_flag","w") as f:
         f.write("0")
     draw_flag=False
-    
+
+    profile_file = None
+    aliases_file = None
+    json_out_file = None
+
     try:
-        opts, args = getopt.getopt(argv,"vd")
+        opts, args = getopt.getopt(argv,"vdp:a:j:")
     except getopt.GetoptError:
         printhelp()
-        
+
     for o,a in opts:
         if o == "-d":
             with open("draw_flag","w") as f:
@@ -70,6 +83,12 @@ def main(argv):
             with open("verbose_flag","w") as f:
                 f.write("1")
             verbose = True
+        elif o == "-p":
+            profile_file = a
+        elif o == "-a":
+            aliases_file = a
+        elif o == "-j":
+            json_out_file = a
         else:
             print("ERROR: Undefined option")
             printhelp()
@@ -88,12 +107,12 @@ def main(argv):
     perfConstruction = 0.0
     start = time.time()*1000
 
-    '''get the property formula for E/A-Nash'''
+    '''get the property formula for E/A-Nash/membership-checking'''
     try:
         pf = str(propFormula[0])
     except IndexError:
         pf = None
-    
+
     if prob=="e":
         if pf==None:
             print("No property formula input...")
@@ -114,6 +133,17 @@ def main(argv):
     elif prob=="n":
         print("Solving Non-Emptiness of "+file_name)
         q_flag=4
+    elif prob=="m":
+        '''Checking a caller-supplied pure-memoryless strategy profile.'''
+        if profile_file is None:
+            print("ERROR: problem 'm' requires -p <profile.json>")
+            printhelp()
+        phi_formula, phi_alphabet = resolve_system_property(propFormula, PFAlphabets)
+        if phi_formula is None:
+            print("No system property declared; checking objectives/NE only.")
+        else:
+            print("Checking profile against system property: "+replace_symbols(phi_formula))
+        q_flag=6
     else:
         print("ERROR: Undefined problem")
         printhelp()
@@ -131,8 +161,11 @@ def main(argv):
     # if draw_flag:
     #     drawM(M)
         
-    '''Don't need to do LTL2DPW conversion for membership-checking problems'''
-    if q_flag in [1,2,4]:
+    '''Every problem below needs each player's own goal converted to a DPW
+    and producted into GPar; only e/a additionally need the property
+    producted in main.py itself (m's own phi product happens inside
+    check_profile_memoryless, against GPar directly, not here).'''
+    if q_flag in [1,2,4,6]:
         DPWs = Graph(directed=True)
 
         '''Convert LTL goals/property directly to DPWs via Spot (spot_backend.py).
@@ -189,13 +222,36 @@ def main(argv):
         perfPGSolver,TTPG_vmax,TTPG_emax=anash(modules,GPar,draw_flag,cgsFlag,pf,DPW_prop,PFAlphabets[0])
         empCheck = time.time()*1000 - start
     elif q_flag==4:
-        '''Solving Non-Emptiness'''    
+        '''Solving Non-Emptiness'''
         empCheck = 0.0
         perfPGSolver = 0.0
         TTPG_vmax=0
         TTPG_emax=0
         start = time.time()*1000
-        perfPGSolver,TTPG_vmax,TTPG_emax=nonemptiness(modules,GPar,draw_flag,cgsFlag)        
+        perfPGSolver,TTPG_vmax,TTPG_emax=nonemptiness(modules,GPar,draw_flag,cgsFlag)
+        empCheck = time.time()*1000 - start
+    elif q_flag==6:
+        '''Checking a pure-memoryless strategy profile'''
+        empCheck = 0.0
+        start = time.time()*1000
+        if aliases_file:
+            action_aliases, state_aliases = load_aliases(aliases_file)
+        else:
+            action_aliases, state_aliases = None, None
+        try:
+            raw_profile = load_profile_json(profile_file, action_aliases, state_aliases)
+            result = check_profile_memoryless(
+                modules, environment, M, GPar, cgsFlag,
+                phi_formula, phi_alphabet, raw_profile)
+        except (UnsupportedModelError, ProfileError) as e:
+            print("ERROR: "+str(e))
+            return True
+        print(print_profile_report(modules, M, result, action_aliases, state_aliases))
+        if json_out_file:
+            import json
+            with open(json_out_file, 'w') as f:
+                json.dump(to_json_result(modules, M, result, action_aliases, state_aliases), f, indent=2)
+            print("Machine-readable result written to " + json_out_file)
         empCheck = time.time()*1000 - start
     else:
         print("Undefined Problem!")

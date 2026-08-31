@@ -1,0 +1,32 @@
+-- Contract Verification Game: a supplier can deliver, claim (a dispute), or
+-- wait; a verifier then approves or rejects. Used as the reference fixture
+-- for pure-memoryless profile checking (main.py problem 'm').
+--
+-- Two profiles inducing the identical on-path outcome differ only in the
+-- verifier's OFF-PATH action (its response to 'deliver', never taken) and
+-- have opposite Nash-equilibrium verdicts under pure-memoryless deviations
+-- -- this is the canonical example showing why a complete profile must
+-- specify a legal action at every original-game decision state, not only
+-- the ones visited on the induced path.
+
+module supplier controls deliver,claim
+init
+:: true ~> deliver':=false,claim':=false;
+update
+:: !deliver and !claim ~> deliver':=true,claim':=false;
+:: !deliver and !claim ~> deliver':=false,claim':=true;
+:: !deliver and !claim ~> deliver':=false,claim':=false;
+goal
+:: F approve;
+
+module verifier controls approve,settled
+init
+:: true ~> approve':=false,settled':=false;
+update
+:: (deliver or claim) and !settled ~> approve':=true,settled':=true;
+:: (deliver or claim) and !settled ~> approve':=false,settled':=true;
+goal
+:: G((deliver or claim) -> F settled);
+
+property
+:: G(claim -> !approve);

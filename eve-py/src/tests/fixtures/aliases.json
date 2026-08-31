@@ -1,0 +1,9 @@
+{
+  "actions": {
+    "supplier": {"deliver": "!claim,deliver", "claim": "!deliver,claim", "wait": "!claim,!deliver"},
+    "verifier": {"approve": "approve", "reject": "!approve"}
+  },
+  "states": {
+    "sD": "s1", "sC": "s2", "sDA": "s3", "sDR": "s4", "sCA": "s5", "sCR": "s6"
+  }
+}

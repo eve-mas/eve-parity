@@ -18,6 +18,7 @@ from checkprofile import (
     check_profile_memoryless, load_profile_json, load_aliases,
     print_profile_report, to_json_result, resolve_system_property,
     UnsupportedModelError, ProfileError)
+from enumerate_profiles import enumerate_memoryless_equilibria
 
 def print_performance(perfConstruction,perfParser,perfPGSolver,empCheck,GPar_v,GPar_e,TTPG_vmax,TTPG_emax,q_flag):
     problem=["E-Nash","A-Nash","Membership","Non-Emptiness"]
@@ -46,8 +47,63 @@ def printhelp():
     print("-a \t path to an optional alias JSON file for problem 'm' "
           "({\"actions\": {...}, \"states\": {...}})")
     print("-j \t path to write a machine-readable JSON result for problem 'm'")
+    print("--strategy-class {perfect-recall,memoryless} \t "
+          "strategy class for n/e/a (default: perfect-recall). "
+          "'m' is always memoryless; --strategy-class perfect-recall is "
+          "not valid with 'm'.")
     print("\n")
     sys.exit()
+
+
+def run_memoryless_query(prob, modules, environment, cgsFlag):
+    """n/e/a under --strategy-class memoryless: builds the same arena/GPar
+    the perfect-recall path would (independently, since this bypasses
+    enash.py/anash.py/nonemptiness.py entirely) and reuses
+    enumerate_profiles.enumerate_memoryless_equilibria() (which itself
+    reuses checkprofile.check_profile_memoryless() unchanged) instead of
+    the perfect-recall engine. No equilibrium logic is duplicated here,
+    only the three Boolean verdicts are read off its nash_equilibria/
+    safe_nash_equilibria counts:
+      n: True iff at least one pure-memoryless NE exists.
+      e: True iff at least one pure-memoryless NE satisfies the declared
+         system property.
+      a: True iff every pure-memoryless NE satisfies the declared system
+         property -- when zero NE exist this is vacuously True (0 safe
+         == 0 total), matching anash.py's own existing convention: when
+         no NE exists at all, it reports the property satisfied in ALL
+         (zero) NE.
+    """
+    print("Strategy class: memoryless")
+    M = Arena2LTS(modules) if cgsFlag else Arena2Kripke(modules)
+    updateLabM(M)
+    print("Kripke states", M.vcount())
+    print("Kripke edges", M.ecount())
+
+    valuations = [frozenset(M.vs[i]['label'][1]) for i in range(M.vcount())]
+    DPWs = Graph(directed=True)
+    for m in modules:
+        goal = list(m[5])[0]
+        print(list(m[1])[0], replace_symbols(goal))
+        DPWs[list(m[1])[0]] = ltl2dpw(goal, list(m[6]), valuations)
+    GPar = convertG_cgs(modules,DPWs,M) if cgsFlag else convertG(modules,DPWs,M)
+
+    phi_formula, phi_alphabet = resolve_system_property(propFormula, PFAlphabets)
+    stats = enumerate_memoryless_equilibria(
+        modules, environment, M, GPar, cgsFlag, phi_formula, phi_alphabet)
+    n_ne = stats['nash_equilibria_count']
+    n_safe = stats['safe_nash_equilibria_count']
+    if prob == 'n':
+        verdict = n_ne > 0
+        label = 'a pure-memoryless NE exists'
+    elif prob == 'e':
+        verdict = n_safe > 0
+        label = 'the property is satisfied in some pure-memoryless NE'
+    else:  # prob == 'a'
+        verdict = n_safe == n_ne
+        label = 'the property is satisfied in ALL pure-memoryless NE'
+    print('>>> %s, %s <<<' % ('YES' if verdict else 'NO', label))
+    print('Total pure-memoryless profiles checked: %d' % stats['total_profiles_checked'])
+    print('Pure-memoryless NE found: %d' % n_ne)
 
 def main(argv):
 
@@ -68,9 +124,10 @@ def main(argv):
     profile_file = None
     aliases_file = None
     json_out_file = None
+    strategy_class = None  # unset -> defaulted below, per problem letter
 
     try:
-        opts, args = getopt.getopt(argv,"vdp:a:j:")
+        opts, args = getopt.getopt(argv,"vdp:a:j:",["strategy-class="])
     except getopt.GetoptError:
         printhelp()
 
@@ -89,6 +146,11 @@ def main(argv):
             aliases_file = a
         elif o == "-j":
             json_out_file = a
+        elif o == "--strategy-class":
+            if a not in ("perfect-recall", "memoryless"):
+                print("ERROR: --strategy-class must be 'perfect-recall' or 'memoryless'")
+                printhelp()
+            strategy_class = a
         else:
             print("ERROR: Undefined option")
             printhelp()
@@ -106,6 +168,26 @@ def main(argv):
     
     perfConstruction = 0.0
     start = time.time()*1000
+
+    '''Problem 'm' is always memoryless (that is the whole point of a
+    fixed pure-memoryless profile check) -- reject an explicit request
+    for perfect-recall rather than silently ignoring it or inventing a
+    perfect-recall profile checker. n/e/a default to perfect-recall
+    (today's behaviour, unchanged) unless --strategy-class memoryless
+    is explicitly requested, in which case they bypass enash.py/
+    anash.py/nonemptiness.py entirely via run_memoryless_query().'''
+    if prob == "m":
+        if strategy_class == "perfect-recall":
+            print("ERROR: --strategy-class perfect-recall is not supported for "
+                  "problem 'm' (pure-memoryless profile checking is always "
+                  "memoryless)")
+            printhelp()
+    elif prob in ("n", "e", "a"):
+        if strategy_class is None:
+            strategy_class = "perfect-recall"
+        if strategy_class == "memoryless":
+            run_memoryless_query(prob, modules, environment, cgsFlag)
+            return
 
     '''get the property formula for E/A-Nash/membership-checking'''
     try:

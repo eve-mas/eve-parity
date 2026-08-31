@@ -1,8 +1,6 @@
 #!/bin/sh
 set -eu
 
-(cd ltl2ba && make clean && make)
-
 [ ! -d temp ] || rm -rf temp
 [ ! -d pgsolver ] || rm -rf pgsolver
 mkdir -p temp

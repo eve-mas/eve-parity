@@ -1,0 +1,104 @@
+{
+  "bisim_ne": {
+    "n": {
+      "gpar_edges": 96,
+      "gpar_states": 6
+    }
+  },
+  "bisim_none": {
+    "n": {
+      "gpar_edges": 80,
+      "gpar_states": 5
+    }
+  },
+  "cgs-matching-pennies": {
+    "a": {
+      "gpar_edges": 8,
+      "gpar_states": 2
+    },
+    "e": {
+      "gpar_edges": 8,
+      "gpar_states": 2
+    },
+    "n": {
+      "gpar_edges": 8,
+      "gpar_states": 2
+    }
+  },
+  "client-server": {
+    "a": {
+      "gpar_edges": 20,
+      "gpar_states": 5
+    },
+    "e": {
+      "gpar_edges": 20,
+      "gpar_states": 5
+    },
+    "n": {
+      "gpar_edges": 20,
+      "gpar_states": 5
+    }
+  },
+  "gifford": {
+    "a": {
+      "gpar_edges": 256,
+      "gpar_states": 7
+    },
+    "e": {
+      "gpar_edges": 256,
+      "gpar_states": 7
+    },
+    "n": {
+      "gpar_edges": 256,
+      "gpar_states": 7
+    }
+  },
+  "gossip": {
+    "a": {
+      "gpar_edges": 28,
+      "gpar_states": 9
+    },
+    "e": {
+      "gpar_edges": 28,
+      "gpar_states": 9
+    },
+    "n": {
+      "gpar_edges": 28,
+      "gpar_states": 9
+    }
+  },
+  "matching_pennies": {
+    "a": {
+      "gpar_edges": 20,
+      "gpar_states": 5
+    },
+    "e": {
+      "gpar_edges": 20,
+      "gpar_states": 5
+    },
+    "n": {
+      "gpar_edges": 20,
+      "gpar_states": 5
+    }
+  },
+  "p2p": {
+    "n": {
+      "gpar_edges": 20,
+      "gpar_states": 5
+    }
+  },
+  "ring-based": {
+    "a": {
+      "gpar_edges": 17,
+      "gpar_states": 9
+    },
+    "e": {
+      "gpar_edges": 17,
+      "gpar_states": 9
+    },
+    "n": {
+      "gpar_edges": 17,
+      "gpar_states": 9
+    }
+  }
+}

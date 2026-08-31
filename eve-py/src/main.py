@@ -8,8 +8,7 @@ from parsrml import *
 from arena2kripke import *
 from srml2lts import *
 import time, sys, getopt
-from ltl2nbw import *
-from nbw2dpw import *
+from spot_backend import ltl2dpw
 from gltl2gpar import convertG,drawGPar,convertG_cgs
 from utils import *
 from nonemptiness import *
@@ -105,22 +104,12 @@ def main(argv):
         '''but the kripke structure will obviously change, is it a problem?'''
         q_flag=1
 
-        '''convert \phi to NBW'''
-        NBW_prop = ltl2nbw(propFormula[0],PFAlphabets[0])
-        DPW_prop = nbw2dpw(NBW_prop,PFAlphabets[0])
-
-        '''NEED TO BUILD DSW FROM DPW_prop'''
-        
         '''add 2 MP players'''
     elif prob=="a":
         if pf==None:
             print("No property formula input...")
         else:
             print("Checking A-Nash property formula: "+replace_symbols(pf))
-
-        '''convert \phi to NBW'''
-        NBW_prop = ltl2nbw('!('+propFormula[0]+')', PFAlphabets[0])
-        DPW_prop = nbw2dpw(NBW_prop, PFAlphabets[0])
         q_flag=2
     elif prob=="n":
         print("Solving Non-Emptiness of "+file_name)
@@ -142,28 +131,27 @@ def main(argv):
     # if draw_flag:
     #     drawM(M)
         
-    '''Don't need to do LTL2DPW conversion for memoryless case'''
+    '''Don't need to do LTL2DPW conversion for membership-checking problems'''
     if q_flag in [1,2,4]:
-        NBWs = Graph(directed=True)
         DPWs = Graph(directed=True)
 
-        '''Convert NBWs to DPWs'''
+        '''Convert LTL goals/property directly to DPWs via Spot (spot_backend.py).
+        Every valuation these DPWs could ever be queried against, while
+        convertG()/convertG_cgs() walk M to build GPar, is already present on
+        M's own vertices.'''
+        valuations = [frozenset(M.vs[i]['label'][1]) for i in range(M.vcount())]
+
+        if q_flag == 1:
+            DPW_prop = ltl2dpw(propFormula[0], PFAlphabets[0], valuations)
+        elif q_flag == 2:
+            DPW_prop = ltl2dpw('!('+propFormula[0]+')', PFAlphabets[0], valuations)
+
         for m in modules:
-    #        states = []
-            NBWs[list(m[1])[0]]=ltl2nbw(list(m[5])[0],list(m[6]))
-    #           print list(m[5])[0],list(m[1])[0]
-            NBWs[list(m[1])[0]]['goal']=list(m[5])[0]
             goal = list(m[5])[0]
-            goal = replace_symbols(goal)
-            print(list(m[1])[0], goal)
-    #        print list(m[1])[0]
-            DPWs[list(m[1])[0]] = nbw2dpw(NBWs[list(m[1])[0]],list(m[6]))
-    #        for v in DPWs[list(m[1])[0]].vs:
-    #            states.append(list(m[1])[0]+'-'+str(v.index))
-    #        print states
-    #        dpw_states[list(m[1])[0]]=states
-    #    st_prod = stateprod(dpw_states,M)
-        
+            goal_display = replace_symbols(goal)
+            print(list(m[1])[0], goal_display)
+            DPWs[list(m[1])[0]] = ltl2dpw(goal, list(m[6]), valuations)
+
         if not cgsFlag:
             if verbose:
                 print("\n Convert G_{LTL} to G_{PAR}...\n")
